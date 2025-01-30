@@ -14,14 +14,57 @@
             list-style: none;
             margin: 0;
             padding: 0; 
-        }   
+        }
+        #content {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        h3 {
+            color: orange;
+            cursor: pointer;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8f8f8;
+            padding: 10px 20px;
+        }
     </style>
 </head>
 <body>
-    <p>Your Startup Experiment</p>
-    <ul>
-        <li><a href="pages/quantums.html">Quantums</a></li>
-        <li><a href="pages/members.html">Members</a></li>
-    </ul>
+    <div class="navbar">
+        <h3 id="home">SieLabs</h3>
+        <a href="pages/quantums.html" class="nav-link">Quantums</a>
+        <a href="pages/members.html" class="nav-link">Members</a>
+    </div>
+    
+    <div id="content">
+        <p>Your Startup Experiment</p>
+    </div>
+
+    <script>
+        function loadContent(url) {
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("content").innerHTML = data;
+                })
+                .catch(error => console.error("Error loading content:", error));
+        }
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+                const url = this.getAttribute("href");
+                loadContent(url);
+            });
+        });
+
+        document.getElementById("home").addEventListener("click", function() {
+            document.getElementById("content").innerHTML = "<p>Your Startup Experiment</p>";
+        });
+    </script>
 </body>
 </html>
