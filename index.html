@@ -31,6 +31,10 @@
             background-color: #f8f8f8;
             padding: 10px 20px;
         }
+        ul li {
+            margin: 5px 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -39,26 +43,49 @@
         <a href="pages/quantums.html" class="nav-link">Quantums</a>
         <a href="pages/members.html" class="nav-link">Members</a>
     </div>
+
+    <ul id="topics">
+        <li><input type="checkbox"/><a href="#">Orientation of SieLabs</a></li>
+        <li><input type="checkbox"/><a href="#">The Client's Story</a></li>
+        <li><input type="checkbox"/><a href="#">The Developer's Lens</a></li>
+        <li><input type="checkbox"/><a href="#">Choosing Tech Stack</a></li>
+        <li><input type="checkbox"/><a href="#">Building Java Environment</a></li>
+        <li><input type="checkbox"/><a href="#">Simulating Nature with Code</a></li>
+        <li><input type="checkbox"/><a href="#">Life of an Object</a></li>
+        <li><input type="checkbox"/><a href="#">Tools of Java (Datatypes)</a></li>
+        <li><input type="checkbox"/><a href="#">Flow of Java Code</a></li>
+        <li><input type="checkbox"/><a href="#">Knowing Your Employee</a></li>
+        <li><input type="checkbox"/><a href="#">Generating Your Employees</a></li>
+    </ul>
     
     <div id="content">
         <p>Your Startup Experiment</p>
     </div>
 
-    <script>
-        function loadContent(url) {
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("content").innerHTML = data;
-                })
-                .catch(error => console.error("Error loading content:", error));
-        }
+    
 
-        document.querySelectorAll(".nav-link").forEach(link => {
+    <script>
+        const contentMap = {
+            "Orientation of SieLabs": "<h3>Orientation of SieLabs</h3><p>This is the introduction to SieLabs, its vision, and how it works.</p>",
+            "The Client's Story": "<h3>The Client's Story</h3><p>Understanding the client's requirements and expectations.</p>",
+            "The Developer's Lens": "<h3>The Developer's Lens</h3><p>How developers approach problems and solutions.</p>",
+            "Choosing Tech Stack": "<h3>Choosing Tech Stack</h3><p>Deciding the right technology for a project.</p>",
+            "Building Java Environment": "<h3>Building Java Environment</h3><p>Setting up Java for development.</p>",
+            "Simulating Nature with Code": "<h3>Simulating Nature with Code</h3><p>Using programming to model natural systems.</p>",
+            "Life of an Object": "<h3>Life of an Object</h3><p>Understanding objects in OOP.</p>",
+            "Tools of Java (Datatypes)": "<h3>Tools of Java (Datatypes)</h3><p>Learning about Java datatypes and how to use them.</p>",
+            "Flow of Java Code": "<h3>Flow of Java Code</h3><p>Understanding execution flow in Java.</p>",
+            "Knowing Your Employee": "<h3>Knowing Your Employee</h3><p>Understanding how objects interact in Java.</p>",
+            "Generating Your Employees": "<h3>Generating Your Employees</h3><p>Creating multiple objects dynamically.</p>",
+        };
+
+        document.querySelectorAll("#topics li a").forEach(link => {
             link.addEventListener("click", function(event) {
                 event.preventDefault();
-                const url = this.getAttribute("href");
-                loadContent(url);
+                const topic = this.innerText.trim();
+                if (contentMap[topic]) {
+                    document.getElementById("content").innerHTML = contentMap[topic];
+                }
             });
         });
 
