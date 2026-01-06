@@ -1,15 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center; 
-      align-items: center; 
-      font-family: 'Poppins', sans-serif;
-      background-color: #d4d2b2;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java 101 Cohort - SieLabs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-<h1>Java Lab</h1>
+<body>
+
+    <header class="hero-section">
+        <div class="container hero-container">
+            
+            <div class="hero-content-left">
+                <p class="cursive-subtitle">Introduction to Programming</p>
+                <h1 class="hero-title">JAVA <span class="highlight">101</span></h1>
+                
+                <p class="hero-desc">
+                    Master core Java development with live sessions, hands-on projects & personalized mentorship from Industry Experts.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#pricing" class="btn btn-white">Enroll Now ↗</a>
+                    <a href="#curriculum" class="btn btn-transparent">View Syllabus ↘</a>
+                </div>
+
+                <div class="countdown-wrapper">
+                    <p class="countdown-label">Lab Starts From <span class="date-highlight">24 Jan 2026 - 9:30 PM IST</span></p>
+                    <div class="countdown-timer">
+                        <div class="time-box">
+                            <span class="num">10</span>
+                            <span class="label">DAYS</span>
+                        </div>
+                        <div class="separator">:</div>
+                        <div class="time-box">
+                            <span class="num">21</span>
+                            <span class="label">HOURS</span>
+                        </div>
+                        <div class="separator">:</div>
+                        <div class="time-box">
+                            <span class="num">18</span>
+                            <span class="label">MINS</span>
+                        </div>
+                        <div class="separator">:</div>
+                        <div class="time-box">
+                            <span class="num">57</span>
+                            <span class="label">SECS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-image-right">
+                <img src="../../favicon.ico" alt="SieLabs Logo" class="hero-logo">
+            </div>
+
+        </div>
+    </header>
+
+    <main class="container" id="curriculum">
+        <h2 class="section-heading">Course <span class="highlight-text">Syllabus</span></h2>
+
+        <div class="timeline">
+            
+            <article class="module-card-new">
+                <div class="card-header" onclick="toggleModule(this)">
+                    <h3>Module 01: Lexical Structure & Syntax</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="card-body">
+                    <ul class="topic-grid">
+                        <li>Lexical Structure</li>
+                        <li>Primitive Types & Data Systems</li>
+                        <li>Array Structures</li>
+                        <li>Computational Logic & Operators</li>
+                        <li>Execution Control Flow</li>
+                        <li>Variable Scope</li>
+                    </ul>
+                    <div class="project-lab-box">
+                        <span class="lab-icon">🛠️</span>
+                        <div class="lab-content">
+                            <h4>PROJECT LAB: THE CONSOLE FOUNDATION</h4>
+                            <p>Establish the core application loop and implement a basic storage mechanism using primitive structures.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="module-card-new">
+                <div class="card-header" onclick="toggleModule(this)">
+                    <h3>Module 02: Object-Oriented Architecture</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="card-body">
+                    <ul class="topic-grid">
+                        <li>Class Design & Access Control</li>
+                        <li>Inheritance & Polymorphism</li>
+                        <li>Abstraction & Interfaces</li>
+                        <li>Inner Classes</li>
+                    </ul>
+                    <div class="project-lab-box">
+                        <span class="lab-icon">🛠️</span>
+                        <div class="lab-content">
+                            <h4>PROJECT LAB: STRUCTURING THE ENTITIES</h4>
+                            <p>Refactor the codebase to utilize a proper Class hierarchy, defining the core Employee entities.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="module-card-new">
+                <div class="card-header" onclick="toggleModule(this)">
+                    <h3>Module 03: Data Persistence & I/O</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="card-body">
+                    <ul class="topic-grid">
+                        <li>File Handling</li>
+                        <li>Stream Architecture</li>
+                        <li>Object Serialization</li>
+                        <li>State Transfer</li>
+                    </ul>
+                    <div class="project-lab-box">
+                        <span class="lab-icon">🛠️</span>
+                        <div class="lab-content">
+                            <h4>PROJECT LAB: THE PERSISTENCE LAYER</h4>
+                            <p>Implement a file handling system to ensure application data is saved and retrieved automatically.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+             <article class="module-card-new">
+                <div class="card-header" onclick="toggleModule(this)">
+                    <h3>Module 04: Exception Handling</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="card-body">
+                    <ul class="topic-grid">
+                        <li>Exception Hierarchy</li>
+                        <li>Try-Catch-Finally Blocks</li>
+                        <li>Custom Exceptions</li>
+                        <li>Error Propagation</li>
+                    </ul>
+                    <div class="project-lab-box">
+                        <span class="lab-icon">🛠️</span>
+                        <div class="lab-content">
+                            <h4>PROJECT LAB: RELIABILITY ENGINEERING</h4>
+                            <p>Integrate error handling logic to manage invalid user inputs and prevent crashes.</p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <script>
+        function toggleModule(headerElement) {
+            const card = headerElement.parentElement;
+            card.classList.toggle('active');
+        }
+    </script>
+
+    <section class="pricing-section" id="pricing">
+        <div class="container pricing-container">
+            <div class="price-left">
+                <span class="promo-text">CODE. CREATE. CONQUER.</span>
+                <h2>Java Development Cohort</h2>
+                <p>Gain hands-on experience in system design and core logic.</p>
+            </div>
+            <div class="price-right">
+                <div class="price-tag">
+                    <span class="currency">₹</span>2000 <span class="old-price">₹ 10000</span>
+                </div>
+                <button class="btn btn-orange">Buy Now &rarr;</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 SieLabs Inc. | Building Builders.</p>
+    </footer>
+
+</body>
+</html>

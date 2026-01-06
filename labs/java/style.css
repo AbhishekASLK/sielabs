@@ -1,0 +1,430 @@
+/* --- Global Reset & Dark Theme Variables --- */
+:root {
+    --brand-orange: #ff781e;   /* Accent Orange */
+    --brand-dark: #0a0a0a;     /* Deepest Black (Background) */
+    --card-bg: #161616;        /* Slightly lighter for cards */
+    --card-border: #262626;    /* Subtle borders */
+    --text-main: #f1f5f9;      /* White-ish text */
+    --text-muted: #94a3b8;     /* Gray text */
+    --lab-bg: #1e293b;         /* Dark Slate for Lab box */
+    --lab-border: #3b82f6;     /* Bright Blue accent */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--brand-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px; /* Slightly wider for the split layout */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* --- 1. HERO SECTION (Updated for Left Align) --- */
+.hero-section {
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    padding: 80px 0 80px;
+    border-bottom: 1px solid var(--card-border);
+    overflow: hidden; /* Prevents overflow if image is large */
+}
+
+/* Flex Container for Side-by-Side Layout */
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    text-align: left; /* Default left align */
+}
+
+.hero-content-left {
+    flex: 1; /* Takes available space */
+    max-width: 600px;
+}
+
+.hero-image-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-logo {
+    max-width: 100%;
+    width: 380px; /* Adjust size of logo */
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(255, 120, 30, 0.15)); /* Subtle orange glow */
+}
+
+/* Typography Updates */
+.cursive-subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: -10px;
+    opacity: 0.9;
+}
+
+.hero-title {
+    font-size: 5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    margin: 10px 0 20px;
+    color: var(--brand-orange);
+    line-height: 1;
+}
+
+.hero-title .highlight {
+    color: #fff;
+}
+
+.hero-desc {
+    max-width: 600px;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* Action Buttons */
+.hero-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 40px;
+    justify-content: flex-start; /* Left align buttons */
+}
+
+.btn {
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn:hover { transform: translateY(-2px); }
+
+.btn-white {
+    background-color: white;
+    color: black;
+    border: 2px solid white;
+}
+
+.btn-transparent {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #555;
+}
+
+.btn-transparent:hover {
+    border-color: #fff;
+    background-color: rgba(255,255,255,0.05);
+}
+
+/* Countdown Timer */
+.countdown-wrapper {
+    margin-top: 20px;
+}
+
+.countdown-label {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.date-highlight {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 5px;
+}
+
+.countdown-timer {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: flex-start; /* Left align timer */
+    font-family: monospace;
+}
+
+.time-box { text-align: center; }
+
+.time-box .num {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+}
+
+.time-box .label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.separator {
+    font-size: 2rem;
+    color: #333;
+    margin-top: -15px;
+}
+
+/* --- Responsive (Mobile Stack) --- */
+@media (max-width: 900px) {
+    .hero-container {
+        flex-direction: column-reverse; /* Put text on top, or remove reverse to put image top */
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .hero-content-left {
+        max-width: 100%;
+    }
+
+    .hero-actions, .countdown-timer {
+        justify-content: center; /* Center align on mobile */
+    }
+
+    .hero-title {
+        font-size: 3.5rem; /* Smaller title on mobile */
+    }
+
+    .hero-logo {
+        width: 250px; /* Smaller logo on mobile */
+    }
+}
+
+/* --- 2. CURRICULUM SECTION --- */
+#curriculum {
+    padding: 60px 20px;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #fff;
+}
+
+.highlight-text {
+    color: var(--brand-orange);
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* --- ACCORDION / MODULE CARD STYLES --- */
+.module-card-new {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.2s;
+}
+
+.module-card-new:hover {
+    border-color: #404040;
+}
+
+.card-header {
+    background-color: #202020;
+    padding: 15px 25px;
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.card-header:hover {
+    background-color: #2a2a2a;
+}
+
+.card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.toggle-icon {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+/* Hidden Body */
+.card-body {
+    display: none;
+    padding: 25px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Active State */
+.module-card-new.active .card-body {
+    display: block;
+}
+
+.module-card-new.active .toggle-icon {
+    transform: rotate(180deg);
+    color: var(--brand-orange);
+}
+
+.module-card-new.active .card-header {
+    border-bottom: 1px solid var(--card-border);
+}
+
+.module-card-new:not(.active) .card-header {
+    border-bottom: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Topic List */
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px 20px;
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+.topic-grid li {
+    position: relative;
+    padding-left: 20px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.topic-grid li::before {
+    content: "•";
+    color: var(--brand-orange);
+    font-weight: bold;
+    font-size: 1.2rem;
+    position: absolute;
+    left: 0;
+    top: -4px;
+}
+
+/* Project Lab Box */
+.project-lab-box {
+    background-color: var(--lab-bg);
+    border-left: 4px solid var(--lab-border);
+    padding: 20px;
+    border-radius: 4px;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.lab-icon {
+    font-size: 1.5rem;
+}
+
+.lab-content h4 {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+}
+
+.lab-content p {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    margin: 0;
+}
+
+/* --- 3. PRICING SECTION --- */
+.pricing-section {
+    background-color: #050505;
+    color: white;
+    padding: 50px 0;
+    margin-top: 60px;
+    border-top: 1px solid var(--card-border);
+}
+
+.pricing-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.price-left .promo-text {
+    color: var(--brand-orange);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.price-left h2 {
+    font-size: 1.8rem;
+    margin: 5px 0;
+    color: #fff;
+}
+
+.price-left p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.price-right {
+    text-align: right;
+}
+
+.price-tag {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--brand-orange);
+    margin-bottom: 10px;
+}
+
+.price-tag .currency { font-size: 1.5rem; }
+.price-tag .old-price { 
+    font-size: 1rem; 
+    color: #525252; 
+    text-decoration: line-through; 
+    margin-left: 10px;
+}
+
+.btn-orange {
+    background-color: var(--brand-orange);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-orange:hover {
+    background-color: #ff781e;
+}
+
+footer {
+    text-align: center;
+    padding: 40px 0;
+    color: #525252;
+    font-size: 0.9rem;
+    border-top: 1px solid #1a1a1a;
+    background-color: #000;
+}
