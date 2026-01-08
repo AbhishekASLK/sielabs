@@ -1,16 +1,28 @@
 /* --- Global Reset & Dark Theme Variables --- */
 :root {
-    --brand-orange: #ff781e;   /* Accent Orange */
-    --brand-dark: #0a0a0a;     /* Deepest Black (Background) */
-    --card-bg: #161616;        /* Slightly lighter for cards */
-    --card-border: #262626;    /* Subtle borders */
-    --text-main: #f1f5f9;      /* White-ish text */
-    --text-muted: #94a3b8;     /* Gray text */
-    --lab-bg: #1e293b;         /* Dark Slate for Lab box */
-    --lab-border: #3b82f6;     /* Bright Blue accent */
+    --brand-orange: #ff781e;
+    /* Accent Orange */
+    --brand-dark: #0a0a0a;
+    /* Deepest Black (Background) */
+    --card-bg: #161616;
+    /* Slightly lighter for cards */
+    --card-border: #262626;
+    /* Subtle borders */
+    --text-main: #f1f5f9;
+    /* White-ish text */
+    --text-muted: #94a3b8;
+    /* Gray text */
+    --lab-bg: #1e293b;
+    /* Dark Slate for Lab box */
+    --lab-border: #3b82f6;
+    /* Bright Blue accent */
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
     font-family: 'Inter', sans-serif;
@@ -20,7 +32,8 @@ body {
 }
 
 .container {
-    max-width: 1100px; /* Slightly wider for the split layout */
+    max-width: 1100px;
+    /* Slightly wider for the split layout */
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -30,7 +43,8 @@ body {
     background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
     padding: 80px 0 80px;
     border-bottom: 1px solid var(--card-border);
-    overflow: hidden; /* Prevents overflow if image is large */
+    overflow: hidden;
+    /* Prevents overflow if image is large */
 }
 
 /* Flex Container for Side-by-Side Layout */
@@ -39,11 +53,13 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 40px;
-    text-align: left; /* Default left align */
+    text-align: left;
+    /* Default left align */
 }
 
 .hero-content-left {
-    flex: 1; /* Takes available space */
+    flex: 1;
+    /* Takes available space */
     max-width: 600px;
 }
 
@@ -54,11 +70,83 @@ body {
     align-items: center;
 }
 
-.hero-logo {
+/* Quote Card Styles */
+.quote-card-container {
+    perspective: 1000px;
+    width: 380px;
     max-width: 100%;
-    width: 380px; /* Adjust size of logo */
-    height: auto;
-    filter: drop-shadow(0 0 20px rgba(255, 120, 30, 0.15)); /* Subtle orange glow */
+}
+
+.quote-card {
+    background: rgba(22, 22, 22, 0.8);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    animation: floatCard 6s ease-in-out infinite;
+    transform-style: preserve-3d;
+}
+
+.quote-icon {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4rem;
+    color: var(--brand-orange);
+    opacity: 0.3;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    line-height: 1;
+}
+
+.quote-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    font-style: italic;
+}
+
+.quote-author-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 15px;
+    /* Added margin to separate from text */
+}
+
+.quote-author-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--brand-orange);
+}
+
+.quote-author {
+    font-size: 0.9rem;
+    color: var(--brand-orange);
+    text-align: right;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@keyframes floatCard {
+
+    0%,
+    100% {
+        transform: translateY(0) rotateX(0) rotateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px) rotateX(2deg) rotateY(2deg);
+    }
 }
 
 /* Typography Updates */
@@ -96,7 +184,8 @@ body {
     display: flex;
     gap: 15px;
     margin-bottom: 40px;
-    justify-content: flex-start; /* Left align buttons */
+    justify-content: flex-start;
+    /* Left align buttons */
 }
 
 .btn {
@@ -107,7 +196,9 @@ body {
     transition: transform 0.2s, background-color 0.2s;
 }
 
-.btn:hover { transform: translateY(-2px); }
+.btn:hover {
+    transform: translateY(-2px);
+}
 
 .btn-white {
     background-color: white;
@@ -123,7 +214,7 @@ body {
 
 .btn-transparent:hover {
     border-color: #fff;
-    background-color: rgba(255,255,255,0.05);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Countdown Timer */
@@ -148,11 +239,14 @@ body {
     display: flex;
     gap: 15px;
     align-items: center;
-    justify-content: flex-start; /* Left align timer */
+    justify-content: flex-start;
+    /* Left align timer */
     font-family: monospace;
 }
 
-.time-box { text-align: center; }
+.time-box {
+    text-align: center;
+}
 
 .time-box .num {
     display: block;
@@ -177,25 +271,30 @@ body {
 /* --- Responsive (Mobile Stack) --- */
 @media (max-width: 900px) {
     .hero-container {
-        flex-direction: column-reverse; /* Put text on top, or remove reverse to put image top */
+        flex-direction: column-reverse;
+        /* Put text on top, or remove reverse to put image top */
         text-align: center;
         gap: 30px;
     }
-    
+
     .hero-content-left {
         max-width: 100%;
     }
 
-    .hero-actions, .countdown-timer {
-        justify-content: center; /* Center align on mobile */
+    .hero-actions,
+    .countdown-timer {
+        justify-content: center;
+        /* Center align on mobile */
     }
 
     .hero-title {
-        font-size: 3.5rem; /* Smaller title on mobile */
+        font-size: 3.5rem;
+        /* Smaller title on mobile */
     }
 
     .hero-logo {
-        width: 250px; /* Smaller logo on mobile */
+        width: 250px;
+        /* Smaller logo on mobile */
     }
 }
 
@@ -290,8 +389,15 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Topic List */
@@ -396,11 +502,14 @@ body {
     margin-bottom: 10px;
 }
 
-.price-tag .currency { font-size: 1.5rem; }
-.price-tag .old-price { 
-    font-size: 1rem; 
-    color: #525252; 
-    text-decoration: line-through; 
+.price-tag .currency {
+    font-size: 1.5rem;
+}
+
+.price-tag .old-price {
+    font-size: 1rem;
+    color: #525252;
+    text-decoration: line-through;
     margin-left: 10px;
 }
 
