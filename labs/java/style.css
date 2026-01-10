@@ -537,3 +537,137 @@ footer {
     border-top: 1px solid #1a1a1a;
     background-color: #000;
 }
+
+/* --- 4. NEW: SIDE-BY-SIDE LAB LAYOUT --- */
+
+/* Wrapper for Timeline + Sidebar */
+.curriculum-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 40px;
+    align-items: start;
+    position: relative;
+}
+
+/* Sidebar (Right Column) */
+.lab-sidebar {
+    height: 100%;
+}
+
+.lab-sticky-content {
+    position: sticky;
+    top: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-height: 200px;
+    /* Ensure some height even if empty */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Placeholder State */
+.lab-placeholder-text {
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.95rem;
+}
+
+/* The Animated Lab Content Wrapper in Sidebar */
+.lab-display-content {
+    animation: slideFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: left;
+}
+
+/* Reuse / Enhance Lab Box Styles for Sidebar */
+.lab-display-content h4 {
+    color: var(--brand-orange);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 15px;
+    line-height: 1.4;
+}
+
+.lab-display-content p {
+    color: var(--text-main);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.lab-feature-icon {
+    font-size: 3.5rem;
+    margin-bottom: 25px;
+    display: block;
+    text-align: center;
+    animation: popIcon 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.lab-feature-icon img {
+    max-width: 100px;
+    /* Reasonable max size for the icon */
+    max-height: 100px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+/* Keyframes */
+@keyframes slideFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes popIcon {
+    0% {
+        transform: scale(0) rotate(-10deg);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(1.1) rotate(5deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1) rotate(0);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .curriculum-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .lab-sidebar {
+        display: none;
+        /* Hide sidebar on mobile */
+    }
+
+    /* Re-show the internal lab box on mobile only */
+    .module-card-new .project-lab-box {
+        display: flex !important;
+    }
+}
+
+/* HIDE the lab box inside the modules list on DESKTOP */
+@media (min-width: 901px) {
+    .module-card-new .project-lab-box {
+        display: none;
+    }
+}

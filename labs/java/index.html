@@ -21,7 +21,8 @@
                 <h1 class="hero-title">JAVA <span class="highlight">101</span></h1>
 
                 <p class="hero-desc">
-                    Ditch the boring lectures. Join me for live coding sessions where we build things together. Let's learn from another fellow Homo sapien.
+                    Ditch the boring lectures. Join me for live coding sessions where we build things together. Let's
+                    learn from another fellow Homo sapien.
                 </p>
 
                 <div class="hero-actions">
@@ -63,7 +64,7 @@
                         <p class="quote-text">In natural science, Nature has given us a world and we’re just to discover
                             its laws. In computers, we can stuff laws into it and create a world.</p>
                         <div class="quote-author-info">
-                            <img src="alan-kay.jpg" alt="Alan Kay" class="quote-author-image">
+                            <img src="./static/alan-kay.jpg" alt="Alan Kay" class="quote-author-image">
                             <p class="quote-author">- Alan Kay</p>
                         </div>
                     </div>
@@ -76,108 +77,163 @@
     <main class="container" id="curriculum">
         <h2 class="section-heading">Course <span class="highlight-text">Syllabus</span></h2>
 
-        <div class="timeline">
+        <div class="curriculum-wrapper">
+            <div class="timeline">
 
-            <article class="module-card-new">
-                <div class="card-header" onclick="toggleModule(this)">
-                    <h3>Module 01: Lexical Structure & Syntax</h3>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="card-body">
-                    <ul class="topic-grid">
-                        <li>Lexical Structure</li>
-                        <li>Primitive Types & Data Systems</li>
-                        <li>Array Structures</li>
-                        <li>Computational Logic & Operators</li>
-                        <li>Execution Control Flow</li>
-                        <li>Variable Scope</li>
-                    </ul>
-                    <div class="project-lab-box">
-                        <span class="lab-icon">🛠️</span>
-                        <div class="lab-content">
-                            <h4>PROJECT LAB: THE CONSOLE FOUNDATION</h4>
-                            <p>Establish the core application loop and implement a basic storage mechanism using
-                                primitive structures.</p>
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Module 01: Lexical Structure & Syntax</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li>Lexical Structure</li>
+                            <li>Primitive Types & Data Systems</li>
+                            <li>Array Structures</li>
+                            <li>Computational Logic & Operators</li>
+                            <li>Execution Control Flow</li>
+                            <li>Variable Scope</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/command.png" alt="">
+                            <div class="lab-content">
+                                <h4>PROJECT LAB: THE CONSOLE FOUNDATION</h4>
+                                <p>Establish the core application loop and implement a basic storage mechanism using
+                                    primitive structures.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="module-card-new">
-                <div class="card-header" onclick="toggleModule(this)">
-                    <h3>Module 02: Object-Oriented Architecture</h3>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="card-body">
-                    <ul class="topic-grid">
-                        <li>Class Design & Access Control</li>
-                        <li>Inheritance & Polymorphism</li>
-                        <li>Abstraction & Interfaces</li>
-                        <li>Inner Classes</li>
-                    </ul>
-                    <div class="project-lab-box">
-                        <span class="lab-icon">🛠️</span>
-                        <div class="lab-content">
-                            <h4>PROJECT LAB: STRUCTURING THE ENTITIES</h4>
-                            <p>Refactor the codebase to utilize a proper Class hierarchy, defining the core Employee
-                                entities.</p>
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Module 02: Object-Oriented Architecture</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li>Class Design & Access Control</li>
+                            <li>Inheritance & Polymorphism</li>
+                            <li>Abstraction & Interfaces</li>
+                            <li>Inner Classes</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/geometry.png" alt="">
+                            <div class="lab-content">
+                                <h4>PROJECT LAB: STRUCTURING THE ENTITIES</h4>
+                                <p>Refactor the codebase to utilize a proper Class hierarchy, defining the core Employee
+                                    entities.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="module-card-new">
-                <div class="card-header" onclick="toggleModule(this)">
-                    <h3>Module 03: Data Persistence & I/O</h3>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="card-body">
-                    <ul class="topic-grid">
-                        <li>File Handling</li>
-                        <li>Stream Architecture</li>
-                        <li>Object Serialization</li>
-                        <li>State Transfer</li>
-                    </ul>
-                    <div class="project-lab-box">
-                        <span class="lab-icon">🛠️</span>
-                        <div class="lab-content">
-                            <h4>PROJECT LAB: THE PERSISTENCE LAYER</h4>
-                            <p>Implement a file handling system to ensure application data is saved and retrieved
-                                automatically.</p>
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Module 03: Data Persistence & I/O</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li>File Handling</li>
+                            <li>Stream Architecture</li>
+                            <li>Object Serialization</li>
+                            <li>State Transfer</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/database-file.png" alt="">
+                            <div class="lab-content">
+                                <h4>PROJECT LAB: THE PERSISTENCE LAYER</h4>
+                                <p>Implement a file handling system to ensure application data is saved and retrieved
+                                    automatically.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="module-card-new">
-                <div class="card-header" onclick="toggleModule(this)">
-                    <h3>Module 04: Exception Handling</h3>
-                    <span class="toggle-icon">▼</span>
-                </div>
-                <div class="card-body">
-                    <ul class="topic-grid">
-                        <li>Exception Hierarchy</li>
-                        <li>Try-Catch-Finally Blocks</li>
-                        <li>Custom Exceptions</li>
-                        <li>Error Propagation</li>
-                    </ul>
-                    <div class="project-lab-box">
-                        <span class="lab-icon">🛠️</span>
-                        <div class="lab-content">
-                            <h4>PROJECT LAB: RELIABILITY ENGINEERING</h4>
-                            <p>Integrate error handling logic to manage invalid user inputs and prevent crashes.</p>
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Module 04: Exception Handling</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li>Exception Hierarchy</li>
+                            <li>Try-Catch-Finally Blocks</li>
+                            <li>Custom Exceptions</li>
+                            <li>Error Propagation</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/browser.png" alt="">
+                            <div class="lab-content">
+                                <h4>PROJECT LAB: RELIABILITY ENGINEERING</h4>
+                                <p>Integrate error handling logic to manage invalid user inputs and prevent crashes.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
 
+            </div>
+
+            <aside class="lab-sidebar">
+                <div class="lab-sticky-content" id="lab-display-area">
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <span style="font-size: 3rem; display: block; margin-bottom: 20px; opacity: 0.3;">🛠️</span>
+                        <p class="lab-placeholder-text">Click on any module to reveal its Standard Project Lab.</p>
+                    </div>
+                </div>
+            </aside>
         </div>
     </main>
 
     <script>
         function toggleModule(headerElement) {
             const card = headerElement.parentElement;
-            card.classList.toggle('active');
+
+            // UX Enhancement: Close other modules to emphasize selection
+            document.querySelectorAll('.module-card-new').forEach(c => {
+                if (c !== card) c.classList.remove('active');
+            });
+
+            const isActive = card.classList.toggle('active');
+
+            // If opened, update the sidebar
+            if (isActive) {
+                updateLabSidebar(card);
+            }
+        }
+
+        function updateLabSidebar(card) {
+            const labSource = card.querySelector('.project-lab-box');
+            const displayTarget = document.getElementById('lab-display-area');
+
+            if (labSource && displayTarget) {
+                // Robustly find the icon: could be a .lab-icon span or an img tag
+                let iconHTML = '';
+                const iconSpan = labSource.querySelector('.lab-icon');
+
+                if (iconSpan) {
+                    iconHTML = iconSpan.innerHTML;
+                } else {
+                    const img = labSource.querySelector('img');
+                    if (img) {
+                        // Clone the image for the sidebar
+                        iconHTML = img.outerHTML;
+                    }
+                }
+
+                const title = labSource.querySelector('h4').innerHTML;
+                const desc = labSource.querySelector('p').innerHTML;
+
+                // Inject and animate
+                displayTarget.innerHTML = `
+                    <div class="lab-display-content">
+                        <span class="lab-feature-icon">${iconHTML}</span>
+                        <h4>${title}</h4>
+                        <p>${desc}</p>
+                    </div>
+                `;
+            }
         }
 
         // Countdown Timer Logic
