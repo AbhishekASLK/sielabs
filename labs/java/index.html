@@ -296,6 +296,16 @@
         // Set target date to January 24, 2026 09:30:00 PM
         const target = new Date("Jan 24, 2026 21:30:00").getTime();
         startCountdown(target);
+
+        // Mobile Project Lab Toggle Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.project-lab-box').forEach(box => {
+                box.addEventListener('click', function (e) {
+                    // Only effective on mobile where this element is visible and interactive
+                    this.classList.toggle('expanded');
+                });
+            });
+        });
     </script>
 
     <section class="pricing-section" id="pricing">

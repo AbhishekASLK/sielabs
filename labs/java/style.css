@@ -441,6 +441,13 @@ body {
     font-size: 1.5rem;
 }
 
+.project-lab-box img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
 .lab-content h4 {
     color: #fff;
     font-size: 0.85rem;
@@ -659,9 +666,73 @@ footer {
         /* Hide sidebar on mobile */
     }
 
+    /* Stack topics vertically */
+    .topic-grid {
+        grid-template-columns: 1fr;
+    }
+
     /* Re-show the internal lab box on mobile only */
     .module-card-new .project-lab-box {
         display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        /* Interactive Mobile State */
+        cursor: pointer;
+        min-height: 80px;
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    /* Collapsed State: Hide children & Show Teaser */
+    .module-card-new .project-lab-box:not(.expanded)>* {
+        display: none;
+    }
+
+    .module-card-new .project-lab-box:not(.expanded)::after {
+        content: "View Project Lab ↘";
+        color: var(--brand-orange);
+        font-weight: 700;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        animation: pulseText 2s infinite;
+    }
+
+    /* Expanded State: Animate In */
+    .module-card-new .project-lab-box.expanded {
+        padding: 30px;
+        background-color: #1e293b;
+        /* Ensure contrast */
+    }
+
+    .module-card-new .project-lab-box.expanded>* {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Adjust image size for stacked layout */
+    .project-lab-box img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+    }
+}
+
+@keyframes pulseText {
+    0% {
+        opacity: 0.6;
+        transform: scale(0.98);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+
+    100% {
+        opacity: 0.6;
+        transform: scale(0.98);
     }
 }
 
