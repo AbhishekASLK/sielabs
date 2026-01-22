@@ -1,24 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SieLabs</title>
+  <title>SieLabs Inc.</title>
   <link rel="icon" href="/favicon.ico?v=1" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center; 
-      align-items: center; 
-      font-family: 'Poppins', sans-serif;
-      background-color: #d4d2b2;
-    }
-  </style>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@400;600;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <h1>Sielabs Inc.</h1>
+
+  <div class="scroll-mask"></div>
+
+  <nav class="navbar">
+    <a href="#" class="nav-brand">
+      <img style="border-radius: 15%;" src="favicon.ico" alt="SieLabs Logo" class="nav-logo">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#labs">Labs</a></li>
+      <li><a href="#products">Products</a></li>
+    </ul>
+    <a href="https://forms.gle/zYU8K4un6dgwpEtx5" class="nav-cta">Join Waitlist</a>
+  </nav>
+
+  <header class="hero-section">
+    <div class="container">
+      <p class="cursive-subtitle">Reverse Engineering</p>
+      <h1 class="hero-title">Sie<span class="highlight">Labs</span></h1>
+      <p class="hero-desc">
+        Building worlds by decoding the laws of computation. We explore, we break, we build.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Labs Section -->
+    <section class="section" id="labs">
+      <h2 class="section-heading">Our <span class="highlight-text">Labs</span></h2>
+      <div class="grid">
+        <!-- Java Lab Card -->
+        <a href="labs/java/index.html" class="card">
+          <div class="card-icon">☕</div>
+          <h3>Java 101</h3>
+          <p>Introduction to Programming. Ditch the boring lectures. Join live coding sessions where we build things
+            together.</p>
+          <span class="card-link">Enter Lab ↗</span>
+        </a>
+
+
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section" id="products">
+      <h2 class="section-heading">Our <span class="highlight-text">Products</span></h2>
+      <div class="grid">
+        <!-- Bookmark Pro -->
+        <a href="products/bookmark-pro/index.html" class="card">
+          <div class="card-icon">🔖</div>
+          <h3>Bookmark Pro</h3>
+          <p>The ultimate bookmark manager for power users. Organize, tag, and sync your web.</p>
+          <span class="card-link">View Product ↗</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 SieLabs Inc. | Reverse Engineering.</p>
+  </footer>
+
 </body>
+
 </html>
