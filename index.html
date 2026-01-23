@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SieLabs Inc.</title>
+  <title>SieLabs</title>
   <link rel="icon" href="/favicon.ico?v=1" type="image/x-icon">
   <!-- Google Fonts -->
   <link
@@ -15,6 +15,16 @@
 
 <body>
 
+  <div class="math-overlay">
+    <!-- Schrodinger Equation -->
+    <span class="formula f1" style="--rot: -15deg">i&#x210f; &#x2202;/&#x2202;t &#x03Psi; = &#x0124;&#x03Psi;</span>
+    <!-- Einstein Mass-Energy -->
+    <span class="formula f2" style="--rot: 10deg">E = mc&#x00B2;</span>
+    <!-- Maxwell Equation (Curl of E) -->
+    <span class="formula f3" style="--rot: 5deg">&#x2207; &#x00D7; E = -&#x2202;B/&#x2202;t</span>
+    <!-- Euler's Identity -->
+    <span class="formula f4" style="--rot: -5deg">e^(i&#x03C0;) + 1 = 0</span>
+  </div>
   <div class="scroll-mask"></div>
 
   <nav class="navbar">
@@ -30,7 +40,7 @@
   </nav>
 
   <header class="hero-section">
-    <div class="container">
+    <div class="container" style="position: relative; z-index: 1;">
       <p class="cursive-subtitle">Reverse Engineering</p>
       <h1 class="hero-title">Sie<span class="highlight">Labs</span></h1>
       <p class="hero-desc">
