@@ -43,3 +43,29 @@ document.addEventListener('DOMContentLoaded', () => {
         if (content) content.style.maxHeight = content.scrollHeight + "px";
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const viewToggle = document.getElementById('viewToggle');
+    const practiceView = document.getElementById('practice-view');
+    const companyView = document.getElementById('company-view');
+    const labelPractice = document.getElementById('label-practice');
+    const labelCompany = document.getElementById('label-company');
+
+    if (viewToggle) {
+        viewToggle.addEventListener('change', () => {
+            if (viewToggle.checked) {
+                // Show Company Archive
+                practiceView.style.display = 'none';
+                companyView.style.display = 'block';
+                labelPractice.classList.remove('active');
+                labelCompany.classList.add('active');
+            } else {
+                // Show Practice Topics
+                practiceView.style.display = 'block';
+                companyView.style.display = 'none';
+                labelPractice.classList.add('active');
+                labelCompany.classList.remove('active');
+            }
+        });
+    }
+});
