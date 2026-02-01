@@ -1,0 +1,286 @@
+/* Inherit core variables from main style */
+:root {
+    --brand-orange: #ff781e;
+    --brand-dark: #0a0a0a;
+    --card-bg: #161616;
+    --card-border: #262626;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --section-bg: #050505;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--brand-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #050505;
+    background-image:
+        radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 10% 20%, rgba(20, 100, 200, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(100, 20, 200, 0.05) 0%, transparent 40%);
+    background-size: 40px 40px, 100% 100%, 100% 100%;
+    background-attachment: fixed;
+}
+
+/* Compact View & Collapse Styles */
+
+.roadmap-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 20px 40px;
+    /* Reduced top padding */
+}
+
+.roadmap-header {
+    text-align: center;
+    margin-bottom: 30px;
+    /* Reduced from 60px */
+}
+
+.roadmap-title {
+    font-size: 2.5rem;
+    /* Reduced from 3.5rem */
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+.roadmap-subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    /* slightly reduced */
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.topic-section {
+    margin-bottom: 15px;
+    /* Compact spacing */
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    /* Slightly smaller radius */
+    overflow: hidden;
+}
+
+.topic-header {
+    padding: 12px 20px;
+    /* Compact padding */
+    border-bottom: 1px solid var(--card-border);
+    background: rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.topic-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.topic-title {
+    font-size: 1.1rem;
+    /* Reduced from 1.5rem */
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topic-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 18px;
+    /* Scaled down */
+    background: var(--brand-orange);
+    border-radius: 2px;
+}
+
+/* Chevron Icon */
+.topic-header::after {
+    content: '▼';
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    transition: transform 0.3s;
+    transform: rotate(-90deg);
+    /* Default closed direction or initial state */
+}
+
+.topic-section.active .topic-header::after {
+    transform: rotate(0deg);
+    /* Open direction */
+}
+
+/* Content Wrapper */
+.topic-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Table Styles - Compact */
+.roadmap-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.roadmap-table th {
+    text-align: left;
+    padding: 8px 20px;
+    /* Compact */
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    /* Compact */
+    border-bottom: 1px solid var(--card-border);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.roadmap-table td {
+    padding: 8px 20px;
+    /* Compact */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+    transition: background-color 0.2s;
+    font-size: 0.9rem;
+    /* Compact */
+}
+
+.roadmap-table tr:hover td {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.roadmap-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Columns */
+.col-name {
+    width: 35%;
+    font-weight: 500;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.col-difficulty {
+    width: 15%;
+}
+
+.difficulty-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    /* Compact */
+    border-radius: 6px;
+    font-size: 0.7rem;
+    /* Compact */
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid;
+    text-align: center;
+    min-width: 60px;
+}
+
+.easy {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+    border-color: rgba(74, 222, 128, 0.2);
+}
+
+.medium {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.2);
+}
+
+.hard {
+    background: rgba(248, 113, 113, 0.1);
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.2);
+}
+
+.col-frequency {
+    width: 20%;
+}
+
+.progress-bar {
+    width: 100%;
+    max-width: 100px;
+    height: 4px;
+    /* Compact */
+    background: #2a2a2a;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #3b82f6;
+    border-radius: 2px;
+}
+
+.col-tags {
+    width: 25%;
+}
+
+.tag-pill {
+    display: inline-block;
+    padding: 2px 6px;
+    /* Compact */
+    background: #262626;
+    color: var(--text-muted);
+    border-radius: 4px;
+    font-size: 0.7rem;
+    /* Compact */
+    margin-right: 4px;
+    border: 1px solid #333;
+}
+
+.tag-pill.company {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.col-action {
+    width: 5%;
+    text-align: right;
+}
+
+.action-link {
+    color: var(--text-muted);
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.action-link:hover {
+    color: var(--brand-orange);
+}
+
+/* Animations - preserved but subtle */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.topic-section {
+    animation: fadeIn 0.5s ease-out forwards;
+}
