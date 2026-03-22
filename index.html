@@ -4,100 +4,271 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SieLabs</title>
+  <title>SieLabs | AI-Native Product Studio</title>
   <meta name="description"
-    content="SieLabs: Building worlds by decoding the laws of computation. Explore coding labs, Java 101, and tools like Bookmark Pro.">
+    content="SieLabs is an AI-native product studio building official software products, developer learning platforms, and applied labs for modern teams.">
   <meta name="keywords"
-    content="coding labs, reverse engineering, java 101, programming, software development, sielabs">
-  <meta property="og:title" content="SieLabs">
+    content="SieLabs, Semicolon, developer tools, engineering education, product studio, AI-native products">
+  <meta property="og:title" content="SieLabs | AI-Native Product Studio">
   <meta property="og:description"
-    content="Building worlds by decoding the laws of computation. We explore, we break, we build.">
+    content="We build practical software, learning systems, and product experiences for modern engineering teams.">
   <link rel="icon" href="/favicon.ico?v=1" type="image/x-icon">
-  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Inter:wght@400;600;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+  <div class="site-backdrop"></div>
 
-  <div class="math-overlay">
-    <!-- Schrodinger Equation -->
-    <span class="formula f1" style="--rot: -15deg">i&#x210f; &#x2202;/&#x2202;t &#x03Psi; = &#x0124;&#x03Psi;</span>
-    <!-- Einstein Mass-Energy -->
-    <span class="formula f2" style="--rot: 10deg">E = mc&#x00B2;</span>
-    <!-- Maxwell Equation (Curl of E) -->
-    <span class="formula f3" style="--rot: 5deg">&#x2207; &#x00D7; E = -&#x2202;B/&#x2202;t</span>
-    <!-- Euler's Identity -->
-    <span class="formula f4" style="--rot: -5deg">e^(i&#x03C0;) + 1 = 0</span>
-  </div>
-  <div class="scroll-mask"></div>
+  <header class="hero-shell" id="top">
+    <nav class="navbar container">
+      <a href="#top" class="nav-brand" aria-label="SieLabs home">
+        <img src="favicon.ico" alt="SieLabs Logo" class="nav-logo">
+        <span>SieLabs</span>
+      </a>
 
-  <nav class="navbar">
-    <a href="#" class="nav-brand">
-      <img style="border-radius: 15%;" src="favicon.ico" alt="SieLabs Logo" class="nav-logo">
-    </a>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#labs">Labs</a></li>
-      <li><a href="#products">Products</a></li>
-      <li><a href="dsa-roadmap/index.html">DSA Roadmap</a></li>
-      <li><a href="#" onclick="alert('Under Development'); return false;">Essays</a></li>
-    </ul>
-    <a href="https://forms.gle/zYU8K4un6dgwpEtx5" class="nav-cta">Join Waitlist</a>
-  </nav>
+      <div class="nav-links">
+        <a href="#company">Company</a>
+        <a href="#products">Products</a>
+        <a href="#programs">Programs</a>
+        <a href="dsa-roadmap/index.html">DSA Roadmap</a>
+      </div>
 
-  <header class="hero-section">
-    <div class="container" style="position: relative; z-index: 1;">
-      <p class="cursive-subtitle">Reverse Engineering</p>
-      <h1 class="hero-title">Sie<span class="highlight">Labs</span></h1>
-      <p class="hero-desc">
-        Building worlds by decoding the laws of computation. We explore, we break, we build.
-      </p>
-    </div>
+      <a href="https://forms.gle/zYU8K4un6dgwpEtx5" class="nav-cta">Book a Call</a>
+    </nav>
+
+    <section class="hero-section container">
+      <div class="hero-copy">
+        <p class="eyebrow">AI-Native Product Studio</p>
+        <h1>Official digital products and learning systems for modern engineering teams.</h1>
+        <p class="hero-desc">
+          SieLabs builds practical software, applied learning platforms, and technical labs that help people
+          understand complex systems faster and ship with more confidence.
+        </p>
+        <div class="hero-actions">
+          <a href="#products" class="primary-btn">Explore Products</a>
+          <a href="#company" class="secondary-btn">How We Work</a>
+        </div>
+
+        <div class="hero-metrics">
+          <div class="metric-card">
+            <strong>2</strong>
+            <span>Live products</span>
+          </div>
+          <div class="metric-card">
+            <strong>2</strong>
+            <span>Hands-on programs</span>
+          </div>
+          <div class="metric-card">
+            <strong>1</strong>
+            <span>Studio mission</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-panel">
+        <div class="panel-badge">Featured Platform</div>
+        <h2>Semicolon</h2>
+        <p class="panel-title">Code through stories, simulations, and real engineering scenarios.</p>
+        <p class="panel-copy">
+          Semicolon transforms abstract computer science and interview-style problem solving into memorable,
+          real-world learning experiences. It combines story-led explanations with system design, debugging, and
+          performance challenges that feel closer to production engineering than textbook drills.
+        </p>
+        <div class="panel-list">
+          <span>Story-first learning</span>
+          <span>System design scenarios</span>
+          <span>Debugging and performance labs</span>
+        </div>
+        <a href="https://sielabs-org.github.io/semicolon/" target="_blank" rel="noreferrer" class="panel-link">Visit
+          Semicolon ↗</a>
+      </aside>
+    </section>
   </header>
 
-  <main class="container">
+  <main>
+    <section class="section container" id="company">
+      <div class="section-intro">
+        <p class="eyebrow">Company Overview</p>
+        <h2>We design software experiences that make technical complexity easier to adopt, teach, and scale.</h2>
+        <p>
+          SieLabs operates at the intersection of product design, developer enablement, and applied education. Our
+          work turns difficult concepts into usable systems, clear workflows, and products teams can trust.
+        </p>
+      </div>
 
-    <!-- Labs Section -->
-    <section class="section" id="labs">
-      <h2 class="section-heading">Our <span class="highlight-text">Labs</span></h2>
-      <div class="grid">
-        <!-- Java Lab Card -->
-        <a href="labs/java/index.html" class="card">
-          <div class="card-icon">☕</div>
+      <div class="capability-grid">
+        <article class="info-card">
+          <p class="card-kicker">Product Strategy</p>
+          <h3>We turn sharp ideas into credible software products.</h3>
+          <p>
+            From concept shaping to launch-ready interfaces, we build products that are clear in positioning and useful
+            in practice.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <p class="card-kicker">Applied Learning</p>
+          <h3>We build teaching systems that feel close to real engineering work.</h3>
+          <p>
+            Our learning products emphasize understanding, retention, and hands-on interaction instead of passive
+            theory delivery.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <p class="card-kicker">Studio Approach</p>
+          <h3>We favor practical clarity, elegant systems, and fast iteration.</h3>
+          <p>
+            Every project is designed to communicate value quickly while supporting the depth serious users need over
+            time.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-accent" id="products">
+      <div class="container">
+        <div class="section-intro split-intro">
+          <div>
+            <p class="eyebrow">Products</p>
+            <h2>Products built for focused learning and better developer workflows.</h2>
+          </div>
+          <p>
+            Our product suite is designed around utility, depth, and clarity. Each experience solves a concrete
+            problem for builders, learners, or modern technical teams.
+          </p>
+        </div>
+
+        <article class="flagship-card">
+          <div class="flagship-copy">
+            <p class="card-kicker">Flagship Product</p>
+            <h3>Semicolon</h3>
+            <p>
+              Semicolon is a story-driven engineering learning platform where algorithms, system design patterns, and
+              debugging concepts are taught through visual scenarios and applied challenges. It helps learners build
+              mental models instead of memorizing isolated answers.
+            </p>
+            <div class="feature-grid">
+              <div class="feature-card">
+                <strong>Concept to Context</strong>
+                <span>Turns abstract CS topics into scenarios learners can visualize and remember.</span>
+              </div>
+              <div class="feature-card">
+                <strong>Beyond Basic DSA</strong>
+                <span>Covers systems thinking, performance engineering, and real-world debugging practice.</span>
+              </div>
+              <div class="feature-card">
+                <strong>Interactive Learning</strong>
+                <span>Uses guided simulations and challenges to make understanding active, not passive.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flagship-aside">
+            <div class="aside-block">
+              <span class="aside-label">Ideal for</span>
+              <p>Students, self-learners, placement prep, and teams building stronger engineering intuition.</p>
+            </div>
+            <div class="aside-block">
+              <span class="aside-label">Core themes</span>
+              <p>System design, debugging, performance, and storytelling-led concept retention.</p>
+            </div>
+            <a href="https://sielabs-org.github.io/semicolon/" target="_blank" rel="noreferrer"
+              class="primary-btn">Open Platform</a>
+          </div>
+        </article>
+
+        <div class="product-grid">
+          <article class="product-card">
+            <p class="card-kicker">Product</p>
+            <h3>Bookmark Pro</h3>
+            <p>
+              A clean bookmark manager for users who need a faster way to organize research, references, and recurring
+              links without clutter.
+            </p>
+            <a href="https://chromewebstore.google.com/detail/nlemmlpgblopgmjdnbohgnjhbcepabjo?utm_source=item-share-cb"
+              target="_blank" rel="noreferrer" class="text-link">View Product ↗</a>
+          </article>
+
+          <article class="product-card">
+            <p class="card-kicker">Studio Value</p>
+            <h3>Built with utility first.</h3>
+            <p>
+              We focus on products that feel immediately useful, communicate their value clearly, and continue to earn
+              trust through depth and reliability.
+            </p>
+            <a href="#programs" class="text-link">See Programs ↓</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="programs">
+      <div class="section-intro split-intro">
+        <div>
+          <p class="eyebrow">Programs & Labs</p>
+          <h2>Learning initiatives that support the product ecosystem.</h2>
+        </div>
+        <p>
+          Our labs create the training ground for deeper technical confidence. They complement our products by giving
+          learners structured practice and implementation context.
+        </p>
+      </div>
+
+      <div class="program-grid">
+        <a href="labs/java/index.html" class="program-card">
+          <p class="card-kicker">Lab</p>
           <h3>Java 101</h3>
-          <p>Introduction to Programming. Ditch the boring lectures. Join live coding sessions where we build things
-            together.</p>
-          <span class="card-link">Enter Lab ↗</span>
+          <p>
+            A hands-on introduction to programming for learners who want practical sessions, guided building, and a
+            less lecture-heavy path into software development.
+          </p>
+          <span class="text-link">Enter Lab ↗</span>
         </a>
 
-
-      </div>
-    </section>
-
-    <!-- Products Section -->
-    <section class="section" id="products">
-      <h2 class="section-heading">Our <span class="highlight-text">Products</span></h2>
-      <div class="grid">
-        <!-- Bookmark Pro -->
-        <a href="https://chromewebstore.google.com/detail/nlemmlpgblopgmjdnbohgnjhbcepabjo?utm_source=item-share-cb"
-          class="card">
-          <div class="card-icon">🔖</div>
-          <h3>Bookmark Pro</h3>
-          <p>The ultimate bookmark manager for power users. Organize, tag, and sync your web.</p>
-          <span class="card-link">View Product ↗</span>
+        <a href="dsa-roadmap/index.html" class="program-card">
+          <p class="card-kicker">Roadmap</p>
+          <h3>DSA Roadmap</h3>
+          <p>
+            A structured path for learning data structures and algorithms with better sequencing, stronger foundations,
+            and clearer direction.
+          </p>
+          <span class="text-link">Open Roadmap ↗</span>
         </a>
       </div>
     </section>
 
+    <section class="section section-dark">
+      <div class="container closing-grid">
+        <div>
+          <p class="eyebrow">Why SieLabs</p>
+          <h2>Built like a studio, presented like a company, focused like a product team.</h2>
+        </div>
+        <div class="closing-copy">
+          <p>
+            We care about clear communication, useful interfaces, and products that create lasting understanding. That
+            is what shapes our design choices, our learning systems, and the software experiences we publish.
+          </p>
+          <a href="https://forms.gle/zYU8K4un6dgwpEtx5" class="secondary-btn">Start a Conversation</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <p>&copy; 2026 SieLabs Inc. | Reverse Engineering.</p>
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div>
+        <strong>SieLabs</strong>
+        <p>AI-native product studio for software, learning systems, and engineering experiences.</p>
+      </div>
+      <p>&copy; 2026 SieLabs. All rights reserved.</p>
+    </div>
   </footer>
-
 </body>
 
 </html>
