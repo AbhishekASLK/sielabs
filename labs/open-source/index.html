@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Source Mindset - SieLabs</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="hero-section">
+        <div class="container hero-container">
+
+            <div class="hero-content-left">
+                <p class="cursive-subtitle">Git, GitHub & Open Source Mindset</p>
+                <h1 class="hero-title">OPEN SOURCE <span class="highlight">MINDSET</span></h1>
+
+                <p class="hero-desc">
+                    A practical playbook to navigate large codebases, communicate with maintainers, and make your first meaningful open source contributions.
+                </p>
+
+                <div class="hero-schedule">
+                    <div class="schedule-item">
+                        <span class="schedule-label">Duration</span>
+                        <span class="schedule-value">4 Months</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Suggested Tools</span>
+                        <span class="schedule-value">GitHub, VS Code, Python 3.x</span>
+                    </div>
+                </div>
+
+                <div class="hero-actions" style="align-items: flex-start;">
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <h3 class="btn btn-white">Open Enrollment</h3>
+                    </div>
+                    <a href="#curriculum" class="btn btn-transparent">View Curriculum ↘</a>
+                </div>
+
+            </div>
+
+            <div class="hero-image-right">
+                <div class="quote-card-container">
+                    <div class="quote-card">
+                        <div class="quote-icon">“</div>
+                        <p class="quote-text">Talk is cheap. Show me the code.</p>
+                        <div class="quote-author-info">
+                            <img src="./static/alan-kay.jpg" alt="Linus Torvalds" class="quote-author-image">
+                            <!-- Note: Using the placeholder Alan Kay image format/border but attributing quote appropriately -->
+                            <p class="quote-author">- Linus Torvalds</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="container" id="curriculum">
+        <h2 class="section-heading">Program <span class="highlight-text">Curriculum</span></h2>
+
+        <div class="curriculum-wrapper">
+            <div class="timeline">
+
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Month 1: Foundations: Git, GitHub & Open Source Mindset</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li><strong>Week 1 - What is Open Source?:</strong> Philosophy of open source, Licenses (MIT, Apache, GPL), Company contributions</li>
+                            <li><strong>Week 2 - Git from Scratch:</strong> init, add, commit, push, pull, Branching & merging, Merge conflicts</li>
+                            <li><strong>Week 3 - GitHub Essentials:</strong> Fork vs Clone, PRs, Issues, Labels, GitHub Flow</li>
+                            <li><strong>Week 4 - Writing Great READMEs:</strong> Markdown deep dive, Good README anatomy, CONTRIBUTING.md, CODE_OF_CONDUCT.md</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/command.png" alt="">
+                            <div class="lab-content">
+                                <h4>MONTH 1 ASSIGNMENT: THE REPO OVERHAUL</h4>
+                                <p>Create a personal project repository featuring a heavily professional README, contribution guidelines, and proper git flow history.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Month 2: Reading & Understanding Open Source Code</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li><strong>Week 5 - Navigating a Large Codebase:</strong> Folder structure conventions, Changelogs, GitHub search & blame</li>
+                            <li><strong>Week 6 - Python OS Structure:</strong> __init__.py, setup.py, pyproject.toml, Standard library deep dive</li>
+                            <li><strong>Week 7 - Environment Management:</strong> pip, virtualenv, requirements.txt, Running projects locally</li>
+                            <li><strong>Week 8 - Understanding Issues & Roadmaps:</strong> Reading "good first issue" tags, following project roadmaps</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/database-file.png" alt="">
+                            <div class="lab-content">
+                                <h4>MONTH 2 ASSIGNMENT: LOCAL DEPLOYMENT</h4>
+                                <p>Pick any Python open source project, successfully run it locally, and formally document your deployment process.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Month 3: Making Your First Contributions</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li><strong>Week 9 - Types of Contributions:</strong> Docs, translations, issue reporting, tests, design</li>
+                            <li><strong>Week 10 - First Code Contribution:</strong> Fixing typos, adding unit tests, code style (PEP8, linters)</li>
+                            <li><strong>Week 11 - Working with Maintainers:</strong> Professional PR communication, handling review feedback without ego</li>
+                            <li><strong>Week 12 - Real Contribution Sprint:</strong> Picking an active project and pushing a pull request</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/blueprint.png" alt="">
+                            <div class="lab-content">
+                                <h4>MONTH 3 ASSIGNMENT: THE MERGE</h4>
+                                <p>Successfully get a Pull Request merged into an open-source project (whether documentation or code fixes).</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="module-card-new">
+                    <div class="card-header" onclick="toggleModule(this)">
+                        <h3>Month 4: Going Deeper & Building Your Profile</h3>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="card-body">
+                        <ul class="topic-grid">
+                            <li><strong>Week 13 - Learning via OS:</strong> Learning frameworks by reading source, OS as a textbook strategy</li>
+                            <li><strong>Week 14 - Building Own OS Project:</strong> Starting small CLI/utilities, proper CI/CD with GitHub Actions</li>
+                            <li><strong>Week 15 - OS Programs & Opportunities:</strong> GSoC, Outreachy, LFX Mentorship, Building a strong GitHub profile</li>
+                            <li><strong>Week 16 - Final Showcase:</strong> Present a contribution + project built, peer roadmap feedback</li>
+                        </ul>
+                        <div class="project-lab-box">
+                            <img src="./static/browser.png" alt="">
+                            <div class="lab-content">
+                                <h4>MONTH 4 ASSIGNMENT: THE FINAL SHOWCASE</h4>
+                                <p>Present one contribution made and one project built during the program, culminating in peer review.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <aside class="lab-sidebar">
+                <div class="lab-sticky-content" id="lab-display-area">
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <img src="./static/cursor.png" alt="" style="width: 64px; margin-bottom: 20px;">
+                        <p class="lab-placeholder-text">Click on any month to reveal its primary assignment.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script>
+        function toggleModule(headerElement) {
+            const card = headerElement.parentElement;
+
+            // UX Enhancement: Close other modules to emphasize selection
+            document.querySelectorAll('.module-card-new').forEach(c => {
+                if (c !== card) c.classList.remove('active');
+            });
+
+            const isActive = card.classList.toggle('active');
+
+            // If opened, update the sidebar
+            if (isActive) {
+                updateLabSidebar(card);
+            }
+        }
+
+        function updateLabSidebar(card) {
+            const labSource = card.querySelector('.project-lab-box');
+            const displayTarget = document.getElementById('lab-display-area');
+
+            if (labSource && displayTarget) {
+                // Robustly find the icon: could be a .lab-icon span or an img tag
+                let iconHTML = '';
+                const iconSpan = labSource.querySelector('.lab-icon');
+
+                if (iconSpan) {
+                    iconHTML = iconSpan.innerHTML;
+                } else {
+                    const img = labSource.querySelector('img');
+                    if (img) {
+                        // Clone the image for the sidebar
+                        iconHTML = img.outerHTML;
+                    }
+                }
+
+                const title = labSource.querySelector('h4').innerHTML;
+                const desc = labSource.querySelector('p').innerHTML;
+
+                // Inject and animate
+                displayTarget.innerHTML = `
+                    <div class="lab-display-content">
+                        <span class="lab-feature-icon">${iconHTML}</span>
+                        <h4>${title}</h4>
+                        <p>${desc}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Mobile Project Lab Toggle Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.project-lab-box').forEach(box => {
+                box.addEventListener('click', function (e) {
+                    // Only effective on mobile where this element is visible and interactive
+                    this.classList.toggle('expanded');
+                });
+            });
+        });
+    </script>
+
+    <section class="pricing-section" id="pricing">
+        <div class="container pricing-container">
+            <div class="price-left">
+                <span class="promo-text">LEARN. CONTRIBUTE. GROW.</span>
+                <h2>Open Source Mindset</h2>
+                <p>Start your journey from navigating open source repos to making your very first impactful contribution.</p>
+            </div>
+            <div class="price-right">
+                <a href="https://forms.gle/zYU8K4un6dgwpEtx5" class="btn btn-orange">Start Creating ↗</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 SieLabs Inc. | Open Source Mindset.</p>
+    </footer>
+
+</body>
+
+</html>
