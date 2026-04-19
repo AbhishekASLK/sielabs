@@ -387,64 +387,100 @@ body::after {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Topic List */
+/* Elegant Timeline Layout */
 .topic-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
     list-style: none;
-    margin-bottom: 25px;
+    margin: 24px 0 40px 12px;
+    padding-left: 32px;
+    border-left: 2px solid rgba(200, 158, 58, 0.2);
 }
 
 .topic-grid li {
     position: relative;
-    padding-left: 20px;
-    color: var(--text-main);
+    color: var(--text-muted);
     font-size: 15px;
+    line-height: 1.6;
+    transition: transform 0.2s ease;
+}
+
+.topic-grid li:hover {
+    transform: translateX(4px);
+    color: var(--text-main);
 }
 
 .topic-grid li::before {
-    content: "↳";
-    color: var(--brand-orange);
-    font-weight: bold;
-    font-size: 14px;
+    content: "";
     position: absolute;
-    left: 0;
-    top: -2px;
+    left: -39px; /* perfectly align with the border */
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid var(--brand-orange);
+    box-shadow: 0 0 0 6px #ffffff; /* Uses background color to cut border line */
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 1;
 }
 
-/* Project Lab Box */
+.topic-grid li:hover::before {
+    background: var(--brand-orange);
+    transform: scale(1.1);
+}
+
+.topic-grid li strong {
+    display: block;
+    color: var(--text-main);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+}
+
+/* Minimalist Assignment Banner */
 .project-lab-box {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    padding: 20px;
-    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background-image: repeating-linear-gradient(-45deg, rgba(200, 158, 58, 0.03) 0, rgba(200, 158, 58, 0.03) 1px, transparent 1px, transparent 6px);
+    padding: 24px 32px;
+    border-radius: 12px;
     display: flex;
-    gap: 18px;
-    align-items: flex-start;
+    gap: 24px;
+    align-items: center;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.project-lab-box:hover {
+    border-color: rgba(200, 158, 58, 0.4);
+    transform: translateY(-2px);
 }
 
 .project-lab-box img {
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     object-fit: contain;
     flex-shrink: 0;
 }
 
 .lab-content h4 {
     color: var(--brand-orange);
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: 8px;
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
 }
 
 .lab-content p {
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--text-muted);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--text-main);
     margin: 0;
+    font-weight: 400;
 }
 
 /* --- SIDE-BY-SIDE LAB LAYOUT --- */
