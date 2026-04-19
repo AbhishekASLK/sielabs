@@ -94,73 +94,97 @@ body::after {
 
 /* Quote Card Styles */
 .quote-card-container {
-    perspective: 1000px;
-    width: 380px;
+    perspective: 1200px;
+    width: 440px;
     max-width: 100%;
 }
 
 .quote-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    border-radius: 24px;
+    padding: 48px 40px;
     position: relative;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
-    animation: floatCard 6s ease-in-out infinite;
+    box-shadow: 
+        0 32px 64px rgba(0, 0, 0, 0.05),
+        0 12px 24px rgba(200, 158, 58, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 1);
+    animation: floatCard 8s ease-in-out infinite;
     transform-style: preserve-3d;
 }
 
 .quote-icon {
     font-family: var(--font-serif);
-    font-size: 5rem;
-    color: var(--brand-orange);
-    opacity: 0.2;
+    font-size: 10rem;
+    background: linear-gradient(135deg, var(--brand-orange), transparent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.15;
     position: absolute;
-    top: 5px;
+    top: -40px;
     left: 20px;
     line-height: 1;
+    user-select: none;
+    z-index: 0;
 }
 
 .quote-text {
     font-family: var(--font-serif);
-    font-size: 1.45rem;
+    font-size: 1.65rem;
     font-weight: 400;
     color: var(--text-main);
-    line-height: 1.5;
-    margin-bottom: 20px;
+    line-height: 1.4;
+    margin-bottom: 36px;
     position: relative;
     z-index: 1;
-    font-style: italic;
+    letter-spacing: -0.01em;
 }
 
 .quote-author-info {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 15px;
+    justify-content: flex-start;
+    gap: 16px;
+    padding-top: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.quote-author-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--brand-orange);
+    opacity: 0.6;
 }
 
 .quote-author-image {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--brand-orange);
+    border: 2px solid #fff;
+    box-shadow: 0 4px 12px rgba(200, 158, 58, 0.2);
 }
 
 .quote-author {
-    font-size: 0.9rem;
-    color: var(--brand-orange);
-    text-align: right;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-size: 1rem;
+    color: var(--text-main);
+    text-align: left;
+    font-weight: 500;
+    font-family: var(--font-sans);
+    letter-spacing: 0;
 }
 
 @keyframes floatCard {
-    0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
-    50% { transform: translateY(-15px) rotateX(2deg) rotateY(2deg); }
+    0%, 100% { transform: translateY(0) rotateX(2deg) rotateY(-2deg); }
+    50% { transform: translateY(-16px) rotateX(-2deg) rotateY(2deg); }
 }
 
 /* Typography Updates */
@@ -324,9 +348,9 @@ body::after {
 }
 
 .card-header h3 {
-    font-family: var(--font-serif);
-    font-size: 22px;
-    font-weight: 400;
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 600;
     color: var(--text-main);
     letter-spacing: -0.01em;
 }
@@ -657,6 +681,16 @@ footer {
     }
     .hero-actions {
         justify-content: center;
+    }
+    .quote-card-container {
+        width: 100%;
+    }
+    .quote-card {
+        padding: 36px 28px;
+    }
+    .quote-text {
+        font-size: 1.4rem;
+        margin-bottom: 24px;
     }
     .hero-schedule {
         display: inline-block;
