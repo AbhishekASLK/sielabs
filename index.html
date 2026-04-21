@@ -25,13 +25,18 @@
             style="width: 30px; height: 30px; object-fit: contain; border-radius: 4px;">
           SieLabs
         </a>
-        <div class="nav-links">
+        <div class="nav-links" id="navLinks">
           <a href="#company">Company</a>
           <a href="#products">Products</a>
           <a href="programs/index.html">Programs</a>
+          <a href="https://chat.whatsapp.com/CArRrlWxosoC4wFLDVBeYE" target="_blank" rel="noreferrer" class="nav-cta mobile-cta">Join Us →</a>
         </div>
-        <a href="https://chat.whatsapp.com/CArRrlWxosoC4wFLDVBeYE" target="_blank" rel="noreferrer" class="nav-cta">Join
-          Us →</a>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="https://chat.whatsapp.com/CArRrlWxosoC4wFLDVBeYE" target="_blank" rel="noreferrer" class="nav-cta desktop-cta">Join Us →</a>
+          <button class="hamburger-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </button>
+        </div>
       </nav>
 
       <div class="hero" id="top">
