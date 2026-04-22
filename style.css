@@ -340,6 +340,14 @@ h1 em {
   font-weight: 500;
 }
 
+.panel-tags .limited-tag {
+  background: rgba(234, 88, 12, 0.08);
+  border-color: rgba(234, 88, 12, 0.3);
+  color: #c2410c;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
 .panel-link {
   display: inline-flex;
   align-items: center;
