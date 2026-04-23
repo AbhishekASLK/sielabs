@@ -684,6 +684,29 @@ h3 {
   flex: 1;
 }
 
+.program-card-img-wrapper {
+  position: relative;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(187, 239, 45, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 5px 12px;
+  border: 1px solid white;
+  border-radius: 100px;
+}
+
 /* ── CLOSING ── */
 .closing {
   background: var(--bg-card);
@@ -833,11 +856,11 @@ footer p {
   nav {
     position: relative;
   }
-  
+
   .hamburger-btn {
     display: block;
   }
-  
+
   .nav-links {
     display: none;
     flex-direction: column;
@@ -848,20 +871,20 @@ footer p {
     background: var(--bg-card);
     padding: 24px;
     border-bottom: 1px solid var(--border);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     z-index: 50;
   }
-  
+
   .nav-links.show {
     display: flex !important;
   }
-  
+
   .mobile-cta {
     display: inline-flex !important;
     justify-content: center;
     margin-top: 8px;
   }
-  
+
   .desktop-cta {
     display: none !important;
   }
