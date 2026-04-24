@@ -4,288 +4,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Source Mindset - SieLabs</title>
+    <title>Open Source Mindset — SieLabs</title>
+    <meta name="description"
+        content="A 4-month practical program to navigate large codebases, communicate with maintainers, and make your first meaningful open source contributions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <style>
-    </style>
 </head>
 
 <body>
 
-    <header class="hero-section">
+    <!-- NAV -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../../index.html" class="nav-brand">
+                    <img src="../../favicon.ico" alt="SieLabs Logo"
+                        style="width: 30px; height: 30px; object-fit: contain; border-radius: 4px;">
+                    SieLabs
+                </a>
+                <div class="nav-links" id="navLinks">
+                    <a href="../index.html">Programs</a>
+                    <a href="../../index.html#products">Products</a>
+                    <a href="../../index.html#company">About</a>
+                    <a href="https://chat.whatsapp.com/CArRrlWxosoC4wFLDVBeYE" target="_blank" rel="noreferrer"
+                        class="nav-cta mobile-cta">Join Us →</a>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <a href="https://chat.whatsapp.com/CArRrlWxosoC4wFLDVBeYE" target="_blank" rel="noreferrer"
+                        class="nav-cta desktop-cta">Join Us →</a>
+                    <button class="hamburger-btn"
+                        onclick="document.getElementById('navLinks').classList.toggle('show')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M3 12h18M3 6h18M3 18h18" />
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-section">
         <div class="container hero-container">
 
-            <div class="hero-content-left">
+            <div class="hero-content-left reveal">
                 <p class="cursive-subtitle">Git, GitHub & Open Source Mindset</p>
-                <h1 class="hero-title">OPEN SOURCE <span class="highlight">MINDSET</span></h1>
-
+                <h1 class="hero-title">Open Source <span class="highlight">Mindset</span></h1>
                 <p class="hero-desc">
                     A practical playbook to navigate large codebases, communicate with maintainers, and make your first
                     meaningful open source contributions.
                 </p>
 
-                <div class="hero-schedule">
-                    <div class="schedule-item">
-                        <span class="schedule-label">Duration</span>
-                        <span class="schedule-value">4 Months</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span class="schedule-label">Suggested Tools</span>
-                        <span class="schedule-value">GitHub, VS Code, Python 3.x</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span class="schedule-label">Capacity</span>
-                        <span class="schedule-value" style="color: #ea580c; font-weight: 600;">Only 25 Students</span>
-                    </div>
+                <div class="hero-meta">
+                    <span class="meta-pill">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                        4 Months
+                    </span>
+                    <span class="meta-pill accent">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        Only 25 Students
+                    </span>
                 </div>
 
-                <div class="hero-actions" style="align-items: flex-start;">
-                    <div style="display: flex; flex-direction: column; gap: 6px;">
-                        <h3 class="btn btn-white">Open Enrollment</h3>
-                    </div>
-                    <a href="#curriculum" class="btn btn-transparent">View Curriculum ↘</a>
+                <div class="hero-actions">
+                    <a href="https://forms.gle/zYU8K4un6dgwpEtx5" target="_blank" rel="noreferrer"
+                        class="btn-primary">Enroll Now →</a>
+                    <a href="#curriculum" class="btn-secondary">View Curriculum ↓</a>
                 </div>
-
             </div>
 
-            <div class="hero-image-right">
+            <div class="hero-image-right reveal" style="transition-delay: 0.15s;">
                 <div class="quote-card-container">
                     <div class="quote-card">
                         <div class="quote-icon">"</div>
                         <p class="quote-text">The best way to predict the future is to invent it.</p>
                         <div class="quote-author-info">
                             <img src="./static/alan-kay.jpg" alt="Alan Kay" class="quote-author-image">
-                            <p class="quote-author">- Alan Kay</p>
+                            <p class="quote-author">— Alan Kay</p>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div>
-    </header>
+    </section>
 
-    <main class="container" id="curriculum">
-        <h2 class="section-heading">Program <span class="highlight-text">Curriculum</span></h2>
+    <!-- WHAT YOU'LL LEARN -->
+    <section class="highlights-section">
+        <div class="container">
+            <p class="section-eyebrow reveal">What You'll Learn</p>
+            <h2 class="section-title reveal">From reading repos to shipping <em>real contributions.</em></h2>
 
-        <div class="curriculum-wrapper">
-            <div class="timeline">
-
-                <article class="module-card-new">
-                    <div class="card-header" onclick="toggleModule(this)">
-                        <h3>Module 1: Introduction to Open Source</h3>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="card-body">
-                        <ul class="topic-grid">
-                            <li><strong>What is Open Source?:</strong> Philosophy of open source, real-world examples,
-                                and why it matters in modern software</li>
-                            <li><strong>Licenses & Legality:</strong> MIT, Apache, GPL — what they allow, restrict, and
-                                why choosing the right license matters</li>
-                            <li><strong>The OS Ecosystem:</strong> Famous projects (Linux, Python, VS Code), companies
-                                that invest in open source, and career benefits</li>
-                            <li><strong>Anatomy of a GitHub Repo:</strong> README, Issues, Pull Requests, Stars, Forks,
-                                Discussions — understanding every section of a repo</li>
-                        </ul>
-                        <div class="project-lab-box">
-                            <img src="./static/command.png" alt="">
-                            <div class="lab-content">
-                                <h4>MODULE 1 ASSIGNMENT: EXPLORE & REPORT</h4>
-                                <p>Pick 3 popular open source projects, analyze their structure, licenses, and
-                                    contributor activity, and write a brief comparison report.</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="module-card-new">
-                    <div class="card-header" onclick="toggleModule(this)">
-                        <h3>Module 2: Reading & Understanding Open Source Code</h3>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="card-body">
-                        <ul class="topic-grid">
-                            <li><strong>Navigating a Large Codebase:</strong> Folder structure conventions, reading
-                                changelogs, using GitHub search and blame to trace logic</li>
-                            <li><strong>Python Basics by Reading Real Code:</strong> Variables, data types, control flow,
-                                functions, and classes — learned by reading and annotating snippets from popular
-                                Python projects (Flask, requests, click, etc.)</li>
-                            <li><strong>Using AI to Understand Code:</strong> Prompting Claude/ChatGPT to explain
-                                unfamiliar functions, debug errors, and map code flow</li>
-                            <li><strong>Python Project Structure:</strong> Understanding __init__.py, setup.py,
-                                pyproject.toml, and running a project locally for the first time</li>
-                            <li><strong>Hands-on Practice:</strong> Modify small parts of open-source Python code
-                                locally — fix a string, change a default, add a print statement — to build confidence
-                                and understanding</li>
-                            <li><strong>Issues & Roadmaps:</strong> Reading "good first issue" tags, tracking
-                                milestones, and understanding how maintainers plan releases</li>
-                        </ul>
-                        <div class="project-lab-box">
-                            <img src="./static/database-file.png" alt="">
-                            <div class="lab-content">
-                                <h4>MODULE 2 ASSIGNMENT: CODE WALKTHROUGH</h4>
-                                <p>Pick a beginner-friendly Python open source project, run it locally, use AI to
-                                    document a walkthrough of its core module, and write an annotated guide explaining
-                                    the Python concepts and architecture you learned from the source code.</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="module-card-new">
-                    <div class="card-header" onclick="toggleModule(this)">
-                        <h3>Module 3: Git & GitHub Version Control</h3>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="card-body">
-                        <ul class="topic-grid">
-                            <li><strong>Git from Scratch:</strong> init, add, commit, push, pull — understanding the
-                                full local-to-remote workflow with hands-on practice</li>
-                            <li><strong>Branching & Merging:</strong> Creating feature branches, merging strategies,
-                                resolving merge conflicts without panic</li>
-                            <li><strong>GitHub Collaboration Flow:</strong> Fork vs Clone, opening PRs, writing Issues,
-                                using Labels, and the GitHub Flow model</li>
-                            <li><strong>Writing Great READMEs:</strong> Markdown deep dive, crafting a professional
-                                README, CONTRIBUTING.md, and CODE_OF_CONDUCT.md</li>
-                        </ul>
-                        <div class="project-lab-box">
-                            <img src="./static/blueprint.png" alt="">
-                            <div class="lab-content">
-                                <h4>MODULE 3 ASSIGNMENT: THE REPO OVERHAUL</h4>
-                                <p>Create a personal project repository featuring a polished README, contribution
-                                    guidelines, and a clean, documented git history using proper branching.</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="module-card-new">
-                    <div class="card-header" onclick="toggleModule(this)">
-                        <h3>Module 4: Make Your First Contribution</h3>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="card-body">
-                        <ul class="topic-grid">
-                            <li><strong>Types of Contributions:</strong> Documentation, translations, bug reports, unit
-                                tests, design — contributions go far beyond code</li>
-                            <li><strong>Your First Code Fix:</strong> Fixing typos, adding tests, following code style
-                                guidelines (PEP8, linters, formatters)</li>
-                            <li><strong>Working with Maintainers:</strong> Writing professional PR descriptions,
-                                responding to review feedback constructively, and respecting community norms</li>
-                            <li><strong>Contribution Sprint:</strong> Finding an active project with open "good first
-                                issues" and pushing a real pull request live</li>
-                        </ul>
-                        <div class="project-lab-box">
-                            <img src="./static/command.png" alt="">
-                            <div class="lab-content">
-                                <h4>MODULE 4 ASSIGNMENT: THE MERGE</h4>
-                                <p>Successfully get a Pull Request merged into a real open-source project —
-                                    documentation fix, test addition, or a code improvement all count.</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="module-card-new">
-                    <div class="card-header" onclick="toggleModule(this)">
-                        <h3>Module 5: Build Your Own Project</h3>
-                        <span class="toggle-icon">▼</span>
-                    </div>
-                    <div class="card-body">
-                        <ul class="topic-grid">
-                            <li><strong>Learning by Reading Source:</strong> Using open source as a textbook — studying
-                                frameworks by reading their internals and design decisions</li>
-                            <li><strong>Starting Your Own OS Project:</strong> Scoping a small CLI tool or utility,
-                                structuring it professionally, and writing a compelling README from day one</li>
-                            <li><strong>CI/CD with GitHub Actions:</strong> Automating tests, linting, and releases —
-                                setting up a pipeline that runs on every push</li>
-                            <li><strong>OS Programs & Final Showcase:</strong> GSoC, Outreachy, LFX Mentorship overview
-                                — and presenting your contribution + project to peers for feedback</li>
-                        </ul>
-                        <div class="project-lab-box">
-                            <img src="./static/browser.png" alt="">
-                            <div class="lab-content">
-                                <h4>MODULE 5 ASSIGNMENT: THE FINAL SHOWCASE</h4>
-                                <p>Present one open source contribution made and one project you built during the
-                                    program, with a live demo and peer review session.</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-            </div>
-
-            <aside class="lab-sidebar">
-                <div class="lab-sticky-content" id="lab-display-area">
-                    <div style="text-align: center; padding: 40px 20px;">
-                        <img src="./static/cursor.png" alt="" style="width: 64px; margin-bottom: 20px;">
-                        <p class="lab-placeholder-text">Click on any module to reveal its primary assignment.</p>
-                    </div>
+            <div class="highlights-grid reveal">
+                <div class="highlight-card">
+                    <div class="card-icon">🔍</div>
+                    <h3>Navigate Open Source</h3>
+                    <p>Understand repo structures, licenses, and community norms — the foundation of every contribution.
+                    </p>
                 </div>
-            </aside>
-        </div>
-    </main>
-
-    <script>
-        function toggleModule(headerElement) {
-            const card = headerElement.parentElement;
-            document.querySelectorAll('.module-card-new').forEach(c => {
-                if (c !== card) c.classList.remove('active');
-            });
-            const isActive = card.classList.toggle('active');
-            if (isActive) { updateLabSidebar(card); }
-        }
-
-        function updateLabSidebar(card) {
-            const labSource = card.querySelector('.project-lab-box');
-            const displayTarget = document.getElementById('lab-display-area');
-            if (labSource && displayTarget) {
-                let iconHTML = '';
-                const iconSpan = labSource.querySelector('.lab-icon');
-                if (iconSpan) {
-                    iconHTML = iconSpan.innerHTML;
-                } else {
-                    const img = labSource.querySelector('img');
-                    if (img) { iconHTML = img.outerHTML; }
-                }
-                const title = labSource.querySelector('h4').innerHTML;
-                const desc = labSource.querySelector('p').innerHTML;
-                displayTarget.innerHTML = `
-                    <div class="lab-display-content">
-                        <span class="lab-feature-icon">${iconHTML}</span>
-                        <h4>${title}</h4>
-                        <p>${desc}</p>
-                    </div>`;
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.project-lab-box').forEach(box => {
-                box.addEventListener('click', function () { this.classList.toggle('expanded'); });
-            });
-        });
-    </script>
-
-
-    <section class="pricing-section" id="pricing">
-        <div class="container pricing-container">
-            <div class="price-left">
-                <span class="promo-text">LEARN. CONTRIBUTE. GROW.</span>
-                <h2>Open Source Mindset</h2>
-                <p>Start your journey from navigating open source repos to making your very first impactful
-                    contribution.</p>
-            </div>
-            <div class="price-right">
-                <a href="https://forms.gle/zYU8K4un6dgwpEtx5" class="btn btn-orange">Start Creating ↗</a>
+                <div class="highlight-card">
+                    <div class="card-icon">🐍</div>
+                    <h3>Read Real Python Code</h3>
+                    <p>Learn Python fundamentals by reading and annotating snippets from popular open-source projects.
+                    </p>
+                </div>
+                <div class="highlight-card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Master Git & GitHub</h3>
+                    <p>From branching to PRs — the full local-to-remote workflow with hands-on collaboration practice.
+                    </p>
+                </div>
+                <div class="highlight-card">
+                    <div class="card-icon">🤝</div>
+                    <h3>Make Contributions</h3>
+                    <p>Find issues, write professional PRs, respond to review feedback, and get your code merged.</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="card-icon">🚀</div>
+                    <h3>Build Your Own Project</h3>
+                    <p>Scope, build, and ship a CLI tool or utility with CI/CD, tests, and a professional README.</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="card-icon">🤖</div>
+                    <h3>AI-Assisted Workflow</h3>
+                    <p>Use Claude and ChatGPT to understand unfamiliar code, debug errors, and map code flow
+                        efficiently.</p>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- CURRICULUM -->
+    <main class="curriculum-section" id="curriculum">
+        <div class="container">
+            <p class="section-eyebrow reveal">Program Curriculum</p>
+            <h2 class="section-title reveal">Five modules. Five months of <em>real practice.</em></h2>
+
+            <div class="curriculum-wrapper">
+                <div class="timeline reveal">
+
+                    <!-- Module 1 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">01</span>
+                                <h3>Introduction to Open Source</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>What is Open Source?</strong>Philosophy of open source, real-world examples,
+                                    and why it matters in modern software</li>
+                                <li><strong>Licenses & Legality</strong>MIT, Apache, GPL — what they allow, restrict,
+                                    and why choosing the right license matters</li>
+                                <li><strong>The OS Ecosystem</strong>Famous projects (Linux, Python, VS Code), companies
+                                    that invest in open source, and career benefits</li>
+                                <li><strong>Anatomy of a GitHub Repo</strong>README, Issues, Pull Requests, Stars,
+                                    Forks, Discussions — understanding every section of a repo</li>
+                            </ul>
+                            <div class="assignment-box">
+                                <img src="./static/command.png" alt="">
+                                <div>
+                                    <h4>Module 1 Assignment: Explore & Report</h4>
+                                    <p>Pick 3 popular open source projects, analyze their structure, licenses, and
+                                        contributor activity, and write a brief comparison report.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Module 2 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">02</span>
+                                <h3>Reading & Understanding Open Source Code</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Navigating a Large Codebase</strong>Folder structure conventions, reading
+                                    changelogs, using GitHub search and blame to trace logic</li>
+                                <li><strong>Python Basics by Reading Real Code</strong>Variables, data types, control
+                                    flow, functions, and classes — learned by reading and annotating snippets from
+                                    popular Python projects (Flask, requests, click, etc.)</li>
+                                <li><strong>Using AI to Understand Code</strong>Prompting Claude/ChatGPT to explain
+                                    unfamiliar functions, debug errors, and map code flow</li>
+                                <li><strong>Python Project Structure</strong>Understanding __init__.py, setup.py,
+                                    pyproject.toml, and running a project locally for the first time</li>
+                                <li><strong>Hands-on Practice</strong>Modify small parts of open-source Python code
+                                    locally — fix a string, change a default, add a print statement — to build
+                                    confidence and understanding</li>
+                                <li><strong>Issues & Roadmaps</strong>Reading "good first issue" tags, tracking
+                                    milestones, and understanding how maintainers plan releases</li>
+                            </ul>
+                            <div class="assignment-box">
+                                <img src="./static/database-file.png" alt="">
+                                <div>
+                                    <h4>Module 2 Assignment: Code Walkthrough</h4>
+                                    <p>Pick a beginner-friendly Python open source project, run it locally, use AI to
+                                        document a walkthrough of its core module, and write an annotated guide
+                                        explaining the Python concepts and architecture you learned from the source
+                                        code.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Module 3 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">03</span>
+                                <h3>Git & GitHub Version Control</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Git from Scratch</strong>init, add, commit, push, pull — understanding the
+                                    full local-to-remote workflow with hands-on practice</li>
+                                <li><strong>Branching & Merging</strong>Creating feature branches, merging strategies,
+                                    resolving merge conflicts without panic</li>
+                                <li><strong>GitHub Collaboration Flow</strong>Fork vs Clone, opening PRs, writing
+                                    Issues, using Labels, and the GitHub Flow model</li>
+                                <li><strong>Writing Great READMEs</strong>Markdown deep dive, crafting a professional
+                                    README, CONTRIBUTING.md, and CODE_OF_CONDUCT.md</li>
+                            </ul>
+                            <div class="assignment-box">
+                                <img src="./static/blueprint.png" alt="">
+                                <div>
+                                    <h4>Module 3 Assignment: The Repo Overhaul</h4>
+                                    <p>Create a personal project repository featuring a polished README, contribution
+                                        guidelines, and a clean, documented git history using proper branching.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Module 4 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">04</span>
+                                <h3>Make Your First Contribution</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Types of Contributions</strong>Documentation, translations, bug reports,
+                                    unit tests, design — contributions go far beyond code</li>
+                                <li><strong>Your First Code Fix</strong>Fixing typos, adding tests, following code style
+                                    guidelines (PEP8, linters, formatters)</li>
+                                <li><strong>Working with Maintainers</strong>Writing professional PR descriptions,
+                                    responding to review feedback constructively, and respecting community norms</li>
+                                <li><strong>Contribution Sprint</strong>Finding an active project with open "good first
+                                    issues" and pushing a real pull request live</li>
+                            </ul>
+                            <div class="assignment-box">
+                                <img src="./static/command.png" alt="">
+                                <div>
+                                    <h4>Module 4 Assignment: The Merge</h4>
+                                    <p>Successfully get a Pull Request merged into a real open-source project —
+                                        documentation fix, test addition, or a code improvement all count.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Module 5 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">05</span>
+                                <h3>Build Your Own Project</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Learning by Reading Source</strong>Using open source as a textbook —
+                                    studying frameworks by reading their internals and design decisions</li>
+                                <li><strong>Starting Your Own OS Project</strong>Scoping a small CLI tool or utility,
+                                    structuring it professionally, and writing a compelling README from day one</li>
+                                <li><strong>CI/CD with GitHub Actions</strong>Automating tests, linting, and releases —
+                                    setting up a pipeline that runs on every push</li>
+                                <li><strong>OS Programs & Final Showcase</strong>GSoC, Outreachy, LFX Mentorship
+                                    overview — and presenting your contribution + project to peers for feedback</li>
+                            </ul>
+                            <div class="assignment-box">
+                                <img src="./static/browser.png" alt="">
+                                <div>
+                                    <h4>Module 5 Assignment: The Final Showcase</h4>
+                                    <p>Present one open source contribution made and one project you built during the
+                                        program, with a live demo and peer review session.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="lab-sidebar reveal" style="transition-delay: 0.1s;">
+                    <div class="lab-sticky-content" id="lab-display-area">
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <img src="./static/cursor.png" alt=""
+                                style="width: 56px; margin-bottom: 16px; opacity: 0.6;">
+                            <p class="lab-placeholder-text">Click on any module to reveal its assignment.</p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-inner reveal">
+                <div>
+                    <p class="cta-eyebrow">Learn. Contribute. Grow.</p>
+                    <h2>Open Source Mindset</h2>
+                </div>
+                <div class="cta-right">
+                    <p>Start your journey from navigating open source repos to making your very first impactful
+                        contribution.</p>
+                    <a href="https://forms.gle/zYU8K4un6dgwpEtx5" target="_blank" rel="noreferrer"
+                        class="btn-primary">Start Creating ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 SieLabs Inc. | Open Source Mindset.</p>
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <img src="../../favicon.ico" alt="SieLabs Logo"
+                        style="width: 20px; height: 20px; object-fit: contain; border-radius: 4px;">
+                    SieLabs
+                </div>
+                <div class="footer-links">
+                    <a href="../index.html">Programs</a>
+                    <a href="../../index.html#products">Products</a>
+                    <a href="../../index.html#company">About</a>
+                </div>
+                <p>© 2026 SieLabs. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        // Module accordion
+        function toggleModule(headerEl) {
+            const card = headerEl.parentElement;
+            document.querySelectorAll('.module-card').forEach(c => {
+                if (c !== card) c.classList.remove('active');
+            });
+            const isActive = card.classList.toggle('active');
+            if (isActive) updateSidebar(card);
+        }
+
+        function updateSidebar(card) {
+            const box = card.querySelector('.assignment-box');
+            const target = document.getElementById('lab-display-area');
+            if (!box || !target) return;
+
+            const img = box.querySelector('img');
+            const title = box.querySelector('h4').innerHTML;
+            const desc = box.querySelector('p').innerHTML;
+            const iconHTML = img ? img.outerHTML : '';
+
+            target.innerHTML = `
+        <div class="lab-display-content">
+          <span class="lab-feature-icon">${iconHTML}</span>
+          <h4>${title}</h4>
+          <p>${desc}</p>
+        </div>`;
+        }
+
+        // Scroll reveal
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        revealEls.forEach(el => observer.observe(el));
+    </script>
 
 </body>
 
