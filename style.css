@@ -774,6 +774,16 @@ footer p {
   color: var(--text-muted);
 }
 
+.footer-address {
+  text-align: center;
+}
+
+.footer-address p {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
 /* ── SCROLL REVEAL ── */
 .reveal {
   opacity: 0;
