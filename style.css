@@ -73,6 +73,12 @@ body::after {
   z-index: 1;
 }
 
+/* ── HEADER ── */
+header {
+  position: relative;
+  z-index: 100;
+}
+
 /* ── NAV ── */
 nav {
   display: flex;
