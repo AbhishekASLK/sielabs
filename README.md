@@ -4,31 +4,41 @@
 
 <h1 align="center">SieLabs</h1>
 
-<p align="center"><strong>AI-Native Product Studio Website</strong></p>
+<p align="center"><strong>AI-Native Product Studio</strong></p>
 
 <p align="center">
   <a href="https://sielabs.org"><img src="https://img.shields.io/badge/website-live-1ecdbf?style=flat-square" alt="Website"></a>
   <a href="https://sielabs.org"><img src="https://img.shields.io/badge/status-active-22c55e?style=flat-square" alt="Status"></a>
-  <a href="https://sielabs.org"><img src="https://img.shields.io/badge/stack-HTML5%20%7C%20CSS3-4a8bff?style=flat-square" alt="Stack"></a>
   <a href="https://sielabs.org"><img src="https://img.shields.io/badge/focus-AI%20Products-0f172a?style=flat-square" alt="Focus"></a>
 </p>
 
-<p align="center">Built and maintained by SieLabs.</p>
+<p align="center">Helping teams launch practical AI products, labs, and learning experiences.</p>
 
-SieLabs is an AI-native product studio website focused on building practical tools for developers, learners, and modern teams.
+## About SieLabs
 
-## What This Website Covers
+SieLabs is an AI-native product studio focused on bringing practical, human-centered AI solutions to market. We combine product strategy, design, and experimentation to help teams build reliable tools that solve real problems.
 
-- SieLabs platform story and product vision
-- Workflow approach: scope, prototype, and scale
-- Featured products and active labs
-- Call-to-action paths for pilot programs and strategy calls
+## What We Do
 
-## Featured Experiences
+- Build AI-enabled product experiences for knowledge workers and modern teams
+- Run labs that explore useful workflows, automation, and generative AI capabilities
+- Offer programs that support learning, prototyping, and early-stage product testing
+- Share open-source resources and experimental product concepts
 
-- **Bookmark Pro**: A productivity-focused tool for organizing web research.
-- **Java 101 Lab**: A hands-on learning experience designed around practical programming fundamentals.
+## Signature Programs
 
-## Brand Direction
+- **Bookmark Pro** — A productivity tool for organizing and surfacing research, notes, and web insights.
+- **YAP** — An intelligent product experience designed to help users interact with AI-enhanced workflows.
+- **Open-Source Lab** — A public initiative for exploring experimental products, educational projects, and collaborative ideas.
 
-The website presents SieLabs as a fast-moving, reliability-focused studio that helps teams ship AI-powered products from concept to production.
+## Studio Focus
+
+SieLabs emphasizes clarity, speed, and value. Our programs are built to help teams:
+
+- validate AI use cases quickly
+- prototype with real user feedback
+- move from idea to usable product fast
+
+## Why SieLabs
+
+SieLabs is designed to support both founders and builders who want AI products that are practical, understandable, and built for adoption. We focus on creating experiences that feel useful from day one.
