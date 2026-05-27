@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — SieLabs | Our Story, Mission & Founder</title>
+  <meta name="description"
+    content="Learn about SieLabs — an AI-native product studio building practical software, applied learning platforms, and technical labs for modern engineering. Meet the anonymous founder behind the vision.">
+  <meta name="keywords"
+    content="SieLabs, about, founder, mission, AI product studio, Pune, engineering education, anonymous founder">
+  <meta name="author" content="SieLabs">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://sielabs.in/about/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sielabs.in/about/">
+  <meta property="og:title" content="About — SieLabs | Our Story, Mission & Founder">
+  <meta property="og:description"
+    content="Learn about SieLabs — an AI-native product studio building practical software and applied learning platforms for modern engineering.">
+  <meta property="og:image" content="https://sielabs.in/favicon.ico">
+  <meta property="og:site_name" content="SieLabs">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About — SieLabs | Our Story, Mission & Founder">
+  <meta name="twitter:description"
+    content="Learn about SieLabs — an AI-native product studio building practical software and applied learning for modern engineering.">
+  <meta name="twitter:image" content="https://sielabs.in/favicon.ico">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="../favicon.ico">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+
+  <!-- Structured Data: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sielabs.in/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://sielabs.in/about/"
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    /* ── ABOUT PAGE SPECIFIC STYLES ── */
+
+    /* Founder Section */
+    .founder-section {
+      padding: 96px 0;
+    }
+
+    .founder-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.03);
+      position: relative;
+    }
+
+    .founder-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200, 158, 58, 0.3), transparent);
+    }
+
+    .founder-avatar {
+      background: linear-gradient(135deg, var(--bg) 0%, var(--gold-pale) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 32px;
+      border-right: 1px solid var(--border);
+      gap: 24px;
+    }
+
+
+    .founder-name {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .founder-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .founder-body {
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .founder-body h3 {
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+
+    .founder-body p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .founder-body .motivation-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      border-left: 3px solid var(--gold);
+    }
+
+    .motivation-block .aside-label {
+      margin-bottom: 12px;
+    }
+
+    .motivation-block p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+
+      .founder-card {
+        grid-template-columns: 1fr;
+      }
+
+      .founder-avatar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 36px 28px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav aria-label="Main navigation">
+        <a href="../index.html" class="nav-brand">
+          <img src="../favicon.ico" alt="SieLabs Logo" class="nav-logo"
+            style="width: 30px; height: 30px; object-fit: contain; border-radius: 4px;">
+          SieLabs
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="../programs/index.html">Programs</a>
+          <a href="../products/index.html">Products</a>
+          <a href="#" class="active">About</a>
+          <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer" class="nav-cta mobile-cta"
+            style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            Contact Us
+          </a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer" class="nav-cta desktop-cta"
+            style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            Contact Us
+          </a>
+          <button class="hamburger-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- FOUNDER -->
+    <section class="founder-section">
+      <div class="container">
+        <div class="section-head-full reveal">
+          <p class="eyebrow">The Founder</p>
+          <h2>Visionary. Engineer. Builder.</h2>
+        </div>
+
+        <div class="founder-card reveal">
+          <div class="founder-avatar">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg"
+              alt="Elon Musk"
+              style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; object-position: center 10%; border: 2px solid var(--border-gold); box-shadow: 0 4px 12px rgba(200, 158, 58, 0.15);">
+            <div style="text-align: center;">
+              <span class="founder-title">Founder & Creator</span>
+              <div class="founder-name">Elon Musk</div>
+              <p style="font-size: 13px; color: var(--text-dim); margin-top: 8px; line-height: 1.5;">
+                Building the future of<br>technology and engineering<br>from the ground up.
+              </p>
+            </div>
+          </div>
+          <div class="founder-body">
+
+            <div class="motivation-block">
+              <span class="aside-label">Founder's Motivation</span>
+              <p>
+                "I started SieLabs because I saw a gap — engineering education was either too theoretical or too
+                shallow. Students graduate knowing syntax but not systems. They can write code but can't read a
+                codebase. I wanted to build a studio that fixes that: products that are genuinely useful, and programs
+                that teach the way real engineering works — through practice, through contribution, through building."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+    <!-- CLOSING CTA -->
+    <section class="closing">
+      <div class="container">
+        <div class="closing-inner reveal">
+          <div>
+            <p class="eyebrow">Get Involved</p>
+            <h2>We'd love to hear from you.</h2>
+          </div>
+          <div class="closing-copy">
+            <p>Whether you're interested in our programs, want to collaborate, or simply want to know more about what
+              we're building — reach out. The best conversations start with curiosity.</p>
+            <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer" class="btn-primary"
+              style="display: inline-flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              Contact Us on Instagram →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="../favicon.ico" alt="SieLabs Logo" class="nav-logo"
+            style="width: 20px; height: 20px; object-fit: contain; border-radius: 4px;">
+          SieLabs
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="../programs/index.html">Programs</a>
+          <a href="../products/index.html">Products</a>
+          <a href="index.html">About</a>
+        </nav>
+        <div class="footer-address">
+          <p style="display: flex; align-items: center; gap: 6px; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)" stroke="var(--gold)" stroke-width="1.5">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+              <circle cx="12" cy="9" r="2.5" fill="white"></circle>
+            </svg>
+            EuroKids PreSchool Near Maratha Hotel in Narhe, Pune
+          </p>
+        </div>
+        <p>© 2026 SieLabs. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    els.forEach(el => obs.observe(el));
+  </script>
+</body>
+
+</html>

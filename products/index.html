@@ -11,14 +11,39 @@
     <div class="container">
       <nav aria-label="Main navigation">
         <a href="../index.html" class="nav-brand">
-          <img src="../favicon.ico" alt="SieLabs Logo" style="width:30px;height:30px;object-fit:contain;border-radius:4px;">
+          <img src="../favicon.ico" alt="SieLabs Logo" class="nav-logo"
+            style="width: 30px; height: 30px; object-fit: contain; border-radius: 4px;">
           SieLabs
         </a>
         <div class="nav-links" id="navLinks">
           <a href="../programs/index.html">Programs</a>
           <a href="index.html" class="active">Products</a>
-          <a href="../index.html#company">About</a>
-          <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer" class="nav-cta">Contact Us</a>
+          <a href="../about/index.html">About</a>
+          <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer"
+            class="nav-cta mobile-cta" style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            Contact Us
+          </a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer"
+            class="nav-cta desktop-cta" style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            Contact Us
+          </a>
+          <button class="hamburger-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            </svg>
+          </button>
         </div>
       </nav>
     </div>
@@ -59,7 +84,7 @@
         <div class="footer-links">
           <a href="../programs/index.html">Programs</a>
           <a href="index.html">Products</a>
-          <a href="../index.html#company">About</a>
+          <a href="../about/index.html">About</a>
         </div>
         <p>© 2026 SieLabs. All rights reserved.</p>
       </div>
