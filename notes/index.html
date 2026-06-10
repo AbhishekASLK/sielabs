@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Essays — SieLabs</title>
+  <meta name="description"
+    content="Short essays, thoughts, and principles on engineering, product design, and open source from the SieLabs founder.">
+  <meta name="keywords"
+    content="SieLabs, notes, essays, log, thoughts, engineering, product design">
+  <meta name="author" content="SieLabs">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://sielabs.in/notes/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sielabs.in/notes/">
+  <meta property="og:title" content="Essays — SieLabs">
+  <meta property="og:description"
+    content="Short essays, thoughts, and principles from SieLabs.">
+  <meta property="og:image" content="https://sielabs.in/favicon.ico">
+  <meta property="og:site_name" content="SieLabs">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Essays — SieLabs">
+  <meta name="twitter:description"
+    content="Short essays, thoughts, and principles from SieLabs.">
+  <meta name="twitter:image" content="https://sielabs.in/favicon.ico">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="apple-touch-icon" href="../favicon.ico">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    /* ── NOTES PAGE SPECIFIC STYLES (nav.al inspired) ── */
+    .notes-section {
+      padding: 48px 0 96px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .notes-header {
+      margin-bottom: 64px;
+      text-align: center;
+    }
+
+    .notes-header h1 {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .notes-header p {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    .notes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .note-item {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .note-date {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .note-content {
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .note-content p {
+      margin-bottom: 16px;
+    }
+
+    .note-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .note-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0 0 0;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav aria-label="Main navigation">
+        <a href="../index.html" class="nav-brand">
+          <img src="../favicon.ico" alt="SieLabs Logo" class="nav-logo"
+            style="width: 30px; height: 30px; object-fit: contain; border-radius: 4px;">
+          SieLabs
+        </a>
+        <div class="nav-links" id="navLinks">
+          <a href="../programs/index.html">Programs</a>
+          <a href="../products/index.html">Products</a>
+          <a href="#" class="active">Essays</a>
+          <a href="../about/index.html">About</a>
+          <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer" class="nav-cta mobile-cta"
+            style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            Contact Us
+          </a>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer" class="nav-cta desktop-cta"
+            style="display: flex; align-items: center; gap: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            Contact Us
+          </a>
+          <button class="hamburger-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="notes-section">
+      <div class="container">
+        <div class="notes-header reveal">
+          <h1>Essays</h1>
+          <p>Thoughts on engineering, systems, and product building.</p>
+        </div>
+
+        <div class="notes-list">
+          <div class="note-item reveal">
+            <div class="note-date">June 10, 2026</div>
+            <div class="note-content">
+              <p>Great engineers don't just write code; they read systems. Most engineering education focuses entirely on syntax and starting from scratch. Real engineering is about dropping into a messy, millions-of-lines codebase and navigating it with confidence.</p>
+            </div>
+            <div class="note-divider"></div>
+          </div>
+
+          <div class="note-item reveal">
+            <div class="note-date">May 24, 2026</div>
+            <div class="note-content">
+              <p>Complexity is easy to build. Simplicity requires an active, aggressive editing process. If a system is hard to explain, it's usually poorly designed. The best architectures reveal their intent immediately.</p>
+            </div>
+            <div class="note-divider"></div>
+          </div>
+
+          <div class="note-item reveal">
+            <div class="note-date">April 15, 2026</div>
+            <div class="note-content">
+              <p>Learn to communicate with maintainers. Open source isn't just a technical exercise; it's a social protocol. Proposing a change requires context, empathy for the reviewer, and a clear demonstration of value.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img src="../favicon.ico" alt="SieLabs Logo" class="nav-logo"
+            style="width: 20px; height: 20px; object-fit: contain; border-radius: 4px;">
+          SieLabs
+        </a>
+        </div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="../programs/index.html">Programs</a>
+          <a href="../products/index.html">Products</a>
+          <a href="index.html">Essays</a>
+          <a href="../about/index.html">About</a>
+        </nav>
+        <div class="footer-address">
+          <p style="display: flex; align-items: center; gap: 6px; justify-content: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)" stroke="var(--gold)" stroke-width="1.5">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+              <circle cx="12" cy="9" r="2.5" fill="white"></circle>
+            </svg>
+            EuroKids PreSchool Near Maratha Hotel in Narhe, Pune
+          </p>
+        </div>
+        <p>© 2026 SieLabs. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    els.forEach(el => obs.observe(el));
+  </script>
+</body>
+
+</html>
