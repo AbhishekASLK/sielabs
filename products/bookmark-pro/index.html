@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -28,7 +27,8 @@
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     <link rel="apple-touch-icon" href="../../favicon.ico">
 
-    <link rel="stylesheet" href="styles.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="landing.css">
 
     <!-- Structured Data: SoftwareApplication -->
     <script type="application/ld+json">
@@ -81,261 +81,112 @@
       ]
     }
     </script>
-    <style>
-        body {
-            display: block;
-            /* Override flex from styles.css if needed, though styles.css seems to set flex on body. Resetting to default for a scrollable page */
-            height: auto;
-            overflow-y: auto;
-            line-height: 1.6;
-        }
-
-        /* Reset body display for this page specifically to avoid layout issues */
-        body.home-page {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            align-items: center;
-            background-color: var(--color-bg);
-        }
-
-        .container {
-            max-width: 98%;
-            width: 100%;
-            margin: 0 auto;
-            padding: 10px 20px;
-            min-height: 100vh;
-            /* assist in fitting */
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--color-border);
-            flex-shrink: 0;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            color: var(--color-primary);
-            margin-bottom: 5px;
-            margin-top: 0;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: var(--color-text-light);
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 20px;
-            align-items: start;
-            flex: 1;
-            /* Hide overflow if strictly single screen, but auto is safer */
-            /* min-height: 0; */
-            /* for flex child scrolling */
-        }
-
-        @media (max-width: 768px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-                overflow-y: auto;
-            }
-
-            .container {
-                height: auto;
-                display: block;
-            }
-        }
-
-        section {
-            margin-bottom: 0;
-            /* Remove bottom margin as grid gap handles spacing */
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--color-border);
-            height: auto;
-            overflow-y: auto;
-            /* Allow internal scrolling if absolutely necessary */
-            display: flex;
-            flex-direction: column;
-        }
-
-        h2 {
-            color: var(--color-text);
-            margin-top: 0;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        h3 {
-            font-size: 0.95rem;
-            margin: 8px 0 4px 0;
-            color: var(--color-text);
-        }
-
-        p,
-        li {
-            font-size: 0.85rem;
-            line-height: 1.4;
-            margin-bottom: 5px;
-        }
-
-        ul {
-            margin-top: 0;
-            margin-bottom: 5px;
-            padding-left: 15px;
-        }
-
-        .privacy-badge {
-            background-color: var(--color-secondary);
-            color: white;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            margin-bottom: 10px;
-            align-self: flex-start;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            /* Single column inside the smaller card */
-            gap: 10px;
-            margin-top: 0;
-            overflow-y: auto;
-        }
-
-        .feature-item {
-            padding: 10px;
-            background: var(--color-bg-sidebar);
-            border-radius: 8px;
-            text-align: left;
-            /* Better for vertical stacking */
-            display: flex;
-            /* keep icon/text alignment if needed later, or just block */
-            flex-direction: column;
-        }
-
-        .feature-item h3 {
-            margin-top: 0;
-            margin-bottom: 2px;
-        }
-
-        .feature-item p {
-            margin: 0;
-        }
-
-
-
-        footer {
-            text-align: center;
-            color: var(--color-text-light);
-            margin-top: 10px;
-            padding: 5px;
-            font-size: 0.75rem;
-            flex-shrink: 0;
-        }
-
-        .icon-shield {
-            width: 24px;
-            height: 24px;
-            fill: var(--color-secondary);
-        }
-    </style>
 </head>
+<body>
+    <nav>
+        <div class="container nav-container">
+            <a href="../../index.html" class="logo">
+                <img src="assets/icon.png" alt="Bookmark Pro Logo">
+                Bookmark Pro
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#privacy">Privacy</a>
+            </div>
+        </div>
+    </nav>
 
-<body class="home-page">
-    <div class="container">
-        <header>
-            <div>&nbsp;</div>
-            <img src="assets/icon.png" alt="Bookmark Pro Logo" width="64" height="64" style="margin-bottom: 10px;">
-            <h1>Bookmark Pro</h1>
-            <p class="subtitle">Organize your web life, simply and securely.</p>
+    <main>
+        <section class="hero container">
+            <div class="hero-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                100% Privacy First
+            </div>
+            <h1 class="gradient-text">Organize your web life,<br>simply and securely.</h1>
+            <p>A fast, privacy-focused Chrome extension to organize your bookmarks with custom categories. All data stays local. No tracking, no servers.</p>
+            <a href="https://chromewebstore.google.com/detail/nlemmlpgblopgmjdnbohgnjhbcepabjo" target="_blank" class="btn-primary">
+                Add to Chrome — It's Free
+            </a>
+        </section>
 
-        </header>
-
-        <div class="content-grid">
-            <section id="privacy">
-                <span class="privacy-badge">Privacy First</span>
-                <h2>Privacy Policy</h2>
-                <p>Bookmark Pro is designed with a "local-only" philosophy. Your data belongs to you and stays on your
-                    machine.</p>
-
-                <h3>1. Data Collection</h3>
-                <p>We do not collect any personally identifiable information. The extension handles the following data
-                    strictly to function:</p>
-                <ul style="color: var(--color-text-light); padding-left: 20px;">
-                    <li><strong>Website Content:</strong> When you save a bookmark, we store the URL and page title.
-                    </li>
-                    <li><strong>Web History:</strong> We access the active tab's metadata only when you click the
-                        extension
-                        icon to help you save links faster.</li>
-                </ul>
-
-                <h3>2. Data Storage</h3>
-                <p>All bookmarks and categories are stored locally in your browser's <code>chrome.storage.local</code>.
-                    No
-                    data is ever transmitted to a remote server or third party.</p>
-
-                <h3>3. Data Control</h3>
-                <p>You have full control over your data. You can delete individual bookmarks or categories at any time.
-                    Uninstalling the extension automatically wipes all locally stored data.</p>
-
-                <h3>4. Security</h3>
-                <p>Since data is stored locally, your information is as secure as your personal device.</p>
-            </section>
-
-            <section id="features">
-                <h2>Why Bookmark Pro?</h2>
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <h3>Fast</h3>
-                        <p>Lightweight and optimized for speed.</p>
+        <section id="features" class="features container">
+            <div class="section-header">
+                <h2 class="gradient-text">Why Bookmark Pro?</h2>
+                <p>Everything you need, nothing you don't.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
                     </div>
-                    <div class="feature-item">
-                        <h3>Organized</h3>
-                        <p>Custom categories to keep your links tidy.</p>
+                    <h3>Lightning Fast</h3>
+                    <p>Lightweight and optimized for speed. Built specifically for Chrome to ensure instant access to your saved links without any lag.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="3" y1="9" x2="21" y2="9"/>
+                            <line x1="9" y1="21" x2="9" y2="9"/>
+                        </svg>
                     </div>
-                    <div class="feature-item">
-                        <h3>Beautiful</h3>
-                        <p>A modern, clean interface that's easy on the eyes.</p>
+                    <h3>Beautifully Organized</h3>
+                    <p>Create custom categories to keep your links tidy. Say goodbye to messy browser bookmark bars and hello to a clean workspace.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Modern Design</h3>
+                    <p>A beautifully crafted interface with sleek aesthetics, subtle animations, and an intuitive user experience that's easy on the eyes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy" class="privacy">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="gradient-text">Local-Only Philosophy</h2>
+                    <p>Your data belongs to you. Period.</p>
+                </div>
+
+                <div class="privacy-content">
+                    <div class="privacy-item">
+                        <h3>1. Zero Data Collection</h3>
+                        <p>We do not collect any personally identifiable information. The extension handles data strictly to function:</p>
+                        <ul>
+                            <li><strong>Website Content:</strong> When you save a bookmark, we store the URL and page title.</li>
+                            <li><strong>Web History:</strong> We access the active tab's metadata only when you interact with the extension.</li>
+                        </ul>
+                    </div>
+
+                    <div class="privacy-item">
+                        <h3>2. Local Storage Only</h3>
+                        <p>All bookmarks and categories are stored locally in your browser's <code>chrome.storage.local</code>. No data is ever transmitted to a remote server or third party.</p>
+                    </div>
+
+                    <div class="privacy-item">
+                        <h3>3. Complete Control</h3>
+                        <p>You have full control over your data. Delete individual bookmarks or categories anytime. Uninstalling automatically wipes all locally stored data.</p>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+    </main>
 
-        <footer>
+    <footer>
+        <div class="container">
             <p>&copy; 2026 SieLabs. Built with ❤️ for the web.</p>
-        </footer>
-    </div>
-
-    <!-- Theme Toggle Script to match system or saved preference -->
-    <script>
-        // Simple theme initialization based on local storage or system preference
-        const savedTheme = localStorage.getItem('theme');
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
-    </script>
+        </div>
+    </footer>
 </body>
-
 </html>
