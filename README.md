@@ -4,7 +4,7 @@
 
 <h1 align="center">SieLabs</h1>
 
-<p align="center"><strong>AI-Native Product Studio</strong></p>
+<p align="center"><strong>Product Studio</strong></p>
 
 <p align="center">
   <a href="https://sielabs.org"><img src="https://img.shields.io/badge/website-live-1ecdbf?style=flat-square" alt="Website"></a>
@@ -16,7 +16,7 @@
 
 ## About SieLabs
 
-SieLabs is an AI-native product studio focused on bringing practical, human-centered AI solutions to market. We combine product strategy, design, and experimentation to help teams build reliable tools that solve real problems.
+SieLabs is a product studio focused on bringing practical, human-centered AI solutions to market. We combine product strategy, design, and experimentation to help teams build reliable tools that solve real problems.
 
 ## What We Do
 
