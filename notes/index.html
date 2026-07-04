@@ -46,12 +46,12 @@
     /* ── NOTES PAGE SPECIFIC STYLES (nav.al inspired) ── */
     .notes-section {
       padding: 48px 0 96px;
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
     }
 
     .notes-header {
-      margin-bottom: 64px;
+      margin-bottom: 56px;
       text-align: center;
     }
 
@@ -65,49 +65,182 @@
       color: var(--text-muted);
     }
 
+    /* ── ESSAY LIST VIEW ── */
     .notes-list {
       display: flex;
       flex-direction: column;
-      gap: 48px;
+      gap: 0;
     }
 
-    .note-item {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .essay-card {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border, #e0e0e0);
+      cursor: pointer;
+      transition: background 0.2s;
     }
 
-    .note-date {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-dim);
+    .essay-card:first-child {
+      padding-top: 0;
     }
 
-    .note-content {
-      font-size: 18px;
-      line-height: 1.8;
-      color: var(--text);
+    .essay-card:hover {
+      background: rgba(128, 128, 128, 0.04);
+    }
+
+    .essay-card-inner {
+      padding: 0 8px;
+    }
+
+    .essay-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px;
       font-weight: 400;
+      color: var(--text, #1a1a1a);
+      margin-bottom: 6px;
+      line-height: 1.3;
     }
 
-    .note-content p {
+    .essay-subtitle {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text, #1a1a1a);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .essay-preview {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-muted, #666);
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .essay-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-dim, #999);
+    }
+
+    .essay-more {
+      color: var(--text-muted, #888);
+      font-weight: 500;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+    }
+
+    .essay-card:hover .essay-more {
+      color: var(--gold, #c9a84c);
+    }
+
+    .essay-date {
+      font-size: 13px;
+      color: var(--text-dim, #999);
+    }
+
+    /* ── ESSAY DETAIL VIEW ── */
+    .essay-detail {
+      display: none;
+    }
+
+    .essay-detail.active {
+      display: block;
+      animation: fadeInUp 0.35s ease;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .essay-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted, #888);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px 0;
+      margin-bottom: 32px;
+      transition: color 0.2s;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .essay-back:hover {
+      color: var(--gold, #c9a84c);
+    }
+
+    .essay-back svg {
+      transition: transform 0.2s;
+    }
+
+    .essay-back:hover svg {
+      transform: translateX(-3px);
+    }
+
+    .essay-detail-header {
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border, #e0e0e0);
+    }
+
+    .essay-detail-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 34px;
+      font-weight: 400;
+      color: var(--text, #1a1a1a);
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+
+    .essay-detail-subtitle {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-muted, #888);
       margin-bottom: 16px;
+      line-height: 1.5;
     }
 
-    .note-content p:last-child {
+    .essay-detail-date {
+      font-size: 13px;
+      color: var(--text-dim, #999);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .essay-detail-body {
+      font-size: 18px;
+      line-height: 1.85;
+      color: var(--text, #1a1a1a);
+    }
+
+    .essay-detail-body p {
+      margin-bottom: 20px;
+    }
+
+    .essay-detail-body p:last-child {
       margin-bottom: 0;
     }
 
-    .note-divider {
-      width: 40px;
-      height: 1px;
-      background: var(--border);
-      margin: 24px 0 0 0;
-    }
-
-    /* Dark Theme */
+    /* ── DARK THEME ── */
     body.dark-theme {
       --bg: #121212;
       --bg-card: #1e1e1e;
@@ -116,6 +249,10 @@
       --text-muted: #a0a0a0;
       --text-dim: #707070;
       --border: #333333;
+    }
+
+    body.dark-theme .essay-card:hover {
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .theme-toggle {
@@ -136,6 +273,24 @@
     .theme-toggle:hover {
       background: var(--bg-card-2);
       border-color: var(--text-dim);
+    }
+
+    @media (max-width: 600px) {
+      .essay-title {
+        font-size: 20px;
+      }
+
+      .essay-detail-title {
+        font-size: 28px;
+      }
+
+      .essay-card {
+        padding: 24px 0;
+      }
+
+      .essay-detail-body {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -198,40 +353,92 @@
       <div class="container">
         <div class="notes-header reveal">
           <h1>Essays</h1>
-          <p>Thoughts on engineering, systems, and product building.</p>
+          <p>Thoughts on engineering, science, and evolution.</p>
         </div>
 
-        <div class="notes-list">
-          <div class="note-item reveal">
-            <div class="note-date">July 4, 2026</div>
-            <div class="note-content">
-              <p>School mein padha hoga - "Mitochondria is the powerhouse of the cell"
-                But kya aapko pata hai ki yeh mitochondria actually ek alag organisms hai jo humari cells ke andr rehta hai? Chalo detail main janate hai.</p>
-              <p>Kahani shuru hoti hai 1886 main. Richard Altmann naam ke ek German scientist ne microscope mein cells ke andar kuch ajeeb granules dekhe. Usne bola yeh koi granules nahi hai, yeh khud jeevit organism hai jo humare cells ke andar rehte hai. Logo ne uska mazak udaya, uska career barbad ho gya. Bichara sahi tha, bas 100 saal pahle bol diya.</p>
-              <p>Abh aata hai twist, 1967 mein Lynn Margulis naam ki ek American scientist ne ek paper likha. Usne bola yeh mitochondria pahle free-living bacteria the, yani humare cells ke baher inki duniya thi. Lekin 2 billion saal pahle ek badi cell ne inhe kha liya but digest nahi kiya. Dono ne deal kar li - cell ne bola - "main tumhe ghar dunga, tum mujhe energy do"</p>
-              <p>Uska paper 15 journals ne reject kiya. Logo ne kaha yeh pagal hai. But phir 1980s mein DNA sequencing aayi. Scientists ne dekha ki mitochondria ka apna DNA hai jaise bacteria ke pass hai. Lynn Margulis bilkul sahi thi.</p>
-              <p>Toh soch ke dekho - aap jo saans le rahe ho, woh trillions ex-bacteria ko feed kar rahi hai jo aapke andar rehte hai. Aap akele nahi ho - aap ek chalti firti bacterio ki colony ho.</p>
-              <p>Aur agar 2 billion saal pehle woh ek weird symbiotic event nahi hota, toh na plants hote, na animals, na hum.</p>
-              <p>Har cheez jo hum dekhte hai, kisi na kisi prakar evolution se judi hue hai.</p>
-              <p>Agar aapko is topic mein aur details mein janna hai, to aap yeh kitab padh sakte ho.</p>
+        <!-- ── ESSAY LISTING VIEW ── -->
+        <div class="notes-list" id="essayList">
+
+          <!-- Essay 1: Mitochondria -->
+          <div class="essay-card reveal" onclick="openEssay('mitochondria')">
+            <div class="essay-card-inner">
+              <h2 class="essay-title">Mitochondria — The Alien Inside You</h2>
+              <p class="essay-subtitle">How a 2-billion-year-old deal created all complex life</p>
+              <p class="essay-preview">School mein padha hoga - "Mitochondria is the powerhouse of the cell" But kya aapko pata hai ki yeh mitochondria actually ek alag organisms hai jo humari cells ke andr rehta hai? Kahani shuru hoti hai 1886 main. Richard Altmann naam ke ek German scientist ne microscope mein cells ke andar kuch ajeeb granules dekhe...</p>
+              <div class="essay-meta">
+                <span class="essay-more">More ›</span>
+                <span class="essay-date">Jul 4 2026</span>
+              </div>
             </div>
-            <div class="note-divider"></div>
           </div>
 
-          <div class="note-item reveal">
-            <div class="note-date">June 12, 2026</div>
-            <div class="note-content">
-              <p>computers ko bas 0/1 hi q smjta hai 2/3 ya aur koi number q nahi</p>
-              <p>asliyat main computers ko koi number nahi samjta, use to bas voltage ya current samjta hai</p>
-              <p>yeh hum log hai jinhone high voltage ke liye 1 and low ke liye 0 choose kiya, hum koi aur symbols bhi choose kar sakte they. squid game waale yeh symbols bhi.</p>
-              <p>dusri cheeze, computers ne binary chhose kiya because of machine ka behaviour, use bas high voltage ya low voltage samjta hai isliye. hum homo sapiense ne decimal choose kiya decimal yani das, aur evolution ne hume 10 ungliya di, aur humne decimal choose kiya.</p>
-              <p>har cheese jo hum dekhte hai, kisina kisi prakar evolutions se jhudi hai.</p>
+          <!-- Essay 2: Computers & Binary -->
+          <div class="essay-card reveal" onclick="openEssay('binary')">
+            <div class="essay-card-inner">
+              <h2 class="essay-title">Computers and Binary</h2>
+              <p class="essay-subtitle">Why computers think in 0s and 1s — it's not what you think</p>
+              <p class="essay-preview">computers ko bas 0/1 hi q smjta hai 2/3 ya aur koi number q nahi. asliyat main computers ko koi number nahi samjta, use to bas voltage ya current samjta hai. yeh hum log hai jinhone high voltage ke liye 1 and low ke liye 0 choose kiya...</p>
+              <div class="essay-meta">
+                <span class="essay-more">More ›</span>
+                <span class="essay-date">Jun 12 2026</span>
+              </div>
             </div>
-            <div class="note-divider"></div>
           </div>
-
 
         </div>
+
+        <!-- ── ESSAY DETAIL VIEWS ── -->
+
+        <!-- Detail: Mitochondria -->
+        <div class="essay-detail" id="essay-mitochondria">
+          <button class="essay-back" onclick="closeEssay()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5"></path>
+              <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            All Essays
+          </button>
+          <div class="essay-detail-header">
+            <h1 class="essay-detail-title">Mitochondria — The Alien Inside You</h1>
+            <p class="essay-detail-subtitle">How a 2-billion-year-old deal created all complex life</p>
+            <span class="essay-detail-date">July 4, 2026</span>
+          </div>
+          <div class="essay-detail-body">
+            <p>School mein padha hoga - "Mitochondria is the powerhouse of the cell"
+              But kya aapko pata hai ki yeh mitochondria actually ek alag organisms hai jo humari cells ke andr rehta hai? Chalo detail main janate hai.</p>
+            <p>Kahani shuru hoti hai 1886 main. Richard Altmann naam ke ek German scientist ne microscope mein cells ke andar kuch ajeeb granules dekhe. Usne bola yeh koi granules nahi hai, yeh khud jeevit organism hai jo humare cells ke andar rehte hai. Logo ne uska mazak udaya, uska career barbad ho gya. Bichara sahi tha, bas 100 saal pahle bol diya.</p>
+            <p>Abh aata hai twist, 1967 mein Lynn Margulis naam ki ek American scientist ne ek paper likha. Usne bola yeh mitochondria pahle free-living bacteria the, yani humare cells ke baher inki duniya thi. Lekin 2 billion saal pahle ek badi cell ne inhe kha liya but digest nahi kiya. Dono ne deal kar li - cell ne bola - "main tumhe ghar dunga, tum mujhe energy do"</p>
+            <p>Uska paper 15 journals ne reject kiya. Logo ne kaha yeh pagal hai. But phir 1980s mein DNA sequencing aayi. Scientists ne dekha ki mitochondria ka apna DNA hai jaise bacteria ke pass hai. Lynn Margulis bilkul sahi thi.</p>
+            <p>Toh soch ke dekho - aap jo saans le rahe ho, woh trillions ex-bacteria ko feed kar rahi hai jo aapke andar rehte hai. Aap akele nahi ho - aap ek chalti firti bacterio ki colony ho.</p>
+            <p>Aur agar 2 billion saal pehle woh ek weird symbiotic event nahi hota, toh na plants hote, na animals, na hum.</p>
+            <p>Har cheez jo hum dekhte hai, kisi na kisi prakar evolution se judi hue hai.</p>
+            <p>Agar aapko is topic mein aur details mein janna hai, to aap yeh kitab padh sakte ho.</p>
+          </div>
+        </div>
+
+        <!-- Detail: Binary -->
+        <div class="essay-detail" id="essay-binary">
+          <button class="essay-back" onclick="closeEssay()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5"></path>
+              <path d="M12 19l-7-7 7-7"></path>
+            </svg>
+            All Essays
+          </button>
+          <div class="essay-detail-header">
+            <h1 class="essay-detail-title">Computers and Binary</h1>
+            <p class="essay-detail-subtitle">Why computers think in 0s and 1s — it's not what you think</p>
+            <span class="essay-detail-date">June 12, 2026</span>
+          </div>
+          <div class="essay-detail-body">
+            <p>computers ko bas 0/1 hi q smjta hai 2/3 ya aur koi number q nahi</p>
+            <p>asliyat main computers ko koi number nahi samjta, use to bas voltage ya current samjta hai</p>
+            <p>yeh hum log hai jinhone high voltage ke liye 1 and low ke liye 0 choose kiya, hum koi aur symbols bhi choose kar sakte they. squid game waale yeh symbols bhi.</p>
+            <p>dusri cheeze, computers ne binary chhose kiya because of machine ka behaviour, use bas high voltage ya low voltage samjta hai isliye. hum homo sapiense ne decimal choose kiya decimal yani das, aur evolution ne hume 10 ungliya di, aur humne decimal choose kiya.</p>
+            <p>har cheese jo hum dekhte hai, kisina kisi prakar evolutions se jhudi hai.</p>
+          </div>
+        </div>
+
       </div>
     </section>
   </main>
@@ -266,12 +473,27 @@
   </footer>
 
   <script>
+    // ── Reveal animations ──
     const els = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
     }, { threshold: 0.1 });
     els.forEach(el => obs.observe(el));
 
+    // ── Essay list/detail toggle ──
+    function openEssay(id) {
+      document.getElementById('essayList').style.display = 'none';
+      document.getElementById('essay-' + id).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeEssay() {
+      document.querySelectorAll('.essay-detail').forEach(d => d.classList.remove('active'));
+      document.getElementById('essayList').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── Theme toggle ──
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
     
@@ -317,3 +539,4 @@
 </body>
 
 </html>
+
