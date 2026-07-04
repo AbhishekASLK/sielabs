@@ -182,11 +182,7 @@ nav {
 }
 
 .eyebrow::before {
-  content: '';
-  width: 24px;
-  height: 1px;
-  background: var(--gold);
-  display: block;
+  display: none;
 }
 
 h1 {
@@ -713,6 +709,106 @@ h3 {
   border-radius: 100px;
 }
 
+/* ── STUDENT REVIEWS ── */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.review-card-compact {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 28px;
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.review-card-compact:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.review-quote-sm {
+  color: var(--gold);
+  opacity: 0.3;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.review-quote-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+
+.review-quote-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.review-expanded {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+}
+
+.review-expanded.show {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.review-read-more {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 6px 0;
+  margin-bottom: 16px;
+  transition: color 0.2s;
+}
+
+.review-read-more:hover {
+  color: var(--gold-light);
+}
+
+.review-author-compact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.review-avatar-sm {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--border-gold);
+}
+
+.review-name-sm {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.review-role-sm {
+  display: block;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 500;
+  margin-top: 1px;
+}
+
 /* ── CLOSING ── */
 .closing {
   background: var(--bg-card);
@@ -857,6 +953,10 @@ footer p {
     grid-template-columns: 1fr;
     gap: 32px;
     padding: 64px 0;
+  }
+
+  .review-card-compact {
+    padding: 24px;
   }
 
   .footer-inner {
