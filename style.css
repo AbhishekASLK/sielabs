@@ -723,6 +723,8 @@ h3 {
   padding: 28px;
   position: relative;
   transition: border-color 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 .review-card-compact:hover {
@@ -784,6 +786,7 @@ h3 {
   gap: 12px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
+  margin-top: auto;
 }
 
 .review-avatar-sm {
@@ -807,6 +810,30 @@ h3 {
   color: var(--gold);
   font-weight: 500;
   margin-top: 1px;
+}
+
+.pr-merged-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  text-decoration: none;
+  background: rgba(137, 87, 229, 0.1);
+  border: 1px solid rgba(137, 87, 229, 0.3);
+  color: #8957e5;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pr-merged-tag:hover {
+  background: rgba(137, 87, 229, 0.18);
+  border-color: rgba(137, 87, 229, 0.5);
 }
 
 /* ── CLOSING ── */
