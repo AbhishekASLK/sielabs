@@ -297,7 +297,7 @@
 
 
     <!-- STUDENT REVIEWS -->
-    <section class="section-pad" id="student-reviews">
+    <section class="section-pad reviews-section" id="student-reviews">
       <div class="container">
         <div class="section-head reveal">
           <div>
@@ -310,12 +310,10 @@
           </p>
         </div>
 
-        <div class="reviews-slider reveal" id="reviewsSlider">
-          <div class="slider-viewport">
-            <div class="slider-track" id="sliderTrack">
+        <div class="reviews-grid reveal">
 
-              <!-- Slide 1: Vishvambhar -->
-              <div class="slider-slide">
+              <!-- Review 1: Vishvambhar -->
+              <div>
                 <div class="review-card-compact">
                   <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -358,8 +356,8 @@
                 </div>
               </div>
 
-              <!-- Slide 2: Piya -->
-              <div class="slider-slide">
+              <!-- Review 2: Piya -->
+              <div>
                 <div class="review-card-compact">
                   <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -409,8 +407,8 @@
                 </div>
               </div>
 
-              <!-- Slide 3: Vaishnavi -->
-              <div class="slider-slide">
+              <!-- Review 3: Vaishnavi -->
+              <div>
                 <div class="review-card-compact">
                   <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -445,27 +443,14 @@
                       <span class="review-name-sm">Vaishnavi Polekar</span>
                       <span class="review-role-sm">Open Source Lab Student</span>
                     </div>
+                    <a href="https://github.com/tobymao/sqlglot/pulls?q=is%3Apr+is%3Amerged+author%3Avaishnavi-polekar" target="_blank" rel="noreferrer" class="pr-merged-tag" data-github-user="vaishnavi-polekar">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218zM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm8-9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm0 4a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zM3.5 3.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0z"/></svg>
+                      <span class="pr-count-text">PRs Merged</span>
+                    </a>
                   </div>
                 </div>
               </div>
 
-            </div>
-          </div>
-
-          <!-- Slider Controls -->
-          <div class="slider-controls">
-            <button class="slider-arrow slider-prev" id="sliderPrev" aria-label="Previous review">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <div class="slider-dots" id="sliderDots"></div>
-            <button class="slider-arrow slider-next" id="sliderNext" aria-label="Next review">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
     </section>
@@ -541,119 +526,6 @@
         .catch(() => {});
     });
 
-    // ── Reviews Coverflow Slider ──
-    (function() {
-      const track = document.getElementById('sliderTrack');
-      const dotsContainer = document.getElementById('sliderDots');
-      const prevBtn = document.getElementById('sliderPrev');
-      const nextBtn = document.getElementById('sliderNext');
-      const slides = Array.from(track.querySelectorAll('.slider-slide'));
-      const total = slides.length;
-      let current = 0;
-      let autoplayTimer = null;
-      let isPaused = false;
-
-      // Build dots
-      for (let i = 0; i < total; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', 'Go to review ' + (i + 1));
-        dot.addEventListener('click', () => goTo(i));
-        dotsContainer.appendChild(dot);
-      }
-
-      function getPosition(slideIndex) {
-        const diff = ((slideIndex - current) % total + total) % total;
-        if (diff === 0) return 'center';
-        if (diff === total - 1) return 'left';
-        if (diff === 1) return 'right';
-        return '';
-      }
-
-      function updateTrackHeight() {
-        const centerCard = slides[current].querySelector('.review-card-compact');
-        if (centerCard) {
-          track.style.height = centerCard.offsetHeight + 'px';
-        }
-      }
-
-      function updateSlides() {
-        slides.forEach((slide, i) => {
-          slide.classList.remove('slide-center', 'slide-left', 'slide-right');
-          const pos = getPosition(i);
-          if (pos) slide.classList.add('slide-' + pos);
-        });
-        dotsContainer.querySelectorAll('.slider-dot').forEach((d, i) => {
-          d.classList.toggle('active', i === current);
-        });
-        // Update height after transition starts
-        requestAnimationFrame(() => updateTrackHeight());
-      }
-
-      function goTo(index) {
-        // Collapse expanded review in current slide
-        const expanded = slides[current].querySelector('.review-expanded.show');
-        if (expanded) {
-          expanded.classList.remove('show');
-          const btn = slides[current].querySelector('.review-read-more');
-          if (btn) btn.textContent = 'Read full review →';
-        }
-        current = ((index % total) + total) % total;
-        updateSlides();
-        resetAutoplay();
-      }
-
-      function next() { goTo(current + 1); }
-      function prev() { goTo(current - 1); }
-
-      prevBtn.addEventListener('click', prev);
-      nextBtn.addEventListener('click', next);
-
-      // Autoplay
-      function startAutoplay() {
-        stopAutoplay();
-        if (!isPaused) autoplayTimer = setInterval(next, 5000);
-      }
-      function stopAutoplay() {
-        if (autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
-      }
-      function resetAutoplay() { stopAutoplay(); startAutoplay(); }
-
-      // Pause on hover
-      const slider = document.getElementById('reviewsSlider');
-      slider.addEventListener('mouseenter', () => { isPaused = true; stopAutoplay(); });
-      slider.addEventListener('mouseleave', () => { isPaused = false; startAutoplay(); });
-
-      // Touch support
-      let startX = 0, isDragging = false;
-      track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isDragging = true; }, { passive: true });
-      track.addEventListener('touchend', (e) => {
-        if (!isDragging) return;
-        isDragging = false;
-        const diff = startX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
-      }, { passive: true });
-
-      // Keyboard
-      slider.setAttribute('tabindex', '0');
-      slider.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') { prev(); e.preventDefault(); }
-        if (e.key === 'ArrowRight') { next(); e.preventDefault(); }
-      });
-
-      // Update height when "Read more" expands/collapses
-      track.addEventListener('click', (e) => {
-        if (e.target.classList.contains('review-read-more')) {
-          setTimeout(updateTrackHeight, 50);
-          setTimeout(updateTrackHeight, 550);
-        }
-      });
-
-      // Init
-      updateSlides();
-      startAutoplay();
-      window.addEventListener('resize', updateTrackHeight);
-    })();
   </script>
 </body>
 
