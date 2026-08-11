@@ -600,6 +600,28 @@
 
       function mod(n, m) { return ((n % m) + m) % m; }
 
+      function setUniformHeight() {
+        // Measure collapsed card heights
+        const expandedElements = [];
+        slides.forEach(s => {
+          const exp = s.querySelector('.review-expanded.show');
+          if (exp) {
+            expandedElements.push(exp);
+            exp.classList.remove('show');
+          }
+          s.style.height = 'auto';
+        });
+
+        const maxH = Math.max(...slides.map(s => s.offsetHeight));
+        if (maxH > 0) {
+          slides.forEach(s => s.style.height = maxH + 'px');
+          track.style.height = maxH + 'px';
+        }
+
+        // Restore expanded state if any
+        expandedElements.forEach(exp => exp.classList.add('show'));
+      }
+
       function updateCarousel() {
         const leftIdx = mod(activeIndex - 1, total);
         const centerIdx = activeIndex;
@@ -615,14 +637,6 @@
 
         // Update dots
         dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
-
-        // Set uniform height based on tallest slide
-        requestAnimationFrame(() => {
-          slides.forEach(s => s.style.height = 'auto');
-          const maxH = Math.max(...slides.map(s => s.offsetHeight));
-          slides.forEach(s => s.style.height = maxH + 'px');
-          track.style.height = maxH + 'px';
-        });
       }
 
       function goTo(index) {
@@ -658,9 +672,13 @@
       wrapper.addEventListener('mouseleave', startAutoPlay);
 
       // Recalculate on resize
-      window.addEventListener('resize', () => updateCarousel());
+      window.addEventListener('resize', () => {
+        setUniformHeight();
+        updateCarousel();
+      });
 
       // Init
+      setUniformHeight();
       updateCarousel();
       startAutoPlay();
     })();
