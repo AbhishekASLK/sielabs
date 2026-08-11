@@ -310,10 +310,15 @@
           </p>
         </div>
 
-        <div class="reviews-grid reveal">
+        <div class="reviews-slider-wrapper reveal">
+          <button class="reviews-arrow reviews-arrow-prev" id="reviewsPrev" aria-label="Previous review">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+
+          <div class="reviews-slider-track" id="reviewsTrack">
 
               <!-- Review 1: Vishvambhar -->
-              <div>
+              <div class="review-slide">
                 <div class="review-card-compact">
                   <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -357,7 +362,7 @@
               </div>
 
               <!-- Review 2: Piya -->
-              <div>
+              <div class="review-slide">
                 <div class="review-card-compact">
                   <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -408,7 +413,7 @@
               </div>
 
               <!-- Review 3: Vaishnavi -->
-              <div>
+              <div class="review-slide">
                 <div class="review-card-compact">
                   <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -451,7 +456,63 @@
                 </div>
               </div>
 
+              <!-- Review 4: Deepika -->
+              <div class="review-slide">
+                <div class="review-card-compact">
+                  <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
+                  </svg>
+                  <p class="review-quote-text">
+                    Being part of SieLabs' Open Source Lab was a turning point for me. Before joining, open source felt
+                    intimidating — large codebases, strict review processes, and the fear of making mistakes. SieLabs
+                    completely changed that by teaching me the <strong>reverse engineering mindset</strong>.
+                  </p>
+                  <div class="review-expanded" id="reviewExpanded4">
+                    <p class="review-quote-text">
+                      Contributing to <strong>SQLGlot</strong> pushed me out of my comfort zone in the best way possible.
+                      I learned how to navigate a complex codebase, write meaningful tests, and iterate on feedback from
+                      experienced maintainers. Each pull request was a lesson in writing cleaner, more thoughtful code.
+                    </p>
+                    <p class="review-quote-text">
+                      What makes SieLabs special is the emphasis on understanding <strong>why</strong> things work, not
+                      just how. The mentorship helped me develop a deeper approach to problem-solving that goes far beyond
+                      any single project or language.
+                    </p>
+                    <p class="review-quote-text" style="margin-bottom: 0;">
+                      I'm grateful for the experience and the confidence it gave me. SieLabs is the perfect place for
+                      anyone who wants to make <strong>real contributions to open source</strong> and grow as a developer.
+                    </p>
+                  </div>
+                  <button class="review-read-more" id="reviewToggle4"
+                    onclick="document.getElementById('reviewExpanded4').classList.toggle('show'); this.textContent = this.textContent.trim() === 'Read full review →' ? 'Show less ↑' : 'Read full review →';">Read full review →</button>
+                  <div class="review-author-compact">
+                    <img src="assets/students/deepika_kakde.jpeg" alt="Deepika Kakade" class="review-avatar-sm" loading="lazy">
+                    <div>
+                      <span class="review-name-sm">Deepika Kakade</span>
+                      <span class="review-role-sm">Open Source Lab Student</span>
+                    </div>
+                    <a href="https://github.com/tobymao/sqlglot/pulls?q=is%3Apr+is%3Aclosed+author%3Adeepika-kakde" target="_blank" rel="noreferrer" class="pr-merged-tag" data-github-user="deepika-kakde">
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218zM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm8-9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm0 4a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zM3.5 3.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0z"/></svg>
+                      <span class="pr-count-text">PRs Merged</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+
+          <button class="reviews-arrow reviews-arrow-next" id="reviewsNext" aria-label="Next review">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
         </div>
+
+        <div class="reviews-dots" id="reviewsDots">
+          <button class="reviews-dot active" data-index="0" aria-label="Go to review 1"></button>
+          <button class="reviews-dot" data-index="1" aria-label="Go to review 2"></button>
+          <button class="reviews-dot" data-index="2" aria-label="Go to review 3"></button>
+          <button class="reviews-dot" data-index="3" aria-label="Go to review 4"></button>
+        </div>
+
       </div>
     </section>
 
@@ -525,6 +586,84 @@
         })
         .catch(() => {});
     });
+
+    // ── Reviews Carousel ──
+    (function() {
+      const track = document.getElementById('reviewsTrack');
+      const slides = Array.from(track.querySelectorAll('.review-slide'));
+      const prevBtn = document.getElementById('reviewsPrev');
+      const nextBtn = document.getElementById('reviewsNext');
+      const dots = document.querySelectorAll('.reviews-dot');
+      const total = slides.length;
+      let activeIndex = 0;
+      let autoPlayTimer;
+
+      function mod(n, m) { return ((n % m) + m) % m; }
+
+      function updateCarousel() {
+        const leftIdx = mod(activeIndex - 1, total);
+        const centerIdx = activeIndex;
+        const rightIdx = mod(activeIndex + 1, total);
+
+        slides.forEach((slide, i) => {
+          slide.classList.remove('pos-left', 'pos-center', 'pos-right', 'pos-hidden');
+          if (i === centerIdx) slide.classList.add('pos-center');
+          else if (i === leftIdx) slide.classList.add('pos-left');
+          else if (i === rightIdx) slide.classList.add('pos-right');
+          else slide.classList.add('pos-hidden');
+        });
+
+        // Update dots
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
+
+        // Set uniform height based on tallest slide
+        requestAnimationFrame(() => {
+          slides.forEach(s => s.style.height = 'auto');
+          const maxH = Math.max(...slides.map(s => s.offsetHeight));
+          slides.forEach(s => s.style.height = maxH + 'px');
+          track.style.height = maxH + 'px';
+        });
+      }
+
+      function goTo(index) {
+        activeIndex = mod(index, total);
+        updateCarousel();
+      }
+
+      prevBtn.addEventListener('click', () => goTo(activeIndex - 1));
+      nextBtn.addEventListener('click', () => goTo(activeIndex + 1));
+
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index)));
+      });
+
+      // Touch / swipe support
+      let touchStartX = 0;
+      track.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+      track.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? goTo(activeIndex + 1) : goTo(activeIndex - 1);
+        }
+      }, { passive: true });
+
+      // Auto-play (loops infinitely)
+      function startAutoPlay() {
+        autoPlayTimer = setInterval(() => goTo(activeIndex + 1), 5000);
+      }
+      function stopAutoPlay() { clearInterval(autoPlayTimer); }
+
+      const wrapper = track.closest('.reviews-slider-wrapper');
+      wrapper.addEventListener('mouseenter', stopAutoPlay);
+      wrapper.addEventListener('mouseleave', startAutoPlay);
+
+      // Recalculate on resize
+      window.addEventListener('resize', () => updateCarousel());
+
+      // Init
+      updateCarousel();
+      startAutoPlay();
+    })();
 
   </script>
 </body>
