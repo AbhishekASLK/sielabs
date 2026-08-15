@@ -70,7 +70,7 @@ header {
 }
 
 /* ── NAV ── */
-nav {
+header nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -114,13 +114,25 @@ nav {
   font-weight: 500;
   padding: 8px 20px;
   border-radius: 100px;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
   letter-spacing: 0.02em;
 }
 
 .nav-cta:hover {
   background: rgba(200, 158, 58, 0.15);
   border-color: rgba(200, 158, 58, 0.5);
+}
+
+.nav-cta-community {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #FFFFFF;
+}
+
+.nav-cta-community:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+  color: #FFFFFF;
 }
 
 .mobile-cta { display: none !important; }
@@ -645,57 +657,144 @@ nav {
 }
 
 /* ── FOOTER ── */
+/* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--border);
-  padding: 40px 0;
+  padding: 56px 0 32px 0;
   position: relative;
   z-index: 1;
   background: var(--bg);
 }
 
-.footer-inner {
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 40px;
+  align-items: start;
+}
+
+.footer-brand-col {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .footer-brand {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   color: var(--text);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-footer p {
-  font-size: 13px;
-  color: var(--text-dim);
-}
-
-.footer-links {
-  display: flex;
-  gap: 24px;
-}
-
-.footer-links a {
   text-decoration: none;
-  font-size: 13px;
-  color: var(--text-dim);
-  transition: color 0.2s;
 }
 
-.footer-links a:hover { color: var(--text-muted); }
-
-.footer-address {
-  text-align: center;
+.footer-tagline {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  max-width: 360px;
+  line-height: 1.6;
+  margin: 0;
 }
 
 .footer-address p {
   font-size: 13px;
   color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 0 0;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.footer-heading {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin: 0;
+  padding: 0;
+}
+
+footer nav,
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  margin: 0;
+  width: auto;
+}
+
+.footer-links a {
+  text-decoration: none;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  padding: 0;
   margin: 0;
 }
+
+.footer-links a:hover {
+  color: var(--gold);
+}
+
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  margin: 0;
+  width: auto;
+}
+
+.footer-social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-social a:hover {
+  color: var(--gold);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom p {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin: 0;
+}
+
 
 /* ── SCROLL REVEAL ── */
 .reveal {
@@ -750,13 +849,16 @@ footer p {
   .cta-eyebrow { justify-content: center; }
   .cta-eyebrow::before { display: none; }
 
-  .footer-inner {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
   }
 
-  .footer-links { justify-content: center; }
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
 
   nav { position: relative; }
 
