@@ -1,23 +1,23 @@
 :root {
-  --bg: #F8F6F0;
-  /* Soft warm light background */
-  --bg-card: #FFFFFF;
-  /* Pure white for popping cards */
-  --bg-card-2: #FBF9F5;
-  /* Subtle off-white for hover states */
-  --border: rgba(0, 0, 0, 0.08);
-  /* Dark subtle line */
+  --bg: #0d0f11;
+  /* Soft warm dark background */
+  --bg-card: #15181a;
+  /* Dark card */
+  --bg-card-2: #1e2225;
+  /* Subtle lighter dark for hover states */
+  --border: rgba(255, 255, 255, 0.08);
+  /* Light subtle line */
   --border-gold: rgba(200, 158, 58, 0.3);
   /* Preserved gold ratio */
-  --text: #171A1C;
-  /* Dark, legible font */
-  --text-muted: rgba(23, 26, 28, 0.65);
+  --text: #F4F6F8;
+  /* Light, legible font */
+  --text-muted: rgba(244, 246, 248, 0.65);
   /* Readable subtle text */
-  --text-dim: rgba(23, 26, 28, 0.4);
-  --gold: #A97C22;
+  --text-dim: rgba(244, 246, 248, 0.4);
+  --gold: #D4AF37;
   /* Deepened gold for readable text on bright */
-  --gold-light: #C89E3A;
-  --gold-pale: rgba(200, 158, 58, 0.1);
+  --gold-light: #F3E5AB;
+  --gold-pale: rgba(212, 175, 55, 0.1);
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-sans: 'Outfit', system-ui, sans-serif;
   --r: 14px;
@@ -70,8 +70,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 64px 64px;
   pointer-events: none;
   z-index: 0;
@@ -172,13 +172,13 @@ header nav {
 .nav-cta-community {
   background: var(--gold);
   border-color: var(--gold);
-  color: #FFFFFF;
+  color: #0d0f11;
 }
 
 .nav-cta-community:hover {
   background: var(--gold-light);
   border-color: var(--gold-light);
-  color: #FFFFFF;
+  color: #0d0f11;
 }
 
 .mobile-cta {
@@ -258,7 +258,7 @@ h1 em {
   gap: 8px;
   text-decoration: none;
   background: var(--gold);
-  color: #FFFFFF;
+  color: #0d0f11;
   font-size: 14px;
   font-weight: 600;
   padding: 12px 26px;
@@ -289,7 +289,7 @@ h1 em {
 
 .btn-secondary:hover {
   background: var(--bg-card-2);
-  border-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
   color: var(--text);
 }
 
@@ -300,7 +300,7 @@ h1 em {
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
   transform: rotate(-2.5deg);
 }
 
@@ -562,7 +562,7 @@ h3 {
   grid-template-columns: 3fr 2fr;
   margin-bottom: 24px;
   position: relative;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
 }
 
 .flagship::after {
