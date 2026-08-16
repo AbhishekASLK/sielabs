@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java with Open Source — Core Java, DSA, Spring Boot & Open Source Contributions | SieLabs Pune</title>
+    <meta name="description"
+        content="Join SieLabs' Java with Open Source program — a 4-month practical course to master Core Java, DSA, Spring Boot, and make real open-source contributions. Only 25 seats. Weekends in Pune.">
+    <meta name="keywords"
+        content="Java course, Core Java training, DSA course, Spring Boot, open source contributions, Java programming, GitHub, Pune, SieLabs, Java bootcamp">
+    <meta name="author" content="SieLabs">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://sielabs.in/programs/java-opensource/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sielabs.in/programs/java-opensource/">
+    <meta property="og:title" content="Java with Open Source — Core Java, DSA, Spring Boot & OSS | SieLabs">
+    <meta property="og:description"
+        content="Master Core Java, DSA, Spring Boot, and contribute to real open-source projects in 4 months. Only 25 seats. Weekends in Pune.">
+    <meta property="og:image"
+        content="https://sielabs.in/programs/java-opensource/java_thumbnail.png">
+    <meta property="og:site_name" content="SieLabs">
+    <meta property="og:locale" content="en_IN">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Java with Open Source — Core Java, DSA & Spring Boot | SieLabs Pune">
+    <meta name="twitter:description"
+        content="4-month practical program: Core Java, DSA, Spring Boot, open-source contributions. Only 25 seats.">
+    <meta name="twitter:image"
+        content="https://sielabs.in/programs/java-opensource/java_thumbnail.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="apple-touch-icon" href="../../favicon.ico">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Structured Data: Course -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "Java with Open Source",
+      "description": "A 4-month practical program to master Core Java, Data Structures & Algorithms, Spring Boot, and make real open-source contributions on GitHub.",
+      "provider": {
+        "@type": "Organization",
+        "name": "SieLabs",
+        "url": "https://sielabs.in"
+      },
+      "url": "https://sielabs.in/programs/java-opensource/",
+      "timeRequired": "P4M",
+      "educationalLevel": "Beginner to Intermediate",
+      "teaches": ["Core Java", "Data Structures", "Algorithms", "Spring Boot", "Open Source", "Git", "GitHub"],
+      "inLanguage": "en",
+      "offers": {
+        "@type": "Offer",
+        "price": "7000",
+        "priceCurrency": "INR",
+        "availability": "https://schema.org/LimitedAvailability"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "EuroKids PreSchool Near Maratha Hotel",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Narhe",
+          "addressLocality": "Pune",
+          "addressRegion": "Maharashtra",
+          "addressCountry": "IN"
+        }
+      }
+    }
+    </script>
+
+    <!-- Structured Data: BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://sielabs.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Programs",
+          "item": "https://sielabs.in/programs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Java with Open Source",
+          "item": "https://sielabs.in/programs/java-opensource/"
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <header>
+        <div class="container">
+            <nav aria-label="Main navigation">
+                <a href="../../index.html" class="nav-brand">
+                    <img src="../../favicon.ico" alt="SieLabs Logo"
+                        style="width: 30px; height: 30px; object-fit: contain; border-radius: 4px;">
+                    SieLabs
+                </a>
+                <div class="nav-links" id="navLinks">
+                    <a href="../index.html">Programs</a>
+                    <a href="../../products/index.html">Products</a>
+                    <a href="../../notes/index.html">Essays</a>
+                    <a href="../../about/index.html">About</a>
+                    <a href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1" target="_blank" rel="noreferrer" class="nav-cta nav-cta-community mobile-cta"
+                        style="display: flex; align-items: center; gap: 6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z"/>
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.986-1.308A9.948 9.948 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.734 0-3.344-.462-4.737-1.268l-.34-.196-2.955.775.789-2.883-.217-.345A7.954 7.954 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z"/>
+                        </svg>
+                        Join Community
+                    </a>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <a href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1" target="_blank" rel="noreferrer" class="nav-cta nav-cta-community desktop-cta"
+                        style="display: flex; align-items: center; gap: 6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z"/>
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.986-1.308A9.948 9.948 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.734 0-3.344-.462-4.737-1.268l-.34-.196-2.955.775.789-2.883-.217-.345A7.954 7.954 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z"/>
+                        </svg>
+                        Join Community
+                    </a>
+                    <button class="hamburger-btn"
+                        onclick="document.getElementById('navLinks').classList.toggle('show')">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M3 12h18M3 6h18M3 18h18" />
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-section">
+        <div class="container hero-container">
+
+            <div class="hero-content-left reveal">
+                <p class="cursive-subtitle">Core Java, DSA, Spring Boot & Open Source</p>
+                <h1 class="hero-title">Java with <span class="highlight">Open Source</span></h1>
+                <p class="hero-desc">
+                    A practical program to master Core Java, Data Structures & Algorithms, Spring Boot, and contribute to real open-source projects on GitHub.
+                </p>
+
+                <div class="hero-meta">
+                    <span class="meta-pill">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                        4 Months
+                    </span>
+
+                    <span class="meta-pill accent">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        Only 25 Students
+                    </span>
+                    <span class="meta-pill">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        Sat & Sun, 5:30 PM - 7:30 PM (2 Hours)
+                    </span>
+                </div>
+
+                <div class="hero-actions">
+                    <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer"
+                        class="btn-primary">Enroll Now →</a>
+                    <a href="#curriculum" class="btn-secondary">View Curriculum ↓</a>
+                </div>
+                <p
+                    style="font-size: 13.5px; font-weight: 500; color: var(--gold); margin-top: 16px; letter-spacing: 0.01em;">
+                    * Enrollments open — Starting October 2026</p>
+                <p
+                    style="font-size: 13.5px; font-weight: 500; color: var(--text-muted); margin-top: 8px; display: flex; align-items: center; gap: 6px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)" stroke="var(--gold)"
+                        stroke-width="1.5">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+                        <circle cx="12" cy="9" r="2.5" fill="white"></circle>
+                    </svg>
+                    EuroKids PreSchool Near Maratha Hotel in Narhe, Pune
+                </p>
+            </div>
+
+            <div class="hero-image-right reveal" style="transition-delay: 0.15s;">
+                <div class="quote-card-container">
+                    <div class="quote-card">
+                        <div class="quote-icon">"</div>
+                        <p class="quote-text">First, solve the problem. Then, write the code.</p>
+                        <div class="quote-author-info">
+                            <p class="quote-author">— John Johnson</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CURRICULUM -->
+    <main class="curriculum-section" id="curriculum">
+        <div class="container">
+            <p class="section-eyebrow reveal">Program Curriculum</p>
+            <h2 class="section-title reveal">Build real projects through <em>hands-on engineering.</em></h2>
+
+            <div class="curriculum-wrapper">
+                <div class="timeline reveal">
+
+                    <!-- Module 1 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">01</span>
+                                <h3>Core Java Fundamentals</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Java from Scratch</strong>Variables, data types, operators, control flow,
+                                    loops, and writing clean, readable Java code from day one</li>
+                                <li><strong>Object-Oriented Programming</strong>Classes, objects, inheritance,
+                                    polymorphism, abstraction, encapsulation — the pillars of Java</li>
+                                <li><strong>Exception Handling & I/O</strong>Try-catch-finally, custom exceptions,
+                                    file reading/writing, and handling real-world error scenarios</li>
+                                <li><strong>Collections Framework</strong>ArrayList, HashMap, HashSet, LinkedList,
+                                    iterators — mastering Java's built-in data structures</li>
+                                <li><strong>Generics & Functional Java</strong>Generic types, lambda expressions,
+                                    streams API, and writing modern, concise Java code</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Module 2 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">02</span>
+                                <h3>Data Structures & Algorithms</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Arrays & Strings</strong>Two-pointer technique, sliding window,
+                                    string manipulation — building problem-solving intuition</li>
+                                <li><strong>Linked Lists & Stacks/Queues</strong>Singly/doubly linked lists, stack
+                                    operations, queue implementations, and real-world use cases</li>
+                                <li><strong>Trees & Graphs</strong>Binary trees, BST, BFS, DFS, graph
+                                    representations — understanding hierarchical and networked data</li>
+                                <li><strong>Sorting & Searching</strong>Merge sort, quick sort, binary search,
+                                    time complexity analysis — writing efficient code that scales</li>
+                                <li><strong>Dynamic Programming & Recursion</strong>Memoization, tabulation,
+                                    classic DP problems — developing algorithmic thinking</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Module 3 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">03</span>
+                                <h3>Git, GitHub & Open Source Foundations</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Version Control with Git</strong>init, add, commit, push, pull,
+                                    branching, merging — collaborating on projects using Git</li>
+                                <li><strong>GitHub Workflow</strong>Forking, cloning, pull requests, code reviews,
+                                    issues — the complete open-source contribution workflow</li>
+                                <li><strong>Understanding Open Source</strong>Licenses, community etiquette,
+                                    finding beginner-friendly projects, reading codebases</li>
+                                <li><strong>Your First Contribution</strong>Finding good first issues, writing
+                                    meaningful PRs, engaging with maintainers, and getting merged</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Module 4 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">04</span>
+                                <h3>Spring Boot & Backend Development</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Spring Boot Basics</strong>Setting up projects with Spring Initializr,
+                                    dependency injection, annotations, and application architecture</li>
+                                <li><strong>REST APIs</strong>Building RESTful endpoints, request/response handling,
+                                    validation, error handling — creating production-ready APIs</li>
+                                <li><strong>Database Integration</strong>Spring Data JPA, Hibernate, connecting to
+                                    MySQL/PostgreSQL, writing queries, and managing data persistence</li>
+                                <li><strong>Testing & Deployment</strong>Unit testing with JUnit, integration tests,
+                                    building JARs, and deploying your Spring Boot application</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Module 5 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">05</span>
+                                <h3>Real-World Open Source Projects</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>Contributing to Java OSS</strong>Finding and contributing to real Java
+                                    open-source projects on GitHub — Apache, Spring, Eclipse ecosystem</li>
+                                <li><strong>Building Your Own Project</strong>Designing, building, and open-sourcing
+                                    your own Java project — from idea to published repository</li>
+                                <li><strong>Code Quality & Best Practices</strong>Clean code principles, SOLID,
+                                    design patterns, code reviews, and writing maintainable software</li>
+                                <li><strong>Portfolio & Career Showcase</strong>Documenting your contributions,
+                                    writing technical blog posts, and presenting your work to peers</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-inner reveal">
+                <div>
+                    <p class="cta-eyebrow">Code. Contribute. Grow.</p>
+                    <h2>Java with Open Source</h2>
+                </div>
+                <div class="cta-right">
+                    <p>Start your journey from writing your first Java class to contributing to real open-source
+                        projects and building production-grade applications.</p>
+                    <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer"
+                        class="btn-primary">Enroll Now →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand-col">
+                    <a href="../../index.html" class="footer-brand">
+                        <img src="../../favicon.ico" alt="SieLabs Logo" class="nav-logo"
+                            style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;">
+                        SieLabs
+                    </a>
+                    <p class="footer-tagline">Building modern software, open-source tools, and high-impact engineering programs.</p>
+                    <div class="footer-address">
+                        <p>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="var(--gold)" stroke="var(--gold)"
+                                stroke-width="1.5">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+                                <circle cx="12" cy="9" r="2.5" fill="white"></circle>
+                            </svg>
+                            EuroKids PreSchool Near Maratha Hotel in Narhe, Pune
+                        </p>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-heading">Navigation</h4>
+                    <nav class="footer-links" aria-label="Footer navigation">
+                        <a href="../index.html">Programs</a>
+                        <a href="../../products/index.html">Products</a>
+                        <a href="../../notes/index.html">Essays</a>
+                        <a href="../../about/index.html">About</a>
+                    </nav>
+                </div>
+
+                <div class="footer-col">
+                    <h4 class="footer-heading">Social</h4>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer" aria-label="Instagram">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                            Instagram
+                        </a>
+                        <a href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1" target="_blank" rel="noreferrer" aria-label="WhatsApp Community">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z"/>
+                                <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.986-1.308A9.948 9.948 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.734 0-3.344-.462-4.737-1.268l-.34-.196-2.955.775.789-2.883-.217-.345A7.954 7.954 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z"/>
+                            </svg>
+                            Community
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 SieLabs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Module accordion
+        function toggleModule(headerEl) {
+            const card = headerEl.parentElement;
+            document.querySelectorAll('.module-card').forEach(c => {
+                if (c !== card) c.classList.remove('active');
+            });
+            card.classList.toggle('active');
+        }
+
+        // Scroll reveal
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        revealEls.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+
+</html>

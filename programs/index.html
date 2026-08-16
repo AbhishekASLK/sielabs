@@ -113,8 +113,15 @@
           <h2>Learning initiatives that support the product ecosystem.</h2>
         </div>
 
-        <div class="program-grid reveal">
-          <div class="program-card" style="position: relative;">
+        <!-- Filter Tabs -->
+        <div class="program-filters reveal" id="programFilters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+          <button class="filter-btn" data-filter="ongoing">Ongoing</button>
+        </div>
+
+        <div class="program-grid reveal" id="programGrid">
+          <div class="program-card" data-status="ongoing" style="position: relative;">
             <a href="open-source/index.html" style="position: absolute; inset: 0; z-index: 1; border-radius: inherit;"
               aria-label="View Open Source Mindset details"></a>
             <div class="program-card-img-wrapper">
@@ -141,29 +148,29 @@
             </div>
           </div>
 
-          <div class="program-card" style="position: relative;">
-            <a href="data-engineering/index.html" style="position: absolute; inset: 0; z-index: 1; border-radius: inherit;"
-              aria-label="View Data Engineering details"></a>
+          <div class="program-card" data-status="upcoming" style="position: relative;">
+            <a href="java-opensource/index.html" style="position: absolute; inset: 0; z-index: 1; border-radius: inherit;"
+              aria-label="View Java with Open Source details"></a>
             <div class="program-card-img-wrapper">
-              <img src="data-engineering/static/data_engineering_thumbnail.png" alt="Data Engineering"
+              <img src="java-opensource/java_thumbnail.png" alt="Java with Open Source"
                 style="width: 100%; border-radius: 8px; object-fit: cover; aspect-ratio: 16/9; display: block; border: 1px solid var(--border);">
-              <span class="card-badge" style="background: rgba(14, 116, 144, 0.12); color: #0e7490; border-color: rgba(14, 116, 144, 0.25);">Upcoming</span>
+              <span class="card-badge" style="background: rgba(23, 26, 28, 0.75); color: #fff; border-color: rgba(255,255,255,0.3);">Upcoming</span>
             </div>
             <span class="cap-kicker" style="margin-bottom: 2px;">Program</span>
-            <h3 style="margin-top: 0; margin-bottom: 8px;">Data Engineering</h3>
+            <h3 style="margin-top: 0; margin-bottom: 8px;">Java with Open Source</h3>
             <p
               style="font-weight: 500; color: var(--text-muted); margin-top: -4px; margin-bottom: 12px; font-size: 13px;">
-              Sat & Sun, 5:30 PM - 7:30 PM</p>
-            <p>A 4-month practical program to master Python, SQL, build ETL pipelines, work with cloud data warehouses, and
-              design production-grade data infrastructure.</p>
+              Sat &amp; Sun, 5:30 PM - 7:30 PM</p>
+            <p>A 4-month practical program to master Core Java, DSA, Spring Boot, and contribute to real open-source
+              projects on GitHub.</p>
             <p style="font-size: 12px; font-weight: 600; color: var(--gold); margin-top: -4px; margin-bottom: 12px;">*
-              Starting August 2026</p>
+              Starting October 2026</p>
             <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 8px; margin-top: auto;">
               <div class="panel-tags" style="margin-bottom: 0;">
                 <span>4 Months</span>
-                <span>₹3,000</span>
+                <span>₹7,000</span>
               </div>
-              <a href="data-engineering/index.html" class="nav-cta"
+              <a href="java-opensource/index.html" class="nav-cta"
                 style="padding: 10px 16px; font-size: 13px; font-weight: 600; position: relative; z-index: 2; text-align: center; width: 100%; box-sizing: border-box;">View
                 Details →</a>
             </div>
@@ -238,6 +245,29 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
     }, { threshold: 0.1 });
     els.forEach(el => obs.observe(el));
+
+    // ── Program Filters ──
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const programCards = document.querySelectorAll('.program-card[data-status]');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active button
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+
+        programCards.forEach(card => {
+          const status = card.getAttribute('data-status');
+          if (filter === 'all' || status === filter) {
+            card.classList.remove('filter-hidden');
+          } else {
+            card.classList.add('filter-hidden');
+          }
+        });
+      });
+    });
   </script>
 </body>
 

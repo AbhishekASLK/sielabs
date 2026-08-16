@@ -26,6 +26,32 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-light) transparent;
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold-light), var(--gold));
+  border-radius: 100px;
+  border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--gold), #8a6518);
+  border-color: transparent;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #8a6518;
 }
 
 body {
@@ -719,6 +745,48 @@ h3 {
   padding: 5px 12px;
   border: 1px solid white;
   border-radius: 100px;
+}
+
+/* ── PROGRAM FILTERS ── */
+.program-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 8px 20px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--border-gold);
+  color: var(--text);
+  background: var(--bg-card-2);
+}
+
+.filter-btn.active {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+
+.program-card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.program-card.filter-hidden {
+  display: none;
 }
 
 /* ── STUDENT REVIEWS SECTION ── */
