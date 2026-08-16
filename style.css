@@ -972,25 +972,9 @@ h3 {
   flex-direction: column;
   height: 100%;
   box-shadow: 0 4px 16px rgba(200, 158, 58, 0.08);
-  overflow-y: auto !important;
-  overscroll-behavior-y: contain;
-  touch-action: pan-y;
-  scrollbar-width: thin;
-  scrollbar-color: var(--gold) transparent;
 }
 
-.review-card-compact::-webkit-scrollbar {
-  width: 6px;
-}
 
-.review-card-compact::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.review-card-compact::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 4px;
-}
 
 .review-quote-sm {
   color: var(--gold);
