@@ -1,15 +1,15 @@
 :root {
-  --bg: #F8F6F0;
-  --bg-card: #FFFFFF;
-  --bg-card-2: #FBF9F5;
-  --border: rgba(0, 0, 0, 0.08);
+  --bg: #0d0f11;
+  --bg-card: #15181a;
+  --bg-card-2: #1e2225;
+  --border: rgba(255, 255, 255, 0.08);
   --border-gold: rgba(200, 158, 58, 0.3);
-  --text: #171A1C;
-  --text-muted: rgba(23, 26, 28, 0.65);
-  --text-dim: rgba(23, 26, 28, 0.4);
-  --gold: #A97C22;
-  --gold-light: #C89E3A;
-  --gold-pale: rgba(200, 158, 58, 0.1);
+  --text: #F4F6F8;
+  --text-muted: rgba(244, 246, 248, 0.65);
+  --text-dim: rgba(244, 246, 248, 0.4);
+  --gold: #D4AF37;
+  --gold-light: #F3E5AB;
+  --gold-pale: rgba(212, 175, 55, 0.1);
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-sans: 'Outfit', system-ui, sans-serif;
   --r: 14px;
@@ -63,8 +63,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 64px 64px;
   pointer-events: none;
   z-index: 0;
@@ -154,13 +154,13 @@ header nav {
 .nav-cta-community {
   background: var(--gold);
   border-color: var(--gold);
-  color: #FFFFFF;
+  color: #0d0f11;
 }
 
 .nav-cta-community:hover {
   background: var(--gold-light);
   border-color: var(--gold-light);
-  color: #FFFFFF;
+  color: #0d0f11;
 }
 
 .mobile-cta { display: none !important; }
@@ -294,7 +294,7 @@ header nav {
   gap: 8px;
   text-decoration: none;
   background: var(--gold);
-  color: #FFFFFF;
+  color: #0d0f11;
   font-size: 14px;
   font-weight: 600;
   padding: 12px 26px;
@@ -325,7 +325,7 @@ header nav {
 
 .btn-secondary:hover {
   background: var(--bg-card-2);
-  border-color: rgba(0,0,0,0.2);
+  border-color: rgba(255, 255, 255, 0.2);
   color: var(--text);
 }
 
@@ -337,17 +337,17 @@ header nav {
 }
 
 .quote-card {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(21, 24, 26, 0.85);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--r-lg);
   padding: 44px 36px;
   position: relative;
   box-shadow:
-    0 32px 64px rgba(0, 0, 0, 0.05),
+    0 32px 64px rgba(0, 0, 0, 0.4),
     0 12px 24px rgba(200, 158, 58, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   animation: floatCard 8s ease-in-out infinite;
   transform-style: preserve-3d;
 }
@@ -689,8 +689,8 @@ header nav {
 
 /* Assignment Box */
 .assignment-box {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   background-image: repeating-linear-gradient(-45deg, rgba(200, 158, 58, 0.03) 0, rgba(200, 158, 58, 0.03) 1px, transparent 1px, transparent 6px);
   padding: 20px 24px;
   border-radius: 12px;
