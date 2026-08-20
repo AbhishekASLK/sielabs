@@ -59,7 +59,7 @@
       "url": "https://sielabs.in/programs/java-opensource/",
       "timeRequired": "P4M",
       "educationalLevel": "Beginner to Intermediate",
-      "teaches": ["Core Java", "Data Structures", "Algorithms", "Spring Boot", "Open Source", "Git", "GitHub"],
+      "teaches": ["Core Java", "Linux", "OOP", "Exception Handling", "Multi-Threading", "Collections", "Generics", "File I/O", "Serialization", "JVM Architecture", "Garbage Collection", "Open Source", "Git", "GitHub", "JSQLParser", "Elasticsearch"],
       "inLanguage": "en",
       "offers": {
         "@type": "Offer",
@@ -197,13 +197,13 @@
                 </div>
 
                 <div class="hero-actions">
-                    <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer"
+                    <a href="https://forms.gle/n5Wjju8xKCcrRLcp6" target="_blank" rel="noreferrer"
                         class="btn-primary">Enroll Now →</a>
                     <a href="#curriculum" class="btn-secondary">View Curriculum ↓</a>
                 </div>
                 <p
                     style="font-size: 13.5px; font-weight: 500; color: var(--gold); margin-top: 16px; letter-spacing: 0.01em;">
-                    * Enrollments open — Starting October 2026</p>
+                    * Enrollments open — Starting 1st October 2026</p>
                 <p
                     style="font-size: 13.5px; font-weight: 500; color: var(--text-muted); margin-top: 8px; display: flex; align-items: center; gap: 6px;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--gold)" stroke="var(--gold)"
@@ -234,7 +234,7 @@
     <main class="curriculum-section" id="curriculum">
         <div class="container">
             <p class="section-eyebrow reveal">Program Curriculum</p>
-            <h2 class="section-title reveal">Build real projects through <em>hands-on engineering.</em></h2>
+            <h2 class="section-title reveal">Learn Java by reading & contributing to <em>open-source projects.</em></h2>
 
             <div class="curriculum-wrapper">
                 <div class="timeline reveal">
@@ -244,22 +244,20 @@
                         <div class="module-header" onclick="toggleModule(this)">
                             <div class="module-header-left">
                                 <span class="module-number">01</span>
-                                <h3>Core Java Fundamentals</h3>
+                                <h3>Introduction to Linux</h3>
                             </div>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="module-body">
                             <ul class="topic-list">
-                                <li><strong>Java from Scratch</strong>Variables, data types, operators, control flow,
-                                    loops, and writing clean, readable Java code from day one</li>
-                                <li><strong>Object-Oriented Programming</strong>Classes, objects, inheritance,
-                                    polymorphism, abstraction, encapsulation — the pillars of Java</li>
-                                <li><strong>Exception Handling & I/O</strong>Try-catch-finally, custom exceptions,
-                                    file reading/writing, and handling real-world error scenarios</li>
-                                <li><strong>Collections Framework</strong>ArrayList, HashMap, HashSet, LinkedList,
-                                    iterators — mastering Java's built-in data structures</li>
-                                <li><strong>Generics & Functional Java</strong>Generic types, lambda expressions,
-                                    streams API, and writing modern, concise Java code</li>
+                                <li><strong>Linux Fundamentals</strong>Understanding the Linux OS, file system hierarchy,
+                                    terminal basics, and why Linux is the industry standard for development</li>
+                                <li><strong>Essential Commands</strong>Navigating directories, file operations (cp, mv, rm),
+                                    permissions (chmod, chown), piping, redirection, and shell scripting basics</li>
+                                <li><strong>Development Environment Setup</strong>Installing JDK on Linux, setting PATH
+                                    and JAVA_HOME, compiling and running Java programs from the terminal</li>
+                                <li><strong>Git & Version Control</strong>init, add, commit, push, pull, branching,
+                                    merging — collaborating on projects using Git and GitHub</li>
                             </ul>
                         </div>
                     </article>
@@ -269,22 +267,20 @@
                         <div class="module-header" onclick="toggleModule(this)">
                             <div class="module-header-left">
                                 <span class="module-number">02</span>
-                                <h3>Data Structures & Algorithms</h3>
+                                <h3>Java Fundamentals & Language Basics</h3>
                             </div>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="module-body">
                             <ul class="topic-list">
-                                <li><strong>Arrays & Strings</strong>Two-pointer technique, sliding window,
-                                    string manipulation — building problem-solving intuition</li>
-                                <li><strong>Linked Lists & Stacks/Queues</strong>Singly/doubly linked lists, stack
-                                    operations, queue implementations, and real-world use cases</li>
-                                <li><strong>Trees & Graphs</strong>Binary trees, BST, BFS, DFS, graph
-                                    representations — understanding hierarchical and networked data</li>
-                                <li><strong>Sorting & Searching</strong>Merge sort, quick sort, binary search,
-                                    time complexity analysis — writing efficient code that scales</li>
-                                <li><strong>Dynamic Programming & Recursion</strong>Memoization, tabulation,
-                                    classic DP problems — developing algorithmic thinking</li>
+                                <li><strong>Java Fundamentals</strong>JDK, JRE, JVM overview, writing your first
+                                    Java program, data types, variables, type casting, and literals</li>
+                                <li><strong>Operators & Assignments</strong>Arithmetic, relational, logical, bitwise,
+                                    ternary, and assignment operators — precedence rules and evaluation order</li>
+                                <li><strong>Flow Control</strong>if-else, switch, for, while, do-while, break, continue,
+                                    and nested loops — controlling program execution flow</li>
+                                <li><strong>Declarations & Access Modifiers</strong>Class declarations, variable scopes,
+                                    public, private, protected, default — understanding access levels and encapsulation</li>
                             </ul>
                         </div>
                     </article>
@@ -294,20 +290,20 @@
                         <div class="module-header" onclick="toggleModule(this)">
                             <div class="module-header-left">
                                 <span class="module-number">03</span>
-                                <h3>Git, GitHub & Open Source Foundations</h3>
+                                <h3>Object-Oriented Programming</h3>
                             </div>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="module-body">
                             <ul class="topic-list">
-                                <li><strong>Version Control with Git</strong>init, add, commit, push, pull,
-                                    branching, merging — collaborating on projects using Git</li>
-                                <li><strong>GitHub Workflow</strong>Forking, cloning, pull requests, code reviews,
-                                    issues — the complete open-source contribution workflow</li>
-                                <li><strong>Understanding Open Source</strong>Licenses, community etiquette,
-                                    finding beginner-friendly projects, reading codebases</li>
-                                <li><strong>Your First Contribution</strong>Finding good first issues, writing
-                                    meaningful PRs, engaging with maintainers, and getting merged</li>
+                                <li><strong>OOP Principles</strong>Classes, objects, inheritance, polymorphism,
+                                    abstraction, encapsulation — the four pillars of object-oriented Java</li>
+                                <li><strong>Interfaces & Abstract Classes</strong>Defining contracts with interfaces,
+                                    abstract methods, default methods, multiple inheritance, and real-world design patterns</li>
+                                <li><strong>Inner Classes</strong>Member inner classes, static nested classes, local
+                                    inner classes, anonymous inner classes — when and why to use them</li>
+                                <li><strong>Packages</strong>Organizing code with packages, import statements,
+                                    access control across packages, and building modular Java applications</li>
                             </ul>
                         </div>
                     </article>
@@ -317,20 +313,16 @@
                         <div class="module-header" onclick="toggleModule(this)">
                             <div class="module-header-left">
                                 <span class="module-number">04</span>
-                                <h3>Spring Boot & Backend Development</h3>
+                                <h3>Exception Handling & Multi-Threading</h3>
                             </div>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="module-body">
                             <ul class="topic-list">
-                                <li><strong>Spring Boot Basics</strong>Setting up projects with Spring Initializr,
-                                    dependency injection, annotations, and application architecture</li>
-                                <li><strong>REST APIs</strong>Building RESTful endpoints, request/response handling,
-                                    validation, error handling — creating production-ready APIs</li>
-                                <li><strong>Database Integration</strong>Spring Data JPA, Hibernate, connecting to
-                                    MySQL/PostgreSQL, writing queries, and managing data persistence</li>
-                                <li><strong>Testing & Deployment</strong>Unit testing with JUnit, integration tests,
-                                    building JARs, and deploying your Spring Boot application</li>
+                                <li><strong>Exception Handling</strong>Try-catch-finally, checked vs unchecked exceptions,
+                                    throw & throws, custom exceptions, and writing robust error-handling code</li>
+                                <li><strong>Multi-Threading</strong>Thread class, Runnable interface, thread lifecycle,
+                                    synchronization, inter-thread communication, deadlocks, and concurrent programming</li>
                             </ul>
                         </div>
                     </article>
@@ -340,20 +332,69 @@
                         <div class="module-header" onclick="toggleModule(this)">
                             <div class="module-header-left">
                                 <span class="module-number">05</span>
-                                <h3>Real-World Open Source Projects</h3>
+                                <h3>File I/O, Serialization & Collections</h3>
                             </div>
                             <span class="toggle-icon">▼</span>
                         </div>
                         <div class="module-body">
                             <ul class="topic-list">
-                                <li><strong>Contributing to Java OSS</strong>Finding and contributing to real Java
-                                    open-source projects on GitHub — Apache, Spring, Eclipse ecosystem</li>
-                                <li><strong>Building Your Own Project</strong>Designing, building, and open-sourcing
-                                    your own Java project — from idea to published repository</li>
-                                <li><strong>Code Quality & Best Practices</strong>Clean code principles, SOLID,
-                                    design patterns, code reviews, and writing maintainable software</li>
-                                <li><strong>Portfolio & Career Showcase</strong>Documenting your contributions,
-                                    writing technical blog posts, and presenting your work to peers</li>
+                                <li><strong>File I/O</strong>FileReader, FileWriter, BufferedReader, BufferedWriter,
+                                    byte streams, character streams — reading and writing files in Java</li>
+                                <li><strong>Serialization</strong>ObjectInputStream, ObjectOutputStream, Serializable
+                                    interface, transient keyword, custom serialization, and data persistence</li>
+                                <li><strong>Collections Framework</strong>List, Set, Map, Queue — ArrayList, HashMap,
+                                    HashSet, LinkedList, TreeMap, iterators, and choosing the right data structure</li>
+                                <li><strong>Generics</strong>Generic classes, methods, bounded types, wildcards,
+                                    type erasure — writing type-safe, reusable Java code</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Module 6 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">06</span>
+                                <h3>JVM Internals & Garbage Collection</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>JVM Architecture</strong>ClassLoader, bytecode, JIT compilation, runtime
+                                    data areas (heap, stack, method area), and how Java programs execute</li>
+                                <li><strong>Garbage Collection</strong>GC roots, mark-and-sweep, generational GC,
+                                    G1 collector, memory leaks, finalize() — understanding automatic memory management</li>
+                                <li><strong>Performance & Debugging</strong>JVM flags, profiling tools, heap dumps,
+                                    thread dumps, and diagnosing real-world performance issues</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- Module 7 -->
+                    <article class="module-card">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">07</span>
+                                <h3>Open Source Projects — JSQLParser & Elasticsearch</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                <li><strong>JSQLParser — SQL Parsing in Java</strong>Understanding the JSQLParser codebase,
+                                    parsing SQL statements, AST traversal, and contributing to a widely-used SQL parsing library
+                                    <a href="https://github.com/jsqlparser/jsqlparser" target="_blank" rel="noreferrer" style="color: var(--gold); margin-left: 4px;">↗ GitHub</a></li>
+                                <li><strong>Elasticsearch — Distributed Search Engine</strong>Exploring the Elasticsearch
+                                    Java codebase, understanding distributed systems, indexing, querying, and contributing to
+                                    one of the most popular open-source search engines
+                                    <a href="https://github.com/elastic/elasticsearch" target="_blank" rel="noreferrer" style="color: var(--gold); margin-left: 4px;">↗ GitHub</a></li>
+                                <li><strong>Reading & Navigating Large Codebases</strong>Strategies for understanding
+                                    project structure, build systems (Maven/Gradle), running tests, and finding entry points
+                                    in production-scale Java projects</li>
+                                <li><strong>Contributing & Building Your Portfolio</strong>Finding good first issues,
+                                    writing meaningful PRs, engaging with maintainers, documenting your contributions,
+                                    and showcasing your open-source work</li>
                             </ul>
                         </div>
                     </article>
@@ -362,6 +403,86 @@
             </div>
         </div>
     </main>
+
+    <!-- PROJECTS SHOWCASE -->
+    <section class="projects-section">
+        <div class="container">
+            <p class="section-eyebrow reveal">Open Source Projects</p>
+            <h2 class="section-title reveal">Learn by contributing to <em>real-world projects.</em></h2>
+            <p class="projects-subtitle reveal">Every concept you learn will be applied hands-on to these two production-grade Java open-source projects.</p>
+
+            <div class="projects-grid reveal">
+                <!-- JSQLParser Card -->
+                <a href="https://github.com/jsqlparser/jsqlparser" target="_blank" rel="noreferrer" class="project-card">
+                    <div class="project-card-glow jsqlparser-glow"></div>
+                    <div class="project-card-header">
+                        <div class="project-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 18l6-6-6-6"/>
+                                <path d="M8 6l-6 6 6 6"/>
+                                <path d="M14.5 4l-5 16"/>
+                            </svg>
+                        </div>
+                        <div class="project-github-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            <span>GitHub</span>
+                        </div>
+                    </div>
+                    <div class="project-card-body">
+                        <h3 class="project-name">JSQLParser</h3>
+                        <p class="project-org">jsqlparser / jsqlparser</p>
+                        <p class="project-desc">A Java library for parsing, building, and modifying SQL statements. Supports complex SQL syntax including SELECT, INSERT, UPDATE, DELETE, and DDL operations.</p>
+                        <div class="project-tags">
+                            <span class="project-tag"><span class="lang-dot java-dot"></span>Java</span>
+                            <span class="project-tag">SQL Parsing</span>
+                            <span class="project-tag">AST</span>
+                            <span class="project-tag">Library</span>
+                        </div>
+                    </div>
+                    <div class="project-card-footer">
+                        <span class="project-link-label">View on GitHub <span class="arrow">→</span></span>
+                    </div>
+                </a>
+
+                <!-- Elasticsearch Card -->
+                <a href="https://github.com/elastic/elasticsearch" target="_blank" rel="noreferrer" class="project-card">
+                    <div class="project-card-glow elasticsearch-glow"></div>
+                    <div class="project-card-header">
+                        <div class="project-icon elasticsearch-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"/>
+                                <path d="M21 21l-4.35-4.35"/>
+                                <path d="M8 11h6"/>
+                                <path d="M11 8v6"/>
+                            </svg>
+                        </div>
+                        <div class="project-github-badge">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            <span>GitHub</span>
+                        </div>
+                    </div>
+                    <div class="project-card-body">
+                        <h3 class="project-name">Elasticsearch</h3>
+                        <p class="project-org">elastic / elasticsearch</p>
+                        <p class="project-desc">A distributed, RESTful search and analytics engine built on Apache Lucene. Powers search, logging, and observability at massive scale across thousands of organizations.</p>
+                        <div class="project-tags">
+                            <span class="project-tag"><span class="lang-dot java-dot"></span>Java</span>
+                            <span class="project-tag">Distributed Systems</span>
+                            <span class="project-tag">Search Engine</span>
+                            <span class="project-tag">REST API</span>
+                        </div>
+                    </div>
+                    <div class="project-card-footer">
+                        <span class="project-link-label">View on GitHub <span class="arrow">→</span></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
 
     <!-- CTA -->
     <section class="cta-section">
@@ -374,7 +495,7 @@
                 <div class="cta-right">
                     <p>Start your journey from writing your first Java class to contributing to real open-source
                         projects and building production-grade applications.</p>
-                    <a href="https://www.instagram.com/sielabs" target="_blank" rel="noreferrer"
+                    <a href="https://forms.gle/n5Wjju8xKCcrRLcp6" target="_blank" rel="noreferrer"
                         class="btn-primary">Enroll Now →</a>
                 </div>
             </div>
