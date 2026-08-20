@@ -136,6 +136,7 @@ header nav {
 .nav-links {
   display: flex;
   gap: 36px;
+  margin-left: auto;
 }
 
 .nav-links a {
