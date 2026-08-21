@@ -163,6 +163,7 @@ header nav {
   color: #0d0f11;
 }
 
+.desktop-cta { margin-left: 20px; }
 .mobile-cta { display: none !important; }
 
 .hamburger-btn {

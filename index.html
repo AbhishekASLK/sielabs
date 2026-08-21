@@ -242,19 +242,10 @@
           </p>
         </div>
 
-        <div class="reviews-slider-wrapper reveal">
-          <button class="reviews-arrow reviews-arrow-prev" id="reviewsPrev" aria-label="Previous review">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-
-          <div class="reviews-slider-track" id="reviewsTrack">
+        <div class="reviews-masonry reveal">
 
             <!-- Review 1: Vishvambhar -->
-            <div class="review-slide">
-              <div class="review-card-compact">
+            <div class="review-card-compact">
                 <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -304,12 +295,10 @@
                     <span class="pr-count-text">PRs Merged</span>
                   </a>
                 </div>
-              </div>
             </div>
 
             <!-- Review 2: Piya -->
-            <div class="review-slide">
-              <div class="review-card-compact">
+            <div class="review-card-compact">
                 <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -366,12 +355,10 @@
                     <span class="pr-count-text">PRs Merged</span>
                   </a>
                 </div>
-              </div>
             </div>
 
             <!-- Review 3: Vaishnavi -->
-            <div class="review-slide">
-              <div class="review-card-compact">
+            <div class="review-card-compact">
                 <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -422,12 +409,10 @@
                     <span class="pr-count-text">PRs Merged</span>
                   </a>
                 </div>
-              </div>
             </div>
 
             <!-- Review 4: Deepika -->
-            <div class="review-slide">
-              <div class="review-card-compact">
+            <div class="review-card-compact review-hidden" id="reviewCard4">
                 <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
@@ -472,24 +457,14 @@
                     <span class="pr-count-text">PRs Merged</span>
                   </a>
                 </div>
-              </div>
             </div>
 
-          </div>
-
-          <button class="reviews-arrow reviews-arrow-next" id="reviewsNext" aria-label="Next review">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
         </div>
 
-        <div class="reviews-dots" id="reviewsDots">
-          <button class="reviews-dot active" data-index="0" aria-label="Go to review 1"></button>
-          <button class="reviews-dot" data-index="1" aria-label="Go to review 2"></button>
-          <button class="reviews-dot" data-index="2" aria-label="Go to review 3"></button>
-          <button class="reviews-dot" data-index="3" aria-label="Go to review 4"></button>
+        <div style="text-align: center; margin-top: 32px;">
+          <button class="review-see-more-btn" id="seeMoreReviewsBtn" onclick="document.getElementById('reviewCard4').classList.toggle('review-hidden'); this.textContent = this.textContent.trim() === 'See more reviews ↓' ? 'Show less ↑' : 'See more reviews ↓';">
+            See more reviews ↓
+          </button>
         </div>
 
       </div>
@@ -583,101 +558,7 @@
         .catch(() => { });
     });
 
-    // ── Reviews Carousel ──
-    (function () {
-      const track = document.getElementById('reviewsTrack');
-      const slides = Array.from(track.querySelectorAll('.review-slide'));
-      const prevBtn = document.getElementById('reviewsPrev');
-      const nextBtn = document.getElementById('reviewsNext');
-      const dots = document.querySelectorAll('.reviews-dot');
-      const total = slides.length;
-      let activeIndex = 0;
-      let autoPlayTimer;
 
-      function mod(n, m) { return ((n % m) + m) % m; }
-
-      function setUniformHeight() {
-        // Measure collapsed card heights
-        const expandedElements = [];
-        slides.forEach(s => {
-          const exp = s.querySelector('.review-expanded.show');
-          if (exp) {
-            expandedElements.push(exp);
-            exp.classList.remove('show');
-          }
-          s.style.height = 'auto';
-        });
-
-        const maxH = Math.max(...slides.map(s => s.offsetHeight));
-        if (maxH > 0) {
-          slides.forEach(s => s.style.height = maxH + 'px');
-          track.style.height = maxH + 'px';
-        }
-
-        // Restore expanded state if any
-        expandedElements.forEach(exp => exp.classList.add('show'));
-      }
-
-      function updateCarousel() {
-        const leftIdx = mod(activeIndex - 1, total);
-        const centerIdx = activeIndex;
-        const rightIdx = mod(activeIndex + 1, total);
-
-        slides.forEach((slide, i) => {
-          slide.classList.remove('pos-left', 'pos-center', 'pos-right', 'pos-hidden');
-          if (i === centerIdx) slide.classList.add('pos-center');
-          else if (i === leftIdx) slide.classList.add('pos-left');
-          else if (i === rightIdx) slide.classList.add('pos-right');
-          else slide.classList.add('pos-hidden');
-        });
-
-        // Update dots
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
-      }
-
-      function goTo(index) {
-        activeIndex = mod(index, total);
-        updateCarousel();
-      }
-
-      prevBtn.addEventListener('click', () => goTo(activeIndex - 1));
-      nextBtn.addEventListener('click', () => goTo(activeIndex + 1));
-
-      dots.forEach(dot => {
-        dot.addEventListener('click', () => goTo(parseInt(dot.dataset.index)));
-      });
-
-      // Touch / swipe support
-      let touchStartX = 0;
-      track.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-      track.addEventListener('touchend', e => {
-        const diff = touchStartX - e.changedTouches[0].screenX;
-        if (Math.abs(diff) > 50) {
-          diff > 0 ? goTo(activeIndex + 1) : goTo(activeIndex - 1);
-        }
-      }, { passive: true });
-
-      // Auto-play (loops infinitely)
-      function startAutoPlay() {
-        autoPlayTimer = setInterval(() => goTo(activeIndex + 1), 5000);
-      }
-      function stopAutoPlay() { clearInterval(autoPlayTimer); }
-
-      const wrapper = track.closest('.reviews-slider-wrapper');
-      wrapper.addEventListener('mouseenter', stopAutoPlay);
-      wrapper.addEventListener('mouseleave', startAutoPlay);
-
-      // Recalculate on resize
-      window.addEventListener('resize', () => {
-        setUniformHeight();
-        updateCarousel();
-      });
-
-      // Init
-      setUniformHeight();
-      updateCarousel();
-      startAutoPlay();
-    })();
 
   </script>
 </body>
