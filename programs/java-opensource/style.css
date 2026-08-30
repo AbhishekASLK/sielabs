@@ -22,6 +22,7 @@ html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--gold-light) transparent;
+  overflow-y: scroll;
 }
 
 /* ── Custom Scrollbar ── */
@@ -120,6 +121,7 @@ header nav {
 .nav-links {
   display: flex;
   gap: 36px;
+  margin-left: auto;
 }
 
 .nav-links a {
