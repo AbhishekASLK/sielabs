@@ -277,6 +277,14 @@
         });
       });
     });
+
+    // Close mobile menu on scroll
+    window.addEventListener('scroll', () => {
+      const navLinks = document.getElementById('navLinks');
+      if (navLinks && navLinks.classList.contains('show')) {
+        navLinks.classList.remove('show');
+      }
+    }, { passive: true });
   </script>
 </body>
 
