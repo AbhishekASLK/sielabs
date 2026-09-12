@@ -396,6 +396,34 @@ h1 em {
   letter-spacing: 0.01em;
 }
 
+.panel-tags .price-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(212, 175, 55, 0.08));
+  border-color: rgba(212, 175, 55, 0.25);
+  padding: 6px 14px;
+}
+
+.panel-tags .price-tag .price-old {
+  font-size: 12px;
+  font-weight: 500;
+  color: #777;
+  text-decoration: line-through;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.panel-tags .price-tag .price-new {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold, #d4af37);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
 .panel-link {
   display: inline-flex;
   align-items: center;
