@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-    --bg-color: #0A0A0A;
-    --text-main: #FFFFFF;
-    --text-muted: #A0A0A0;
-    --accent-color: #3b82f6;
-    --accent-glow: rgba(59, 130, 246, 0.5);
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-border: rgba(255, 255, 255, 0.08);
-    --nav-bg: rgba(10, 10, 10, 0.75);
+    --bg-color: #FAFAF8;
+    --text-main: #1A1A1A;
+    --text-muted: #6B6B6B;
+    --accent-color: #2563eb;
+    --accent-glow: rgba(37, 99, 235, 0.35);
+    --card-bg: rgba(0, 0, 0, 0.02);
+    --card-border: rgba(0, 0, 0, 0.08);
+    --nav-bg: rgba(250, 250, 248, 0.85);
 }
 
 * {
@@ -33,7 +33,7 @@ h1, h2, h3, h4 {
 
 /* Typography */
 .gradient-text {
-    background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+    background: linear-gradient(135deg, #1A1A1A 0%, #6B6B6B 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -170,8 +170,8 @@ nav {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.7);
-    background: #4f8bf9;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    background: #3b82f6;
 }
 
 /* Features Grid */
@@ -217,15 +217,15 @@ nav {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 70%);
+    background: radial-gradient(circle at top left, rgba(0, 0, 0, 0.03), transparent 70%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    border-color: rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
 .feature-card:hover::before {
@@ -235,7 +235,7 @@ nav {
 .feature-icon {
     width: 48px;
     height: 48px;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(37, 99, 235, 0.08);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -257,7 +257,7 @@ nav {
 /* Privacy Section */
 .privacy {
     padding: 100px 0;
-    background: linear-gradient(180deg, var(--bg-color) 0%, rgba(59, 130, 246, 0.03) 100%);
+    background: linear-gradient(180deg, var(--bg-color) 0%, rgba(37, 99, 235, 0.03) 100%);
     border-top: 1px solid var(--card-border);
 }
 
@@ -277,7 +277,7 @@ nav {
 .privacy-item h3 {
     font-size: 1.25rem;
     margin-bottom: 12px;
-    color: #fff;
+    color: #1A1A1A;
     display: flex;
     align-items: center;
     gap: 10px;

@@ -1,15 +1,15 @@
 :root {
-  --bg: #0d0f11;
-  --bg-card: #15181a;
-  --bg-card-2: #1e2225;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-gold: rgba(200, 158, 58, 0.3);
-  --text: #F4F6F8;
-  --text-muted: rgba(244, 246, 248, 0.65);
-  --text-dim: rgba(244, 246, 248, 0.4);
-  --gold: #D4AF37;
-  --gold-light: #F3E5AB;
-  --gold-pale: rgba(212, 175, 55, 0.1);
+  --bg: #FAFAF8;
+  --bg-card: #FFFFFF;
+  --bg-card-2: #F3F2EE;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-gold: rgba(160, 120, 20, 0.3);
+  --text: #1A1A1A;
+  --text-muted: rgba(26, 26, 26, 0.6);
+  --text-dim: rgba(26, 26, 26, 0.4);
+  --gold: #9A7B1A;
+  --gold-light: #7A6015;
+  --gold-pale: rgba(154, 123, 26, 0.08);
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-sans: 'Outfit', system-ui, sans-serif;
   --r: 14px;
@@ -21,7 +21,7 @@
 html {
   scroll-behavior: smooth;
   scrollbar-width: thin;
-  scrollbar-color: var(--gold-light) transparent;
+  scrollbar-color: var(--gold) transparent;
   overflow-y: scroll;
 }
 
@@ -41,12 +41,12 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--gold), #8a6518);
+  background: linear-gradient(180deg, var(--gold), #6B5512);
   border-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background: #8a6518;
+  background: #6B5512;
 }
 
 body {
@@ -64,8 +64,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 64px 64px;
   pointer-events: none;
   z-index: 0;
@@ -79,7 +79,7 @@ body::after {
   transform: translateX(-50%);
   width: 700px;
   height: 700px;
-  background: radial-gradient(ellipse, rgba(200,158,58,0.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(154,123,26,0.06) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -149,20 +149,20 @@ header nav {
 }
 
 .nav-cta:hover {
-  background: rgba(200, 158, 58, 0.15);
-  border-color: rgba(200, 158, 58, 0.5);
+  background: rgba(154, 123, 26, 0.12);
+  border-color: rgba(154, 123, 26, 0.4);
 }
 
 .nav-cta-community {
   background: var(--gold);
   border-color: var(--gold);
-  color: #0d0f11;
+  color: #FFFFFF;
 }
 
 .nav-cta-community:hover {
   background: var(--gold-light);
   border-color: var(--gold-light);
-  color: #0d0f11;
+  color: #FFFFFF;
 }
 
 .desktop-cta { margin-left: 20px; }
@@ -297,7 +297,7 @@ header nav {
   gap: 8px;
   text-decoration: none;
   background: var(--gold);
-  color: #0d0f11;
+  color: #FFFFFF;
   font-size: 14px;
   font-weight: 600;
   padding: 12px 26px;
@@ -328,7 +328,7 @@ header nav {
 
 .btn-secondary:hover {
   background: var(--bg-card-2);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 0, 0, 0.15);
   color: var(--text);
 }
 
@@ -340,17 +340,17 @@ header nav {
 }
 
 .quote-card {
-  background: rgba(21, 24, 26, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--r-lg);
   padding: 44px 36px;
   position: relative;
   box-shadow:
-    0 32px 64px rgba(0, 0, 0, 0.4),
-    0 12px 24px rgba(200, 158, 58, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 32px 64px rgba(0, 0, 0, 0.1),
+    0 12px 24px rgba(154, 123, 26, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   animation: floatCard 8s ease-in-out infinite;
   transform-style: preserve-3d;
 }
@@ -408,8 +408,8 @@ header nav {
   height: 44px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 12px rgba(200, 158, 58, 0.15);
+  border: 2px solid var(--gold);
+  box-shadow: 0 4px 12px rgba(154, 123, 26, 0.1);
 }
 
 .quote-author {
@@ -596,7 +596,7 @@ header nav {
 
 .module-card.active .module-number {
   background: var(--gold);
-  color: #fff;
+  color: #FFFFFF;
   border-color: var(--gold);
 }
 
