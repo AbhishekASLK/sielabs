@@ -462,10 +462,49 @@
                 </div>
             </div>
 
+            <!-- Review 5: Anuja -->
+            <div class="review-card-compact review-hidden" id="reviewCard5">
+                <svg class="review-quote-sm" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M9.135 5.015C5.242 6.584 3 9.58 3 13.203v5.782h5.782v-5.782H5.27c0-2.076 1.475-3.98 3.865-4.842L9.135 5.015zM18.865 5.015c-3.893 1.569-6.135 4.565-6.135 8.188v5.782h5.782v-5.782h-3.513c0-2.076 1.475-3.98 3.866-4.842L18.865 5.015z" />
+                </svg>
+                <p class="review-quote-text">
+                  SieLabs helped me bridge the gap between theoretical knowledge and practical software engineering. 
+                  The <strong>reverse engineering mindset</strong> taught here is invaluable.
+                </p>
+                <div class="review-expanded" id="reviewExpanded5">
+                  <p class="review-quote-text">
+                    Through the Open Source Lab, I learned how to navigate large, complex codebases and write production-quality code. The mentorship provided is exceptional, focusing on understanding the 'why' behind every technical decision.
+                  </p>
+                  <p class="review-quote-text" style="margin-bottom: 0;">
+                    I highly recommend SieLabs to anyone looking to make real open-source contributions and grow as a developer.
+                  </p>
+                </div>
+                <button class="review-read-more" id="reviewToggle5"
+                  onclick="document.getElementById('reviewExpanded5').classList.toggle('show'); this.textContent = this.textContent.trim() === 'Read full review →' ? 'Show less ↑' : 'Read full review →';">Read
+                  full review →</button>
+                <div class="review-author-compact">
+                  <img src="assets/students/anuja.jpeg" alt="Anuja" class="review-avatar-sm"
+                    loading="lazy">
+                  <div>
+                    <span class="review-name-sm">Anuja</span>
+                    <span class="review-role-sm">Open Source Lab Student</span>
+                  </div>
+                  <a href="https://github.com/tobymao/sqlglot/pulls?q=is%3Apr+state%3Aclosed+author%3AAnuja006"
+                    target="_blank" rel="noreferrer" class="pr-merged-tag" data-github-user="Anuja006">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                      <path
+                        d="M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218zM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm8-9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5zm0 4a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zM3.5 3.75a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0z" />
+                    </svg>
+                    <span class="pr-count-text">PRs Merged</span>
+                  </a>
+                </div>
+            </div>
+
         </div>
 
         <div style="text-align: center; margin-top: 32px;">
-          <button class="review-see-more-btn" id="seeMoreReviewsBtn" onclick="document.getElementById('reviewCard4').classList.toggle('review-hidden'); this.textContent = this.textContent.trim() === 'See more reviews ↓' ? 'Show less ↑' : 'See more reviews ↓';">
+          <button class="review-see-more-btn" id="seeMoreReviewsBtn" onclick="document.getElementById('reviewCard4').classList.toggle('review-hidden'); document.getElementById('reviewCard5').classList.toggle('review-hidden'); this.textContent = this.textContent.trim() === 'See more reviews ↓' ? 'Show less ↑' : 'See more reviews ↓';">
             See more reviews ↓
           </button>
         </div>
