@@ -42,7 +42,7 @@ html {
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, var(--gold-light), var(--gold));
-  border-radius: 100px;
+  border-radius: 8px;
   border: 2px solid var(--bg);
 }
 
@@ -161,7 +161,7 @@ header nav {
   font-size: 13px;
   font-weight: 500;
   padding: 8px 20px;
-  border-radius: 100px;
+  border-radius: 8px;
   transition: background 0.2s, border-color 0.2s, color 0.2s;
   letter-spacing: 0.02em;
 }
@@ -268,7 +268,7 @@ h1 em {
   font-size: 14px;
   font-weight: 600;
   padding: 12px 26px;
-  border-radius: 100px;
+  border-radius: 8px;
   transition: background 0.2s, transform 0.15s;
   letter-spacing: 0.01em;
 }
@@ -289,7 +289,7 @@ h1 em {
   font-size: 14px;
   font-weight: 500;
   padding: 12px 26px;
-  border-radius: 100px;
+  border-radius: 8px;
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
@@ -340,7 +340,7 @@ h1 em {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 4px 12px;
-  border-radius: 100px;
+  border-radius: 8px;
   margin-bottom: 16px;
 }
 
@@ -383,7 +383,7 @@ h1 em {
   background: var(--bg-card-2);
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 6px 14px;
-  border-radius: 100px;
+  border-radius: 8px;
   font-weight: 600;
   letter-spacing: 0.01em;
 }
@@ -827,7 +827,7 @@ h3 {
   letter-spacing: 0.04em;
   padding: 6px 14px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 100px;
+  border-radius: 8px;
   z-index: 2;
 }
 
@@ -921,7 +921,7 @@ h3 {
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: 8px 20px;
-  border-radius: 100px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--bg-card);
   color: var(--text-muted);
@@ -1007,7 +1007,7 @@ h3 {
   font-size: 14px;
   font-weight: 500;
   padding: 12px 32px;
-  border-radius: 100px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
   letter-spacing: 0.02em;
@@ -1131,7 +1131,7 @@ h3 {
   font-size: 11px;
   font-weight: 600;
   padding: 5px 12px;
-  border-radius: 100px;
+  border-radius: 8px;
   letter-spacing: 0.02em;
   transition: background 0.2s, border-color 0.2s;
   white-space: nowrap;
