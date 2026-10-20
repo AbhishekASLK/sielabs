@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PROGRAMS as DEFAULT_PROGRAMS, ProgramDefinition } from "@/lib/programsData";
@@ -59,6 +59,30 @@ export default function AdminPage() {
   const [savingModule, setSavingModule] = useState(false);
   const [subtopicInputs, setSubtopicInputs] = useState<Record<string, string>>({});
   const [savingSubtopicKey, setSavingSubtopicKey] = useState<string | null>(null);
+  const [expandedCurriculumModules, setExpandedCurriculumModules] = useState<Record<string, boolean>>({});
+  const [isProgramDropdownOpen, setIsProgramDropdownOpen] = useState(false);
+  const [isModuleDropdownOpen, setIsModuleDropdownOpen] = useState(false);
+  const [isCohortDropdownOpen, setIsCohortDropdownOpen] = useState(false);
+  const programDropdownRef = useRef<HTMLDivElement>(null);
+  const moduleDropdownRef = useRef<HTMLDivElement>(null);
+  const cohortDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (programDropdownRef.current && !programDropdownRef.current.contains(e.target as Node)) {
+        setIsProgramDropdownOpen(false);
+      }
+      if (moduleDropdownRef.current && !moduleDropdownRef.current.contains(e.target as Node)) {
+        setIsModuleDropdownOpen(false);
+      }
+      if (cohortDropdownRef.current && !cohortDropdownRef.current.contains(e.target as Node)) {
+        setIsCohortDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   // Custom Confirmation Modal state (replacing browser default window.confirm)
   const [confirmModal, setConfirmModal] = useState<{
     isOpen: boolean;
@@ -317,8 +341,8 @@ export default function AdminPage() {
   };
 
   // Add Module to Program
-  const handleAddModule = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAddModule = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!newModuleTitle.trim()) {
       showToast("Module title is required", "error");
       return;
@@ -352,6 +376,12 @@ export default function AdminPage() {
         setIsAddModuleModalOpen(false);
         setNewModuleTitle("");
         setNewModuleSubtopics("");
+        if (data.program?.modules) {
+          const lastMod = data.program.modules[data.program.modules.length - 1];
+          if (lastMod?.id) {
+            setExpandedCurriculumModules(prev => ({ ...prev, [lastMod.id]: true }));
+          }
+        }
         fetchPrograms();
       } else {
         showToast(data.message || "Failed to add module", "error");
@@ -619,6 +649,55 @@ export default function AdminPage() {
   const displayedModules = selectedModuleFilter === "all"
     ? activeProgramModules
     : activeProgramModules.filter(m => m.id === selectedModuleFilter);
+
+  // Next Module number and badge for compact Add Module card
+  const nextModuleNum = activeProgramModules.reduce((max, m) => {
+    const num = parseInt(m.id, 10);
+    return !isNaN(num) ? Math.max(max, num) : max;
+  }, 0) + 1;
+  const nextModuleBadge = `Module ${String(nextModuleNum).padStart(2, "0")}`;
+
+  const isModuleExpanded = (modId: string, index: number) => {
+    if (selectedModuleFilter !== "all") return true;
+    if (expandedCurriculumModules[modId] !== undefined) {
+      return expandedCurriculumModules[modId];
+    }
+    return index === 0;
+  };
+
+  const toggleModuleExpanded = (modId: string, index: number) => {
+    setExpandedCurriculumModules(prev => ({
+      ...prev,
+      [modId]: !isModuleExpanded(modId, index)
+    }));
+  };
+
+  const handleExportCurriculumCSV = () => {
+    if (!activeCurriculumProgram) return;
+    const rows = [["Module ID", "Module Title", "Status", "Subtopic Number", "Subtopic Content"]];
+    const completedIds = globalProgress[activeCurriculumProgram.id] || [];
+
+    (activeCurriculumProgram.modules || []).forEach(m => {
+      const status = completedIds.includes(m.id) ? "Completed" : "In Progress";
+      if (!m.subtopics || m.subtopics.length === 0) {
+        rows.push([m.id, `"${(m.title || "").replace(/"/g, '""')}"`, status, "", ""]);
+      } else {
+        m.subtopics.forEach((sub, idx) => {
+          rows.push([m.id, `"${(m.title || "").replace(/"/g, '""')}"`, status, String(idx + 1), `"${sub.replace(/"/g, '""')}"`]);
+        });
+      }
+    });
+
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${activeCurriculumProgram.id}_curriculum.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast(`Exported ${activeCurriculumProgram.title} curriculum to CSV!`);
+  };
 
   // Toggle row selection for table
   const toggleRowSelect = (id: string) => {
@@ -938,56 +1017,6 @@ export default function AdminPage() {
 
         {/* Bottom Utility Menu */}
         <div style={{ padding: "10px", borderTop: "1px solid rgba(255, 255, 255, 0.06)", display: "flex", flexDirection: "column", gap: "4px" }}>
-          {/* Notifications */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: sidebarCollapsed ? "center" : "space-between",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              color: "#94A3B8",
-              fontSize: "13px",
-              cursor: "pointer"
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-              </svg>
-              {!sidebarCollapsed && <span>Notifications</span>}
-            </div>
-            {!sidebarCollapsed && (
-              <span style={{ backgroundColor: "#E11D48", color: "#FFFFFF", fontSize: "10px", fontWeight: 700, padding: "1px 6px", borderRadius: "10px" }}>
-                7
-              </span>
-            )}
-          </div>
-
-          {/* Help & Support */}
-          <a
-            href="mailto:support@sielabs.com"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "8px 12px",
-              borderRadius: "8px",
-              color: "#94A3B8",
-              fontSize: "13px",
-              textDecoration: "none",
-              justifyContent: sidebarCollapsed ? "center" : "flex-start"
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-              <line x1="12" y1="17" x2="12.01" y2="17" />
-            </svg>
-            {!sidebarCollapsed && <span>Help &amp; support</span>}
-          </a>
-
           {/* Settings / Profile */}
           <Link
             href="/profile"
@@ -1092,7 +1121,7 @@ export default function AdminPage() {
                   : adminTab === "students"
                   ? `Directory of registered accounts (${totalUsersCount} total, ${enrolledLearnersCount} enrolled, ${normalUsersCount} normal accounts).`
                   : adminTab === "curriculum"
-                  ? "Manage course modules, edit subtopics, and track live milestone completion."
+                  ? "Edit modules, subtopics and milestones"
                   : "Real-time key performance indicators and cohort milestones."}
               </p>
             </div>
@@ -1100,7 +1129,13 @@ export default function AdminPage() {
 
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <button
-              onClick={() => showToast("Exporting data to CSV...")}
+              onClick={() => {
+                if (adminTab === "curriculum") {
+                  handleExportCurriculumCSV();
+                } else {
+                  showToast("Exporting data to CSV...");
+                }
+              }}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -1119,28 +1154,7 @@ export default function AdminPage() {
               <span>Export</span>
             </button>
 
-            {adminTab === "curriculum" ? (
-              <button
-                onClick={() => setIsAddModuleModalOpen(true)}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  backgroundColor: "#0F172A",
-                  color: "#FFFFFF",
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  border: "none",
-                  cursor: "pointer",
-                  boxShadow: "0 2px 8px rgba(15, 23, 42, 0.15)"
-                }}
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                <span>Add Module</span>
-              </button>
-            ) : (
+            {adminTab !== "curriculum" && (
               <button
                 onClick={() => setIsEnrollModalOpen(true)}
                 style={{
@@ -1165,16 +1179,16 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* Filter Pills Toolbar (for Programs & Students tabs) */}
-        {(adminTab === "programs" || adminTab === "students") && (
+        {/* Filter Pills Toolbar (strictly for Users / Students Directory tab) */}
+        {adminTab === "students" && (
           <div style={{ padding: "14px 32px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", borderBottom: "1px solid #F8FAFC", backgroundColor: "#FAFAF8" }}>
             {/* Account Type Segmented Filter (All / Enrolled / Normal) */}
-            <div style={{ display: "inline-flex", backgroundColor: "#FFFFFF", borderRadius: "20px", border: "1px solid #E2E8F0", padding: "2px", gap: "2px" }}>
+            <div style={{ display: "inline-flex", backgroundColor: "#FFFFFF", borderRadius: "6px", border: "1px solid #E2E8F0", padding: "2px", gap: "2px" }}>
               <button
                 onClick={() => setUserTypeFilter("all")}
                 style={{
-                  padding: "4px 10px",
-                  borderRadius: "16px",
+                  padding: "5px 12px",
+                  borderRadius: "4px",
                   border: "none",
                   fontSize: "11px",
                   fontWeight: 700,
@@ -1189,8 +1203,8 @@ export default function AdminPage() {
               <button
                 onClick={() => setUserTypeFilter("enrolled")}
                 style={{
-                  padding: "4px 10px",
-                  borderRadius: "16px",
+                  padding: "5px 12px",
+                  borderRadius: "4px",
                   border: "none",
                   fontSize: "11px",
                   fontWeight: 700,
@@ -1205,8 +1219,8 @@ export default function AdminPage() {
               <button
                 onClick={() => setUserTypeFilter("unenrolled")}
                 style={{
-                  padding: "4px 10px",
-                  borderRadius: "16px",
+                  padding: "5px 12px",
+                  borderRadius: "4px",
                   border: "none",
                   fontSize: "11px",
                   fontWeight: 700,
@@ -1220,28 +1234,181 @@ export default function AdminPage() {
               </button>
             </div>
 
-            {/* Cohort Filter Selector */}
-            <select
-              value={selectedProgramFilter}
-              onChange={e => setSelectedProgramFilter(e.target.value)}
-              style={{
-                padding: "5px 12px",
-                borderRadius: "20px",
-                border: "1px solid #E2E8F0",
-                backgroundColor: "#FFFFFF",
-                fontSize: "12px",
-                fontWeight: 600,
-                color: "#0F172A",
-                cursor: "pointer",
-                outline: "none"
-              }}
-            >
-              <option value="all">Cohort: All Programs</option>
-              {programs.map(prog => (
-                <option key={prog.id} value={prog.id}>Cohort: {prog.title}</option>
-              ))}
-              <option value="unenrolled">Cohort: None (Normal Users)</option>
-            </select>
+            {/* Cohort Filter Selector (Custom Dropdown) */}
+            <div ref={cohortDropdownRef} style={{ position: "relative" }}>
+              <button
+                type="button"
+                onClick={() => setIsCohortDropdownOpen(prev => !prev)}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "8px",
+                  padding: "6px 12px",
+                  borderRadius: "6px",
+                  border: isCohortDropdownOpen ? "1.5px solid #0F172A" : "1px solid #E2E8F0",
+                  backgroundColor: "#FFFFFF",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  color: "#0F172A",
+                  cursor: "pointer",
+                  outline: "none",
+                  boxShadow: isCohortDropdownOpen ? "0 0 0 3px rgba(15, 23, 42, 0.08)" : "0 1px 2px rgba(0, 0, 0, 0.03)",
+                  transition: "all 0.15s ease",
+                  whiteSpace: "nowrap"
+                }}
+              >
+                <span>
+                  {selectedProgramFilter === "all"
+                    ? "All Programs"
+                    : selectedProgramFilter === "unenrolled"
+                    ? "None (Normal Users)"
+                    : programs.find(p => p.id === selectedProgramFilter)?.title || selectedProgramFilter}
+                </span>
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#64748B"
+                  strokeWidth="2.5"
+                  style={{
+                    transform: isCohortDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.15s ease"
+                  }}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+
+              {isCohortDropdownOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 5px)",
+                    left: 0,
+                    minWidth: "250px",
+                    maxHeight: "300px",
+                    overflowY: "auto",
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: "8px",
+                    border: "1px solid #E2E8F0",
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04)",
+                    padding: "5px",
+                    zIndex: 60
+                  }}
+                >
+                  {/* All Programs */}
+                  <div
+                    onClick={() => {
+                      setSelectedProgramFilter("all");
+                      setIsCohortDropdownOpen(false);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "8px 10px",
+                      borderRadius: "6px",
+                      backgroundColor: selectedProgramFilter === "all" ? "#F1F5F9" : "transparent",
+                      cursor: "pointer"
+                    }}
+                    onMouseEnter={e => {
+                      if (selectedProgramFilter !== "all") e.currentTarget.style.backgroundColor = "#F8FAFC";
+                    }}
+                    onMouseLeave={e => {
+                      if (selectedProgramFilter !== "all") e.currentTarget.style.backgroundColor = "transparent";
+                    }}
+                  >
+                    {selectedProgramFilter === "all" ? (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    ) : (
+                      <span style={{ width: "13px" }} />
+                    )}
+                    <span style={{ fontSize: "12px", fontWeight: selectedProgramFilter === "all" ? 700 : 500, color: "#0F172A" }}>
+                      All Programs
+                    </span>
+                  </div>
+
+                  {/* Individual Programs */}
+                  {programs.map(prog => {
+                    const isSelected = selectedProgramFilter === prog.id;
+
+                    return (
+                      <div
+                        key={prog.id}
+                        onClick={() => {
+                          setSelectedProgramFilter(prog.id);
+                          setIsCohortDropdownOpen(false);
+                        }}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          padding: "8px 10px",
+                          borderRadius: "6px",
+                          backgroundColor: isSelected ? "#F1F5F9" : "transparent",
+                          cursor: "pointer"
+                        }}
+                        onMouseEnter={e => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = "#F8FAFC";
+                        }}
+                        onMouseLeave={e => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                        }}
+                      >
+                        {isSelected ? (
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        ) : (
+                          <span style={{ width: "13px" }} />
+                        )}
+                        <span style={{ fontSize: "12px", fontWeight: isSelected ? 700 : 500, color: "#0F172A", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {prog.title}
+                        </span>
+                      </div>
+                    );
+                  })}
+
+                  {/* Unenrolled */}
+                  <div
+                    onClick={() => {
+                      setSelectedProgramFilter("unenrolled");
+                      setIsCohortDropdownOpen(false);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "8px 10px",
+                      borderRadius: "6px",
+                      backgroundColor: selectedProgramFilter === "unenrolled" ? "#F1F5F9" : "transparent",
+                      cursor: "pointer"
+                    }}
+                    onMouseEnter={e => {
+                      if (selectedProgramFilter !== "unenrolled") e.currentTarget.style.backgroundColor = "#F8FAFC";
+                    }}
+                    onMouseLeave={e => {
+                      if (selectedProgramFilter !== "unenrolled") e.currentTarget.style.backgroundColor = "transparent";
+                    }}
+                  >
+                    {selectedProgramFilter === "unenrolled" ? (
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.5">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                    ) : (
+                      <span style={{ width: "13px" }} />
+                    )}
+                    <span style={{ fontSize: "12px", fontWeight: selectedProgramFilter === "unenrolled" ? 700 : 500, color: "#0F172A" }}>
+                      None (Normal Users)
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Reset Filters */}
             {(userTypeFilter !== "all" || selectedProgramFilter !== "all" || searchQuery) && (
@@ -1255,8 +1422,8 @@ export default function AdminPage() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "4px",
-                  padding: "5px 12px",
-                  borderRadius: "20px",
+                  padding: "6px 12px",
+                  borderRadius: "6px",
                   border: "1px dashed #CBD5E1",
                   backgroundColor: "transparent",
                   fontSize: "12px",
@@ -1627,208 +1794,433 @@ export default function AdminPage() {
             </table>
           )}
 
-          {/* TAB: CURRICULUM MODULES VIEW */}
+          {/* TAB: CURRICULUM MODULES VIEW (Compact SaaS Redesign) */}
           {adminTab === "curriculum" && (
-            <div style={{ paddingTop: "20px" }}>
-              {/* Program & Module Dropdown Selector Toolbar */}
+            <div style={{ paddingTop: "16px" }}>
+              {/* 1. FILTER & METADATA TOOLBAR (Unified single horizontal row) */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: "14px",
-                  marginBottom: "20px",
-                  borderBottom: "1px solid #E2E8F0",
-                  paddingBottom: "16px"
+                  gap: "16px",
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #E2E8F0",
+                  borderRadius: "10px",
+                  padding: "10px 16px",
+                  marginBottom: "16px",
+                  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)"
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
-                  {/* Select Program Dropdown */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <label htmlFor="curriculum-program-select" style={{ fontSize: "12px", fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                      Program:
-                    </label>
-                    <div style={{ position: "relative", minWidth: "260px" }}>
-                      <select
-                        id="curriculum-program-select"
-                        value={selectedCurriculumProgramId}
-                        onChange={e => {
-                          setSelectedCurriculumProgramId(e.target.value);
-                          setSelectedModuleFilter("all");
+                <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap", flex: 1, minWidth: 0 }}>
+                  {/* PROGRAM SELECT (Custom Dropdown) */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 800, color: "#64748B", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                      PROGRAM
+                    </span>
+                    <div ref={programDropdownRef} style={{ position: "relative" }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsProgramDropdownOpen(prev => !prev);
+                          setIsModuleDropdownOpen(false);
                         }}
                         style={{
-                          appearance: "none",
-                          width: "100%",
-                          padding: "8px 34px 8px 12px",
-                          borderRadius: "8px",
-                          border: "1px solid #CBD5E1",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "8px",
+                          padding: "6px 12px",
+                          borderRadius: "7px",
+                          border: isProgramDropdownOpen ? "1.5px solid #0F172A" : "1px solid #CBD5E1",
                           backgroundColor: "#FFFFFF",
-                          fontSize: "13px",
-                          fontWeight: 700,
-                          color: "#0F172A",
-                          cursor: "pointer",
-                          outline: "none",
-                          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)"
-                        }}
-                      >
-                        {programs.map(prog => {
-                          const comp = (globalProgress[prog.id] || []).length;
-                          const tot = prog.modules?.length || 0;
-                          return (
-                            <option key={prog.id} value={prog.id}>
-                              {prog.title} ({comp}/{tot} Modules)
-                            </option>
-                          );
-                        })}
-                      </select>
-                      <div style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#64748B", display: "flex", alignItems: "center" }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9" /></svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Select Module Dropdown */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <label htmlFor="curriculum-module-select" style={{ fontSize: "12px", fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                      Module:
-                    </label>
-                    <div style={{ position: "relative", minWidth: "240px" }}>
-                      <select
-                        id="curriculum-module-select"
-                        value={selectedModuleFilter}
-                        onChange={e => setSelectedModuleFilter(e.target.value)}
-                        style={{
-                          appearance: "none",
-                          width: "100%",
-                          padding: "8px 34px 8px 12px",
-                          borderRadius: "8px",
-                          border: "1px solid #CBD5E1",
-                          backgroundColor: "#FFFFFF",
-                          fontSize: "13px",
+                          fontSize: "12.5px",
                           fontWeight: 600,
                           color: "#0F172A",
                           cursor: "pointer",
                           outline: "none",
-                          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)"
+                          boxShadow: isProgramDropdownOpen ? "0 0 0 3px rgba(15, 23, 42, 0.08)" : "0 1px 2px rgba(0, 0, 0, 0.03)",
+                          transition: "all 0.15s ease",
+                          whiteSpace: "nowrap"
                         }}
                       >
-                        <option value="all">All Modules ({activeProgramModules.length})</option>
-                        {activeProgramModules.map(mod => (
-                          <option key={mod.id} value={mod.id}>
-                            Module {mod.id}: {mod.title}
-                          </option>
-                        ))}
-                      </select>
-                      <div style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#64748B", display: "flex", alignItems: "center" }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9" /></svg>
-                      </div>
+                        <span>
+                          {activeCurriculumProgram.title} ({activeProgramCompleted.length}/{activeProgramModules.length})
+                        </span>
+                        <svg
+                          width="11"
+                          height="11"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="#64748B"
+                          strokeWidth="2.5"
+                          style={{
+                            transform: isProgramDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                            transition: "transform 0.15s ease"
+                          }}
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
+
+                      {isProgramDropdownOpen && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "calc(100% + 5px)",
+                            left: 0,
+                            minWidth: "270px",
+                            backgroundColor: "#FFFFFF",
+                            borderRadius: "8px",
+                            border: "1px solid #E2E8F0",
+                            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04)",
+                            padding: "5px",
+                            zIndex: 60
+                          }}
+                        >
+                          {programs.map(prog => {
+                            const comp = (globalProgress[prog.id] || []).length;
+                            const tot = prog.modules?.length || 0;
+                            const isSelected = prog.id === selectedCurriculumProgramId;
+
+                            return (
+                              <div
+                                key={prog.id}
+                                onClick={() => {
+                                  setSelectedCurriculumProgramId(prog.id);
+                                  setSelectedModuleFilter("all");
+                                  setIsProgramDropdownOpen(false);
+                                }}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "space-between",
+                                  gap: "10px",
+                                  padding: "8px 10px",
+                                  borderRadius: "6px",
+                                  backgroundColor: isSelected ? "#F1F5F9" : "transparent",
+                                  cursor: "pointer",
+                                  transition: "background-color 0.1s ease"
+                                }}
+                                onMouseEnter={e => {
+                                  if (!isSelected) e.currentTarget.style.backgroundColor = "#F8FAFC";
+                                }}
+                                onMouseLeave={e => {
+                                  if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                                }}
+                              >
+                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                  {isSelected ? (
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.5">
+                                      <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                  ) : (
+                                    <span style={{ width: "13px" }} />
+                                  )}
+                                  <span style={{ fontSize: "12.5px", fontWeight: isSelected ? 700 : 500, color: "#0F172A" }}>
+                                    {prog.title}
+                                  </span>
+                                </div>
+
+                                <span
+                                  style={{
+                                    fontSize: "11px",
+                                    fontWeight: 700,
+                                    padding: "1px 6px",
+                                    borderRadius: "8px",
+                                    backgroundColor: isSelected ? "#0F172A" : "#F1F5F9",
+                                    color: isSelected ? "#FFFFFF" : "#64748B"
+                                  }}
+                                >
+                                  {comp}/{tot}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   </div>
+
+                  {/* MODULE SELECT (Custom Dropdown) */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 800, color: "#64748B", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+                      MODULE
+                    </span>
+                    <div ref={moduleDropdownRef} style={{ position: "relative" }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsModuleDropdownOpen(prev => !prev);
+                          setIsProgramDropdownOpen(false);
+                        }}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "8px",
+                          padding: "6px 12px",
+                          borderRadius: "7px",
+                          border: isModuleDropdownOpen ? "1.5px solid #0F172A" : "1px solid #CBD5E1",
+                          backgroundColor: "#FFFFFF",
+                          fontSize: "12.5px",
+                          fontWeight: 600,
+                          color: "#0F172A",
+                          cursor: "pointer",
+                          outline: "none",
+                          boxShadow: isModuleDropdownOpen ? "0 0 0 3px rgba(15, 23, 42, 0.08)" : "0 1px 2px rgba(0, 0, 0, 0.03)",
+                          transition: "all 0.15s ease",
+                          whiteSpace: "nowrap"
+                        }}
+                      >
+                        <span>
+                          {selectedModuleFilter === "all"
+                            ? `All (${activeProgramModules.length})`
+                            : `Module ${!isNaN(Number(selectedModuleFilter)) ? String(selectedModuleFilter).padStart(2, "0") : selectedModuleFilter}`}
+                        </span>
+                        <svg
+                          width="11"
+                          height="11"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="#64748B"
+                          strokeWidth="2.5"
+                          style={{
+                            transform: isModuleDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                            transition: "transform 0.15s ease"
+                          }}
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
+
+                      {isModuleDropdownOpen && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "calc(100% + 5px)",
+                            left: 0,
+                            minWidth: "250px",
+                            maxHeight: "300px",
+                            overflowY: "auto",
+                            backgroundColor: "#FFFFFF",
+                            borderRadius: "8px",
+                            border: "1px solid #E2E8F0",
+                            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04)",
+                            padding: "5px",
+                            zIndex: 60
+                          }}
+                        >
+                          <div
+                            onClick={() => {
+                              setSelectedModuleFilter("all");
+                              setIsModuleDropdownOpen(false);
+                            }}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              padding: "8px 10px",
+                              borderRadius: "6px",
+                              backgroundColor: selectedModuleFilter === "all" ? "#F1F5F9" : "transparent",
+                              cursor: "pointer"
+                            }}
+                            onMouseEnter={e => {
+                              if (selectedModuleFilter !== "all") e.currentTarget.style.backgroundColor = "#F8FAFC";
+                            }}
+                            onMouseLeave={e => {
+                              if (selectedModuleFilter !== "all") e.currentTarget.style.backgroundColor = "transparent";
+                            }}
+                          >
+                            {selectedModuleFilter === "all" ? (
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            ) : (
+                              <span style={{ width: "13px" }} />
+                            )}
+                            <span style={{ fontSize: "12.5px", fontWeight: selectedModuleFilter === "all" ? 700 : 500, color: "#0F172A" }}>
+                              All Modules ({activeProgramModules.length})
+                            </span>
+                          </div>
+
+                          {activeProgramModules.map(mod => {
+                            const isSelected = selectedModuleFilter === mod.id;
+                            const formattedId = !isNaN(Number(mod.id)) ? String(mod.id).padStart(2, "0") : mod.id;
+
+                            return (
+                              <div
+                                key={mod.id}
+                                onClick={() => {
+                                  setSelectedModuleFilter(mod.id);
+                                  setIsModuleDropdownOpen(false);
+                                }}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "8px",
+                                  padding: "8px 10px",
+                                  borderRadius: "6px",
+                                  backgroundColor: isSelected ? "#F1F5F9" : "transparent",
+                                  cursor: "pointer"
+                                }}
+                                onMouseEnter={e => {
+                                  if (!isSelected) e.currentTarget.style.backgroundColor = "#F8FAFC";
+                                }}
+                                onMouseLeave={e => {
+                                  if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                                }}
+                              >
+                                {isSelected ? (
+                                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                  </svg>
+                                ) : (
+                                  <span style={{ width: "13px" }} />
+                                )}
+                                <span style={{ fontSize: "12px", fontWeight: 700, color: "#10B981" }}>
+                                  {formattedId}
+                                </span>
+                                <span style={{ fontSize: "12.5px", fontWeight: isSelected ? 700 : 500, color: "#0F172A", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                  {mod.title}
+                                </span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* SCHEDULE & DURATION */}
+                  <span style={{ fontSize: "12px", color: "#64748B", whiteSpace: "nowrap" }}>
+                    {activeCurriculumProgram.schedule?.replace("Fri, Sat & Sun", "Fri-Sun").replace(":00", "").replace(":00", "") || "Fri-Sun, 7-9 PM"} · {activeCurriculumProgram.duration || "4 months"}
+                  </span>
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: "#64748B" }}>
-                  <span>Active Cohort:</span>
-                  <span style={{ fontWeight: 700, color: "#0F172A", backgroundColor: "#F1F5F9", padding: "3px 10px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
-                    {activeCurriculumProgram.title}
+                {/* RIGHT PROGRESS BAR */}
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+                  <div style={{ width: "95px", height: "5px", backgroundColor: "#E2E8F0", borderRadius: "3px", overflow: "hidden" }}>
+                    <div
+                      style={{
+                        width: `${activeProgressPct}%`,
+                        height: "100%",
+                        backgroundColor: "#EA580C",
+                        borderRadius: "3px",
+                        transition: "width 0.3s ease"
+                      }}
+                    />
+                  </div>
+                  <span style={{ fontSize: "12px", fontWeight: 700, color: "#0F172A", whiteSpace: "nowrap" }}>
+                    {activeProgramCompleted.length}/{activeProgramModules.length} - {activeProgressPct}%
                   </span>
                 </div>
               </div>
 
-              {/* Active Program Metadata Bar */}
-              <div
+              {/* 2. INLINE ADD MODULE CARD */}
+              <form
+                onSubmit={handleAddModule}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: "16px",
-                  backgroundColor: "#F8FAFC",
+                  backgroundColor: "#FFFFFF",
                   border: "1px solid #E2E8F0",
                   borderRadius: "10px",
-                  padding: "16px 20px",
-                  marginBottom: "20px"
+                  padding: "12px 14px",
+                  marginBottom: "16px",
+                  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)"
                 }}
               >
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                    <h2 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "#0F172A" }}>
-                      {activeCurriculumProgram.title}
-                    </h2>
-                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#9A7B1A", backgroundColor: "rgba(154, 123, 26, 0.1)", padding: "2px 7px", borderRadius: "4px" }}>
-                      {activeCurriculumProgram.badge}
-                    </span>
-                  </div>
-                  <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>
-                    {activeCurriculumProgram.schedule} • Duration: {activeCurriculumProgram.duration}
-                  </p>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                  <div style={{ minWidth: "160px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", fontWeight: 700, color: "#64748B", marginBottom: "4px" }}>
-                      <span>Milestone Progress</span>
-                      <span style={{ color: activeProgressPct === 100 ? "#059669" : "#0F172A" }}>{activeProgressPct}%</span>
-                    </div>
-                    <div style={{ height: "6px", backgroundColor: "#E2E8F0", borderRadius: "3px", overflow: "hidden" }}>
-                      <div style={{ width: `${activeProgressPct}%`, height: "100%", backgroundColor: activeProgressPct === 100 ? "#10B981" : "#9A7B1A", borderRadius: "3px" }} />
-                    </div>
-                    <span style={{ fontSize: "10px", color: "#94A3B8" }}>
-                      {activeProgramCompleted.length} of {activeProgramModules.length} modules completed
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={() => setIsAddModuleModalOpen(true)}
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                  <span
                     style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      padding: "8px 14px",
-                      borderRadius: "8px",
                       backgroundColor: "#0F172A",
                       color: "#FFFFFF",
                       fontSize: "12px",
                       fontWeight: 700,
-                      border: "none",
-                      cursor: "pointer"
+                      padding: "6px 12px",
+                      borderRadius: "6px",
+                      whiteSpace: "nowrap",
+                      letterSpacing: "0.02em"
                     }}
                   >
-                    <span>+ Add Module</span>
+                    {nextModuleBadge}
+                  </span>
+                  <input
+                    type="text"
+                    placeholder="Module title, e.g. Data Visualization"
+                    value={newModuleTitle}
+                    onChange={e => setNewModuleTitle(e.target.value)}
+                    style={{
+                      flex: 1,
+                      padding: "7px 12px",
+                      fontSize: "13px",
+                      color: "#0F172A",
+                      backgroundColor: "#FFFFFF",
+                      border: "1px solid #CBD5E1",
+                      borderRadius: "6px",
+                      outline: "none"
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    disabled={savingModule}
+                    style={{
+                      backgroundColor: "#EA580C",
+                      color: "#FFFFFF",
+                      fontSize: "13px",
+                      fontWeight: 700,
+                      padding: "7px 18px",
+                      borderRadius: "6px",
+                      border: "none",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      transition: "opacity 0.15s ease",
+                      opacity: savingModule ? 0.7 : 1
+                    }}
+                  >
+                    {savingModule ? "Adding..." : "Add module"}
                   </button>
                 </div>
-              </div>
 
-              {/* Modules List */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <textarea
+                  placeholder="Subtopics: one per line (optional)"
+                  value={newModuleSubtopics}
+                  onChange={e => setNewModuleSubtopics(e.target.value)}
+                  rows={2}
+                  style={{
+                    width: "100%",
+                    padding: "8px 12px",
+                    fontSize: "12.5px",
+                    color: "#0F172A",
+                    backgroundColor: "#FFFFFF",
+                    border: "1px solid #CBD5E1",
+                    borderRadius: "6px",
+                    outline: "none",
+                    resize: "none",
+                    boxSizing: "border-box",
+                    fontFamily: "inherit"
+                  }}
+                />
+              </form>
+
+              {/* 3. MODULES LIST (Compact & Collapsible) */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 {displayedModules.length === 0 ? (
-                  <div style={{ padding: "48px 20px", textAlign: "center", backgroundColor: "#F8FAFC", borderRadius: "10px", border: "1px dashed #CBD5E1" }}>
+                  <div style={{ padding: "40px 20px", textAlign: "center", backgroundColor: "#FFFFFF", borderRadius: "10px", border: "1px dashed #CBD5E1" }}>
                     <p style={{ margin: "0 0 6px", fontSize: "14px", fontWeight: 700, color: "#0F172A" }}>
                       {activeProgramModules.length === 0 ? "No Modules in this Program Yet" : "No Module Matching Selection"}
                     </p>
-                    <p style={{ margin: "0 0 16px", fontSize: "12px", color: "#64748B" }}>
-                      {activeProgramModules.length === 0 ? "Add the first module to start defining the syllabus." : "Reset module filter to view all modules."}
+                    <p style={{ margin: 0, fontSize: "12px", color: "#64748B" }}>
+                      {activeProgramModules.length === 0 ? "Use the form above to add the first module." : "Reset module filter to view all modules."}
                     </p>
-                    {activeProgramModules.length === 0 ? (
-                      <button
-                        onClick={() => setIsAddModuleModalOpen(true)}
-                        style={{ padding: "8px 16px", borderRadius: "8px", backgroundColor: "#0F172A", color: "#FFFFFF", fontSize: "12px", fontWeight: 700, border: "none", cursor: "pointer" }}
-                      >
-                        + Add First Module
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => setSelectedModuleFilter("all")}
-                        style={{ padding: "8px 16px", borderRadius: "8px", backgroundColor: "#0F172A", color: "#FFFFFF", fontSize: "12px", fontWeight: 700, border: "none", cursor: "pointer" }}
-                      >
-                        View All Modules
-                      </button>
-                    )}
                   </div>
                 ) : (
-                  displayedModules.map(mod => {
+                  displayedModules.map((mod, modIdx) => {
                     const isCompleted = activeProgramCompleted.includes(mod.id);
                     const subtopics = mod.subtopics || [];
+                    const isExpanded = isModuleExpanded(mod.id, modIdx);
+                    const formattedNum = !isNaN(Number(mod.id))
+                      ? String(mod.id).padStart(2, "0")
+                      : mod.id;
 
                     return (
                       <div
@@ -1837,316 +2229,392 @@ export default function AdminPage() {
                           backgroundColor: "#FFFFFF",
                           borderRadius: "10px",
                           border: "1px solid #E2E8F0",
-                          padding: "20px 22px",
-                          boxShadow: "0 1px 3px rgba(0, 0, 0, 0.04)"
+                          overflow: "hidden",
+                          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)",
+                          transition: "border-color 0.15s ease"
                         }}
                       >
-                        {/* Header Row */}
-                        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", flexWrap: "wrap", marginBottom: "10px" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                        {/* Module Header Row */}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "10px 16px",
+                            backgroundColor: "#FFFFFF",
+                            gap: "12px"
+                          }}
+                        >
+                          {/* Clickable Title Area to Expand/Collapse */}
+                          <div
+                            onClick={() => toggleModuleExpanded(mod.id, modIdx)}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "12px",
+                              flex: 1,
+                              cursor: "pointer",
+                              userSelect: "none",
+                              minWidth: 0
+                            }}
+                          >
                             <span
                               style={{
-                                fontSize: "11px",
+                                fontSize: "13.5px",
                                 fontWeight: 800,
-                                backgroundColor: isCompleted ? "#ECFDF5" : "#F1F5F9",
-                                color: isCompleted ? "#059669" : "#475569",
-                                padding: "3px 9px",
-                                borderRadius: "6px",
-                                border: isCompleted ? "1px solid #A7F3D0" : "1px solid #E2E8F0"
+                                color: "#10B981",
+                                minWidth: "22px",
+                                letterSpacing: "0.02em"
                               }}
                             >
-                              Module {mod.id}
+                              {formattedNum}
                             </span>
-                            <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#0F172A" }}>
+                            <h3
+                              style={{
+                                margin: 0,
+                                fontSize: "14px",
+                                fontWeight: 700,
+                                color: "#0F172A",
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis"
+                              }}
+                            >
                               {mod.title}
                             </h3>
-                            {isCompleted ? (
-                              <span style={{ fontSize: "11px", fontWeight: 700, color: "#059669", backgroundColor: "#ECFDF5", padding: "2px 8px", borderRadius: "12px", border: "1px solid #A7F3D0" }}>
-                                ✓ Completed
-                              </span>
-                            ) : (
-                              <span style={{ fontSize: "11px", fontWeight: 600, color: "#64748B", backgroundColor: "#F8FAFC", padding: "2px 8px", borderRadius: "12px", border: "1px solid #E2E8F0" }}>
-                                ○ In Progress
-                              </span>
-                            )}
                           </div>
 
-                          {/* Module Actions */}
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <button
-                              onClick={() => handleToggleGlobalModule(activeCurriculumProgram.id, mod.id, isCompleted)}
+                          {/* Right Meta & Actions */}
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+                            {/* Collapsed / Subtopic count status */}
+                            <span
+                              onClick={() => toggleModuleExpanded(mod.id, modIdx)}
                               style={{
-                                padding: "6px 12px",
-                                borderRadius: "6px",
                                 fontSize: "12px",
-                                fontWeight: 600,
+                                color: isExpanded ? "#64748B" : "#94A3B8",
                                 cursor: "pointer",
-                                backgroundColor: isCompleted ? "#FFFFFF" : "#059669",
-                                color: isCompleted ? "#475569" : "#FFFFFF",
-                                border: isCompleted ? "1px solid #CBD5E1" : "none",
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: "5px"
+                                userSelect: "none"
                               }}
                             >
-                              <span>{isCompleted ? "Mark Incomplete" : "Mark Complete ✓"}</span>
-                            </button>
+                              {isExpanded ? `${subtopics.length} subtopics` : "collapsed"}
+                            </span>
 
-                            <button
-                              onClick={() => setEditingModule({
-                                programId: activeCurriculumProgram.id,
-                                moduleId: mod.id,
-                                title: mod.title
-                              })}
-                              title="Edit Module"
-                              style={{
-                                padding: "6px 10px",
-                                borderRadius: "6px",
-                                fontSize: "12px",
-                                fontWeight: 600,
-                                cursor: "pointer",
-                                backgroundColor: "#F1F5F9",
-                                color: "#0F172A",
-                                border: "1px solid #CBD5E1",
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: "4px"
-                              }}
-                            >
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                              <span>Edit</span>
-                            </button>
+                            {/* Status Badge */}
+                            {isCompleted ? (
+                              <span
+                                style={{
+                                  fontSize: "11px",
+                                  fontWeight: 700,
+                                  color: "#059669",
+                                  backgroundColor: "#ECFDF5",
+                                  border: "1px solid #A7F3D0",
+                                  padding: "2px 8px",
+                                  borderRadius: "12px"
+                                }}
+                              >
+                                Completed
+                              </span>
+                            ) : (
+                              <span
+                                style={{
+                                  fontSize: "11px",
+                                  fontWeight: 600,
+                                  color: "#64748B",
+                                  backgroundColor: "#F8FAFC",
+                                  border: "1px solid #E2E8F0",
+                                  padding: "2px 8px",
+                                  borderRadius: "12px"
+                                }}
+                              >
+                                In Progress
+                              </span>
+                            )}
 
-                            <button
-                              onClick={() => handleRemoveModule(activeCurriculumProgram.id, mod.id, mod.title)}
-                              title="Delete Module"
-                              style={{
-                                padding: "6px 10px",
-                                borderRadius: "6px",
-                                fontSize: "12px",
-                                fontWeight: 600,
-                                cursor: "pointer",
-                                backgroundColor: "#FEF2F2",
-                                color: "#DC2626",
-                                border: "1px solid #FEE2E2"
-                              }}
-                            >
-                              Delete
-                            </button>
+                            {/* Action Buttons: Checkmark, Edit, Delete */}
+                            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                              {/* Complete Toggle Button */}
+                              <button
+                                onClick={() => handleToggleGlobalModule(activeCurriculumProgram.id, mod.id, isCompleted)}
+                                title={isCompleted ? "Mark Incomplete" : "Mark Complete"}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  width: "28px",
+                                  height: "28px",
+                                  borderRadius: "6px",
+                                  border: "1px solid #E2E8F0",
+                                  backgroundColor: isCompleted ? "#ECFDF5" : "#FFFFFF",
+                                  color: isCompleted ? "#059669" : "#64748B",
+                                  cursor: "pointer",
+                                  padding: 0
+                                }}
+                              >
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                  <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                              </button>
+
+                              {/* Edit Module Title Button */}
+                              <button
+                                onClick={() =>
+                                  setEditingModule({
+                                    programId: activeCurriculumProgram.id,
+                                    moduleId: mod.id,
+                                    title: mod.title
+                                  })
+                                }
+                                title="Edit Module Title"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  width: "28px",
+                                  height: "28px",
+                                  borderRadius: "6px",
+                                  border: "1px solid #E2E8F0",
+                                  backgroundColor: "#FFFFFF",
+                                  color: "#64748B",
+                                  cursor: "pointer",
+                                  padding: 0
+                                }}
+                              >
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                </svg>
+                              </button>
+
+                              {/* Delete Module Button */}
+                              <button
+                                onClick={() => handleRemoveModule(activeCurriculumProgram.id, mod.id, mod.title)}
+                                title="Delete Module"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  width: "28px",
+                                  height: "28px",
+                                  borderRadius: "6px",
+                                  border: "1px solid #FEE2E2",
+                                  backgroundColor: "#FFFFFF",
+                                  color: "#EF4444",
+                                  cursor: "pointer",
+                                  padding: 0
+                                }}
+                              >
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                  <polyline points="3 6 5 6 21 6" />
+                                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                </svg>
+                              </button>
+                            </div>
                           </div>
                         </div>
 
-                        {/* Subtopics Section (strictly top-to-bottom) */}
-                        <div style={{ borderTop: "1px solid #F1F5F9", paddingTop: "14px" }}>
-                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-                            <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "#64748B", letterSpacing: "0.04em" }}>
-                              Subtopics &amp; Topics Covered ({subtopics.length})
-                            </span>
-                            <span style={{ fontSize: "11px", color: "#94A3B8" }}>
-                              Syllabus sequence (top to bottom)
-                            </span>
-                          </div>
-
-                          {/* Vertical Top-to-Bottom List */}
-                          <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "12px" }}>
+                        {/* Subtopics Section (When Expanded) */}
+                        {isExpanded && (
+                          <div style={{ borderTop: "1px solid #F1F5F9", padding: "10px 18px 14px 44px", backgroundColor: "#FAFAFA" }}>
                             {subtopics.length === 0 ? (
-                              <div style={{ padding: "12px 14px", backgroundColor: "#F8FAFC", border: "1px dashed #CBD5E1", borderRadius: "8px", fontSize: "12px", color: "#64748B" }}>
-                                No subtopics added yet for Module {mod.id}.
+                              <div style={{ padding: "8px 0", fontSize: "12px", color: "#94A3B8" }}>
+                                No subtopics added yet.
                               </div>
                             ) : (
-                              subtopics.map((subtopic, idx) => {
-                                const isEditing = editingSubtopic?.moduleId === mod.id && editingSubtopic?.index === idx;
+                              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                                {subtopics.map((subtopic, idx) => {
+                                  const isEditing = editingSubtopic?.moduleId === mod.id && editingSubtopic?.index === idx;
 
-                                return (
-                                  <div
-                                    key={idx}
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "space-between",
-                                      gap: "12px",
-                                      padding: isEditing ? "8px 12px" : "10px 14px",
-                                      backgroundColor: isEditing ? "#FFFFFF" : "#F8FAFC",
-                                      border: isEditing ? "1px solid #9A7B1A" : "1px solid #E2E8F0",
-                                      borderRadius: "8px",
-                                      boxShadow: isEditing ? "0 0 0 3px rgba(154, 123, 26, 0.12)" : "none",
-                                      transition: "all 0.15s ease"
-                                    }}
-                                  >
-                                    <span style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", minWidth: "22px", flexShrink: 0 }}>
-                                      {idx + 1}.
-                                    </span>
-
-                                    {isEditing ? (
-                                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1 }}>
-                                        <input
-                                          type="text"
-                                          value={editingSubtopic.text}
-                                          onChange={e => setEditingSubtopic({ ...editingSubtopic, text: e.target.value })}
-                                          onKeyDown={e => {
-                                            if (e.key === "Enter") {
-                                              e.preventDefault();
-                                              handleSaveSubtopicEdit();
-                                            } else if (e.key === "Escape") {
-                                              setEditingSubtopic(null);
-                                            }
-                                          }}
-                                          autoFocus
-                                          style={{
-                                            flex: 1,
-                                            padding: "6px 10px",
-                                            borderRadius: "6px",
-                                            border: "1px solid #CBD5E1",
-                                            fontSize: "13px",
-                                            color: "#0F172A",
-                                            outline: "none"
-                                          }}
-                                        />
-                                        <button
-                                          onClick={handleSaveSubtopicEdit}
-                                          disabled={savingSubtopicEdit}
-                                          style={{
-                                            padding: "6px 12px",
-                                            borderRadius: "6px",
-                                            backgroundColor: "#0F172A",
-                                            color: "#FFFFFF",
-                                            fontSize: "11px",
-                                            fontWeight: 700,
-                                            border: "none",
-                                            cursor: "pointer",
-                                            whiteSpace: "nowrap"
-                                          }}
-                                        >
-                                          {savingSubtopicEdit ? "Saving..." : "Save"}
-                                        </button>
-                                        <button
-                                          onClick={() => setEditingSubtopic(null)}
-                                          style={{
-                                            padding: "6px 10px",
-                                            borderRadius: "6px",
-                                            backgroundColor: "transparent",
-                                            color: "#64748B",
-                                            border: "1px solid #CBD5E1",
-                                            fontSize: "11px",
-                                            fontWeight: 600,
-                                            cursor: "pointer",
-                                            whiteSpace: "nowrap"
-                                          }}
-                                        >
-                                          Cancel
-                                        </button>
-                                      </div>
-                                    ) : (
-                                      <>
-                                        <div style={{ flex: 1, minWidth: 0 }}>
-                                          <span style={{ fontSize: "13px", color: "#0F172A", fontWeight: 500, lineHeight: 1.45 }}>
-                                            {subtopic}
-                                          </span>
-                                        </div>
-
-                                        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexShrink: 0 }}>
-                                          <button
-                                            onClick={() => setEditingSubtopic({ moduleId: mod.id, index: idx, text: subtopic })}
-                                            title="Edit subtopic"
-                                            style={{
-                                              display: "inline-flex",
-                                              alignItems: "center",
-                                              gap: "4px",
-                                              background: "transparent",
-                                              border: "1px solid #E2E8F0",
-                                              color: "#475569",
-                                              cursor: "pointer",
-                                              padding: "4px 8px",
-                                              borderRadius: "5px",
-                                              fontSize: "11px",
-                                              fontWeight: 600
+                                  return (
+                                    <div
+                                      key={idx}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        gap: "10px",
+                                        padding: isEditing ? "6px 8px" : "4px 0",
+                                        backgroundColor: isEditing ? "#FFFFFF" : "transparent",
+                                        border: isEditing ? "1px solid #CBD5E1" : "none",
+                                        borderRadius: isEditing ? "6px" : "0"
+                                      }}
+                                    >
+                                      {isEditing ? (
+                                        <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1 }}>
+                                          <input
+                                            type="text"
+                                            value={editingSubtopic.text}
+                                            onChange={e => setEditingSubtopic({ ...editingSubtopic, text: e.target.value })}
+                                            onKeyDown={e => {
+                                              if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                handleSaveSubtopicEdit();
+                                              } else if (e.key === "Escape") {
+                                                setEditingSubtopic(null);
+                                              }
                                             }}
-                                            onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#F1F5F9"; e.currentTarget.style.color = "#0F172A"; }}
-                                            onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#475569"; }}
-                                          >
-                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                            <span>Edit</span>
-                                          </button>
-
-                                          <button
-                                            onClick={() => handleRemoveSubtopic(activeCurriculumProgram.id, mod.id, idx, subtopic)}
-                                            title="Delete subtopic"
+                                            autoFocus
                                             style={{
-                                              display: "inline-flex",
-                                              alignItems: "center",
-                                              gap: "4px",
-                                              background: "transparent",
+                                              flex: 1,
+                                              padding: "5px 10px",
+                                              borderRadius: "6px",
+                                              border: "1px solid #CBD5E1",
+                                              fontSize: "12.5px",
+                                              outline: "none"
+                                            }}
+                                          />
+                                          <button
+                                            onClick={handleSaveSubtopicEdit}
+                                            disabled={savingSubtopicEdit}
+                                            style={{
+                                              padding: "5px 10px",
+                                              borderRadius: "6px",
+                                              backgroundColor: "#0F172A",
+                                              color: "#FFFFFF",
+                                              fontSize: "11px",
+                                              fontWeight: 700,
                                               border: "none",
-                                              color: "#94A3B8",
-                                              cursor: "pointer",
-                                              padding: "4px 8px",
-                                              borderRadius: "5px",
-                                              fontSize: "11px",
-                                              fontWeight: 600
+                                              cursor: "pointer"
                                             }}
-                                            onMouseEnter={e => { e.currentTarget.style.color = "#DC2626"; e.currentTarget.style.backgroundColor = "#FEF2F2"; }}
-                                            onMouseLeave={e => { e.currentTarget.style.color = "#94A3B8"; e.currentTarget.style.backgroundColor = "transparent"; }}
                                           >
-                                            <span>Delete</span>
-                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                                            Save
+                                          </button>
+                                          <button
+                                            onClick={() => setEditingSubtopic(null)}
+                                            style={{
+                                              padding: "5px 8px",
+                                              borderRadius: "6px",
+                                              backgroundColor: "transparent",
+                                              color: "#64748B",
+                                              border: "1px solid #CBD5E1",
+                                              fontSize: "11px",
+                                              cursor: "pointer"
+                                            }}
+                                          >
+                                            Cancel
                                           </button>
                                         </div>
-                                      </>
-                                    )}
-                                  </div>
-                                );
-                              })
-                            )}
-                          </div>
+                                      ) : (
+                                        <>
+                                          <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", flex: 1, minWidth: 0 }}>
+                                            <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#64748B", minWidth: "16px" }}>
+                                              {idx + 1}.
+                                            </span>
+                                            <span style={{ fontSize: "12.5px", color: "#334155", fontWeight: 450, lineHeight: 1.45 }}>
+                                              {subtopic}
+                                            </span>
+                                          </div>
 
-                          {/* Inline Add Subtopic Input */}
-                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                            <input
-                              type="text"
-                              placeholder={`+ Add a new subtopic to Module ${mod.id}...`}
-                              value={subtopicInputs[mod.id] || ""}
-                              onChange={e => {
-                                const val = e.target.value;
-                                setSubtopicInputs(prev => ({ ...prev, [mod.id]: val }));
-                              }}
-                              onKeyDown={e => {
-                                if (e.key === "Enter") {
-                                  e.preventDefault();
-                                  handleAddSubtopic(activeCurriculumProgram.id, mod.id);
-                                }
-                              }}
-                              style={{
-                                flex: 1,
-                                padding: "9px 14px",
-                                borderRadius: "8px",
-                                border: "1px solid #CBD5E1",
-                                backgroundColor: "#FFFFFF",
-                                fontSize: "13px",
-                                outline: "none"
-                              }}
-                            />
-                            <button
-                              onClick={() => handleAddSubtopic(activeCurriculumProgram.id, mod.id)}
-                              disabled={savingSubtopicKey === mod.id}
-                              style={{
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: "5px",
-                                padding: "9px 16px",
-                                borderRadius: "8px",
-                                backgroundColor: "#0F172A",
-                                color: "#FFFFFF",
-                                fontSize: "12px",
-                                fontWeight: 700,
-                                border: "none",
-                                cursor: "pointer",
-                                whiteSpace: "nowrap"
-                              }}
-                            >
-                              <span>{savingSubtopicKey === mod.id ? "Adding..." : "+ Add Subtopic"}</span>
-                            </button>
+                                          <div style={{ display: "flex", alignItems: "center", gap: "4px", flexShrink: 0 }}>
+                                            {/* Edit Subtopic Icon */}
+                                            <button
+                                              onClick={() => setEditingSubtopic({ moduleId: mod.id, index: idx, text: subtopic })}
+                                              title="Edit subtopic"
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                width: "24px",
+                                                height: "24px",
+                                                borderRadius: "4px",
+                                                border: "1px solid #E2E8F0",
+                                                backgroundColor: "#FFFFFF",
+                                                color: "#64748B",
+                                                cursor: "pointer",
+                                                padding: 0
+                                              }}
+                                            >
+                                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                              </svg>
+                                            </button>
+
+                                            {/* Delete Subtopic Icon */}
+                                            <button
+                                              onClick={() => handleRemoveSubtopic(activeCurriculumProgram.id, mod.id, idx, subtopic)}
+                                              title="Delete subtopic"
+                                              style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                width: "24px",
+                                                height: "24px",
+                                                borderRadius: "4px",
+                                                border: "1px solid #E2E8F0",
+                                                backgroundColor: "#FFFFFF",
+                                                color: "#94A3B8",
+                                                cursor: "pointer",
+                                                padding: 0
+                                              }}
+                                              onMouseEnter={e => {
+                                                e.currentTarget.style.color = "#DC2626";
+                                                e.currentTarget.style.borderColor = "#FEE2E2";
+                                              }}
+                                              onMouseLeave={e => {
+                                                e.currentTarget.style.color = "#94A3B8";
+                                                e.currentTarget.style.borderColor = "#E2E8F0";
+                                              }}
+                                            >
+                                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                                <line x1="18" y1="6" x2="6" y2="18" />
+                                                <line x1="6" y1="6" x2="18" y2="18" />
+                                              </svg>
+                                            </button>
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+
+                            {/* Inline Add Subtopic Input */}
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "10px" }}>
+                              <input
+                                type="text"
+                                placeholder="+ Add subtopic and press Enter"
+                                value={subtopicInputs[mod.id] || ""}
+                                onChange={e => {
+                                  const val = e.target.value;
+                                  setSubtopicInputs(prev => ({ ...prev, [mod.id]: val }));
+                                }}
+                                onKeyDown={e => {
+                                  if (e.key === "Enter") {
+                                    e.preventDefault();
+                                    handleAddSubtopic(activeCurriculumProgram.id, mod.id);
+                                  }
+                                }}
+                                style={{
+                                  flex: 1,
+                                  padding: "6px 12px",
+                                  borderRadius: "6px",
+                                  border: "1px solid #CBD5E1",
+                                  backgroundColor: "#FFFFFF",
+                                  fontSize: "12px",
+                                  outline: "none"
+                                }}
+                              />
+                              <button
+                                onClick={() => handleAddSubtopic(activeCurriculumProgram.id, mod.id)}
+                                disabled={savingSubtopicKey === mod.id}
+                                style={{
+                                  padding: "6px 14px",
+                                  borderRadius: "6px",
+                                  backgroundColor: "#0F172A",
+                                  color: "#FFFFFF",
+                                  fontSize: "12px",
+                                  fontWeight: 700,
+                                  border: "none",
+                                  cursor: "pointer",
+                                  whiteSpace: "nowrap"
+                                }}
+                              >
+                                {savingSubtopicKey === mod.id ? "Adding..." : "Add"}
+                              </button>
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                     );
                   })

@@ -63,6 +63,7 @@
     ]
   }
   </script>
+  <script src="/nav-auth.js"></script>
 </head>
 
 <body>
@@ -70,15 +71,15 @@
   <header>
     <div class="container">
       <nav aria-label="Main navigation">
-        <a href="../index.html" class="nav-brand">
+        <a href="/" class="nav-brand">
           <img src="../favicon.ico" alt="SieLabs Logo" class="nav-logo"
             style="width: 30px; height: 30px; object-fit: contain; border-radius: 4px;">
           SieLabs
         </a>
         <div class="nav-links" id="navLinks">
-          <a href="#" class="active">Programs</a>
-          <a href="../products/index.html">Products</a>
-          <a href="../careers/index.html">Careers</a>
+          <a href="/programs/index.html" class="active">Programs</a>
+          <a href="/products/index.html">Products</a>
+          <a href="/careers/index.html">Careers</a>
           <a href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1" target="_blank" rel="noreferrer"
             class="nav-cta nav-cta-community mobile-cta" style="display: flex; align-items: center; gap: 6px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -90,9 +91,9 @@
             Join Community
           </a>
         </div>
-        <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 16px; margin-left: 36px;">
           <a href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1" target="_blank" rel="noreferrer"
-            class="nav-cta nav-cta-community desktop-cta" style="display: flex; align-items: center; gap: 6px;">
+            class="nav-cta nav-cta-community desktop-cta" style="display: flex; align-items: center; gap: 6px; margin-left: 0;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path
                 d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z" />
@@ -101,6 +102,7 @@
             </svg>
             Join Community
           </a>
+          <div id="navAuthSection" style="display: flex; align-items: center;"><script>window.renderNavAuth && window.renderNavAuth();</script></div>
           <button class="hamburger-btn" onclick="document.getElementById('navLinks').classList.toggle('show')">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M3 12h18M3 6h18M3 18h18" />
@@ -128,29 +130,29 @@
         </div>
 
         <div class="program-grid reveal" id="programGrid">
-          <div class="program-card" data-status="upcoming">
-            <a href="java-opensource/index.html"
+          <div class="program-card" data-status="ongoing upcoming">
+            <a href="python-ml/index.html"
               style="position: absolute; inset: 0; z-index: 3; border-radius: inherit;"
-              aria-label="View Java with Open Source details"></a>
+              aria-label="View Python with Machine Learning details"></a>
             <div class="program-card-img-wrapper">
-              <img src="java-opensource/java_thumbnail.png" alt="Java with Open Source"
+              <img src="python-ml/python_ml_thumbnail.png" alt="Python with Machine Learning"
                 style="width: 100%; object-fit: cover; aspect-ratio: 16/9; display: block;">
-              <span class="card-badge card-badge-upcoming">Upcoming</span>
+              <span class="card-badge card-badge-ongoing">Ongoing</span>
             </div>
             <div class="program-card-content">
               <span class="cap-kicker">Program</span>
-              <h3 style="margin-top: 4px; margin-bottom: 10px;">Java with Open Source</h3>
+              <h3 style="margin-top: 4px; margin-bottom: 10px;">Python with Machine Learning</h3>
               <p class="program-schedule">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                Fri, Sat &amp; Sun, 5:30 PM – 7:30 PM
+                Fri, Sat &amp; Sun, 7:00 PM – 9:00 PM
               </p>
-              <p class="program-start-date">* Starting October 2026</p>
+              <p class="program-start-date">* Started from 9 Oct (Demo was on 28, 29, 30 Oct)</p>
               <div class="program-card-footer">
                 <div class="panel-tags" style="margin-bottom: 0;">
                   <span>4 Months</span>
                   <span class="price-tag"><span class="price-old">₹7,000</span><span class="price-new">₹5,000</span></span>
                 </div>
-                <a href="java-opensource/index.html" class="program-cta">View Details →</a>
+                <a href="python-ml/index.html" class="program-cta">View Details →</a>
               </div>
             </div>
           </div>
@@ -190,7 +192,7 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand-col">
-          <a href="../index.html" class="footer-brand">
+          <a href="/" class="footer-brand">
             <img src="../favicon.ico" alt="SieLabs Logo" class="nav-logo"
               style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;">
             SieLabs
@@ -276,8 +278,8 @@
         const filter = btn.getAttribute('data-filter');
 
         programCards.forEach(card => {
-          const status = card.getAttribute('data-status');
-          if (filter === 'all' || status === filter) {
+          const status = (card.getAttribute('data-status') || '').split(' ');
+          if (filter === 'all' || status.includes(filter)) {
             card.classList.remove('filter-hidden');
           } else {
             card.classList.add('filter-hidden');
