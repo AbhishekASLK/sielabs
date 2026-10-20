@@ -19,7 +19,6 @@ export async function getOrSeedPrograms(): Promise<ProgramDefinition[]> {
         modules: prog.modules.map(m => ({
           id: m.id,
           title: m.title,
-          summary: m.summary,
           subtopics: m.subtopics || []
         }))
       });
@@ -36,7 +35,6 @@ export async function getOrSeedPrograms(): Promise<ProgramDefinition[]> {
       modules: doc.modules.map((m: any) => ({
         id: m.id,
         title: m.title,
-        summary: m.summary,
         subtopics: m.subtopics || []
       }))
     }));
@@ -52,7 +50,6 @@ export async function getOrSeedPrograms(): Promise<ProgramDefinition[]> {
     modules: doc.modules.map((m: any) => ({
       id: m.id,
       title: m.title,
-      summary: m.summary,
       subtopics: m.subtopics || []
     }))
   }));

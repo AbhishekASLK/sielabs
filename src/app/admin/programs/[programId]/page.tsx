@@ -36,7 +36,6 @@ export default function ProgramEditPage() {
   // Modal state for Adding Module
   const [isAddModuleModalOpen, setIsAddModuleModalOpen] = useState(false);
   const [newModuleTitle, setNewModuleTitle] = useState("");
-  const [newModuleSummary, setNewModuleSummary] = useState("");
   const [newModuleSubtopics, setNewModuleSubtopics] = useState("");
   const [savingModule, setSavingModule] = useState(false);
 
@@ -192,7 +191,6 @@ export default function ProgramEditPage() {
           adminUser: admin,
           programId,
           title: newModuleTitle,
-          summary: newModuleSummary,
           subtopics: subtopicsList
         })
       });
@@ -202,7 +200,6 @@ export default function ProgramEditPage() {
         showToast(`New module added successfully!`);
         setIsAddModuleModalOpen(false);
         setNewModuleTitle("");
-        setNewModuleSummary("");
         setNewModuleSubtopics("");
         fetchPrograms();
       } else {
@@ -664,15 +661,9 @@ export default function ProgramEditPage() {
                             )}
                           </div>
 
-                          <h3 style={{ margin: "0 0 4px", fontSize: "16px", fontWeight: 700, color: isDone ? "#065F46" : "#0F172A" }}>
+                          <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: isDone ? "#065F46" : "#0F172A" }}>
                             {mod.title}
                           </h3>
-
-                          {mod.summary && (
-                            <p style={{ margin: 0, fontSize: "13px", color: isDone ? "rgba(6, 95, 70, 0.8)" : "rgba(15, 23, 42, 0.6)", lineHeight: 1.45 }}>
-                              {mod.summary}
-                            </p>
-                          )}
                         </div>
                       </div>
 
@@ -888,29 +879,6 @@ export default function ProgramEditPage() {
                     fontSize: "13px",
                     outline: "none",
                     boxSizing: "border-box"
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "rgba(15, 23, 42, 0.65)", marginBottom: "5px" }}>
-                  Module Summary (Optional)
-                </label>
-                <textarea
-                  placeholder="Brief summary of what this module covers..."
-                  value={newModuleSummary}
-                  onChange={e => setNewModuleSummary(e.target.value)}
-                  rows={2}
-                  style={{
-                    width: "100%",
-                    padding: "9px 12px",
-                    borderRadius: "8px",
-                    border: "1px solid rgba(0, 0, 0, 0.12)",
-                    backgroundColor: "#FAFAF8",
-                    fontSize: "13px",
-                    outline: "none",
-                    boxSizing: "border-box",
-                    fontFamily: "inherit"
                   }}
                 />
               </div>

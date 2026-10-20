@@ -55,7 +55,6 @@ export default function AdminPage() {
   const [selectedModuleFilter, setSelectedModuleFilter] = useState<string>("all");
   const [isAddModuleModalOpen, setIsAddModuleModalOpen] = useState(false);
   const [newModuleTitle, setNewModuleTitle] = useState("");
-  const [newModuleSummary, setNewModuleSummary] = useState("");
   const [newModuleSubtopics, setNewModuleSubtopics] = useState("");
   const [savingModule, setSavingModule] = useState(false);
   const [subtopicInputs, setSubtopicInputs] = useState<Record<string, string>>({});
@@ -75,7 +74,6 @@ export default function AdminPage() {
     programId: string;
     moduleId: string;
     title: string;
-    summary: string;
   } | null>(null);
   const [savingEditModule, setSavingEditModule] = useState(false);
 
@@ -344,7 +342,6 @@ export default function AdminPage() {
           adminUser: admin,
           programId: selectedCurriculumProgramId,
           title: newModuleTitle.trim(),
-          summary: newModuleSummary.trim(),
           subtopics: subtopicsList
         })
       });
@@ -354,7 +351,6 @@ export default function AdminPage() {
         showToast(`New module added successfully!`);
         setIsAddModuleModalOpen(false);
         setNewModuleTitle("");
-        setNewModuleSummary("");
         setNewModuleSubtopics("");
         fetchPrograms();
       } else {
@@ -411,7 +407,7 @@ export default function AdminPage() {
     });
   };
 
-  // Update Module (Title and Summary)
+  // Update Module (Title and Subtopics)
   const handleUpdateModule = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingModule || !editingModule.title.trim()) {
@@ -432,8 +428,7 @@ export default function AdminPage() {
           adminUser: admin,
           programId: editingModule.programId,
           moduleId: editingModule.moduleId,
-          title: editingModule.title.trim(),
-          summary: editingModule.summary.trim()
+          title: editingModule.title.trim()
         })
       });
 
@@ -1901,8 +1896,7 @@ export default function AdminPage() {
                               onClick={() => setEditingModule({
                                 programId: activeCurriculumProgram.id,
                                 moduleId: mod.id,
-                                title: mod.title,
-                                summary: mod.summary || ""
+                                title: mod.title
                               })}
                               title="Edit Module"
                               style={{
@@ -1941,13 +1935,6 @@ export default function AdminPage() {
                             </button>
                           </div>
                         </div>
-
-                        {/* Summary */}
-                        {mod.summary && (
-                          <p style={{ margin: "0 0 14px", fontSize: "13px", color: "#475569", lineHeight: 1.5 }}>
-                            {mod.summary}
-                          </p>
-                        )}
 
                         {/* Subtopics Section (strictly top-to-bottom) */}
                         <div style={{ borderTop: "1px solid #F1F5F9", paddingTop: "14px" }}>
@@ -2466,7 +2453,7 @@ export default function AdminPage() {
                   Add Module to {activeCurriculumProgram.title}
                 </h2>
                 <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#64748B" }}>
-                  Create a new syllabus module with summary and subtopics.
+                  Create a new syllabus module with subtopics.
                 </p>
               </div>
               <button
@@ -2496,29 +2483,6 @@ export default function AdminPage() {
                     backgroundColor: "#FAFAF8",
                     fontSize: "13px",
                     outline: "none",
-                    boxSizing: "border-box"
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "#64748B", marginBottom: "5px" }}>
-                  Summary / Overview
-                </label>
-                <textarea
-                  value={newModuleSummary}
-                  onChange={e => setNewModuleSummary(e.target.value)}
-                  placeholder="Brief summary of what this module covers..."
-                  rows={2}
-                  style={{
-                    width: "100%",
-                    padding: "9px 12px",
-                    borderRadius: "8px",
-                    border: "1px solid #CBD5E1",
-                    backgroundColor: "#FAFAF8",
-                    fontSize: "13px",
-                    outline: "none",
-                    resize: "vertical",
                     boxSizing: "border-box"
                   }}
                 />
@@ -2732,7 +2696,7 @@ export default function AdminPage() {
       )}
 
       {/* ═════════════════════════════════════════════════════════════════ */}
-      {/* MODAL: EDIT MODULE (Title and Summary)                         */}
+      {/* MODAL: EDIT MODULE (Title and Subtopics)                       */}
       {/* ═════════════════════════════════════════════════════════════════ */}
       {editingModule && (
         <div
@@ -2798,29 +2762,6 @@ export default function AdminPage() {
                     fontWeight: 600,
                     color: "#0F172A",
                     outline: "none",
-                    boxSizing: "border-box"
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: 700, textTransform: "uppercase", color: "#64748B", marginBottom: "5px" }}>
-                  Summary / Overview
-                </label>
-                <textarea
-                  value={editingModule.summary}
-                  onChange={e => setEditingModule({ ...editingModule, summary: e.target.value })}
-                  rows={3}
-                  placeholder="Module summary..."
-                  style={{
-                    width: "100%",
-                    padding: "9px 12px",
-                    borderRadius: "8px",
-                    border: "1px solid #CBD5E1",
-                    backgroundColor: "#FAFAF8",
-                    fontSize: "13px",
-                    outline: "none",
-                    resize: "vertical",
                     boxSizing: "border-box"
                   }}
                 />

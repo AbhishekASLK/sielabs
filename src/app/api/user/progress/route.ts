@@ -44,10 +44,16 @@ export async function GET(req: Request) {
       programName: string;
       enrolledAt: Date;
     }) => {
-      const def = allPrograms.find(p => p.id === ep.programId);
-      const totalModules = def ? def.modules.length : 6;
-      // Global completed modules for this program!
-      const globalCompletedList = progressMap[ep.programId] || [];
+      const def = allPrograms.find(p => 
+        p.id === ep.programId || 
+        p.title.toLowerCase() === (ep.programId || '').toLowerCase() ||
+        (ep.programName && p.title.toLowerCase() === ep.programName.toLowerCase()) ||
+        (ep.programName && p.id.toLowerCase() === ep.programName.toLowerCase())
+      );
+      const targetProgramId = def ? def.id : ep.programId;
+      const totalModules = def ? def.modules.length : 0;
+      // Global completed modules for this program from database!
+      const globalCompletedList = progressMap[targetProgramId] || progressMap[ep.programId] || [];
       const completedCount = globalCompletedList.length;
       const percentage = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
 
@@ -57,8 +63,8 @@ export async function GET(req: Request) {
       }));
 
       return {
-        programId: ep.programId,
-        programName: ep.programName || def?.title || 'SieLabs Program',
+        programId: targetProgramId,
+        programName: def?.title || ep.programName || 'SieLabs Program',
         badge: def?.badge || 'Cohort Program',
         schedule: def?.schedule || 'Weekend Cohort',
         duration: def?.duration || '4 Months',

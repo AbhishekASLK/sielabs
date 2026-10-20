@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/mongodb';
 import User from '@/models/User';
-import { getProgramById } from '@/lib/programsData';
+import { getOrSeedPrograms } from '@/lib/programService';
 
 import { isAuthorizedAdmin } from '@/lib/adminAuth';
 
@@ -19,7 +19,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'studentIdentifier and programId are required' }, { status: 400 });
     }
 
-    const program = getProgramById(programId);
+    const allPrograms = await getOrSeedPrograms();
+    const program = allPrograms.find(p => p.id === programId || p.title.toLowerCase() === programId.toLowerCase());
     if (!program) {
       return NextResponse.json({ message: 'Invalid program ID' }, { status: 400 });
     }

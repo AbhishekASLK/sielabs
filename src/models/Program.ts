@@ -3,7 +3,6 @@ import mongoose, { Schema, models } from 'mongoose';
 const moduleSchema = new Schema({
   id: { type: String, required: true },
   title: { type: String, required: true },
-  summary: { type: String, default: '' },
   subtopics: { type: [String], default: [] }
 }, { _id: false });
 

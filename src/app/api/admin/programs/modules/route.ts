@@ -20,7 +20,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { adminUser, programId, title, summary, subtopics } = body;
+    const { adminUser, programId, title, subtopics } = body;
 
     const authorized = await isAuthorizedAdmin(req, adminUser);
     if (!authorized) {
@@ -51,7 +51,6 @@ export async function POST(req: Request) {
     const newModule = {
       id: newModuleId,
       title: title.trim(),
-      summary: (summary || '').trim(),
       subtopics: cleanSubtopics
     };
 
@@ -128,7 +127,7 @@ export async function DELETE(req: Request) {
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
-    const { adminUser, programId, moduleId, title, summary } = body;
+    const { adminUser, programId, moduleId, title } = body;
 
     const authorized = await isAuthorizedAdmin(req, adminUser);
     if (!authorized) {
@@ -153,7 +152,6 @@ export async function PUT(req: Request) {
     }
 
     mod.title = title.trim();
-    if (summary !== undefined) mod.summary = summary.trim();
 
     program.markModified('modules');
     await program.save();

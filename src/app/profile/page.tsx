@@ -191,6 +191,27 @@ export default function ProfilePage() {
   const [loadingProgress, setLoadingProgress] = useState(false);
   const [userRole, setUserRole] = useState<string>("student");
 
+  // Expanded state for curriculum modules (subtopics collapsed initially)
+  const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({});
+
+  const toggleModuleSubtopics = (moduleKey: string) => {
+    setExpandedModules(prev => ({
+      ...prev,
+      [moduleKey]: !prev[moduleKey]
+    }));
+  };
+
+  const toggleAllModulesForProgram = (programModules: { id: string }[], programId: string) => {
+    const allExpanded = programModules.every(m => Boolean(expandedModules[`${programId}_${m.id}`]));
+    setExpandedModules(prev => {
+      const next = { ...prev };
+      programModules.forEach(m => {
+        next[`${programId}_${m.id}`] = !allExpanded;
+      });
+      return next;
+    });
+  };
+
   // Profile Form State
   const [profile, setProfile] = useState<UserProfileData>({
     name: "",
@@ -1590,102 +1611,246 @@ export default function ProfilePage() {
 
                         {/* Modules Breakdown List */}
                         <div>
-                          <h4 style={{ fontSize: "15px", fontWeight: 700, margin: "0 0 14px", color: "#1A1A1A", display: "flex", alignItems: "center", gap: "8px" }}>
-                            <span>Curriculum Modules &amp; Status</span>
-                            <span style={{ fontSize: "12px", fontWeight: 500, color: "rgba(26, 26, 26, 0.5)" }}>
-                              (Updated by Admin)
-                            </span>
-                          </h4>
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "0 0 14px", flexWrap: "wrap", gap: "10px" }}>
+                            <h4 style={{ fontSize: "15px", fontWeight: 700, margin: 0, color: "#1A1A1A", display: "flex", alignItems: "center", gap: "8px" }}>
+                              <span>Curriculum Modules &amp; Status</span>
+                              <span style={{ fontSize: "12px", fontWeight: 500, color: "rgba(26, 26, 26, 0.5)" }}>
+                                (Updated by Admin)
+                              </span>
+                            </h4>
 
-                          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "12px" }}>
-                            {prog.modules.map((m: { id: string; title: string; summary: string; isCompleted: boolean; subtopics?: string[] }) => (
-                              <div
-                                key={m.id}
+                            {prog.modules && prog.modules.some((m: { subtopics?: string[] }) => (m.subtopics || []).length > 0) && (
+                              <button
+                                type="button"
+                                onClick={() => toggleAllModulesForProgram(prog.modules, prog.programId)}
                                 style={{
-                                  backgroundColor: m.isCompleted ? "#F0FDF4" : "#FFFFFF",
-                                  border: m.isCompleted ? "1.5px solid #10B981" : "1px solid rgba(0, 0, 0, 0.1)",
-                                  borderRadius: "14px",
-                                  padding: "16px 18px",
-                                  display: "flex",
-                                  alignItems: "flex-start",
-                                  gap: "12px",
-                                  boxShadow: m.isCompleted ? "0 2px 10px rgba(16, 185, 129, 0.1)" : "none",
-                                  transition: "transform 0.15s ease",
+                                  background: "#FFFFFF",
+                                  border: "1px solid rgba(0, 0, 0, 0.12)",
+                                  color: "#1A1A1A",
+                                  fontSize: "12px",
+                                  fontWeight: 600,
+                                  padding: "5px 12px",
+                                  borderRadius: "8px",
+                                  cursor: "pointer",
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: "6px",
+                                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.04)",
+                                  transition: "all 0.15s ease",
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = "#F8F8F6";
+                                  e.currentTarget.style.borderColor = "rgba(0, 0, 0, 0.2)";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = "#FFFFFF";
+                                  e.currentTarget.style.borderColor = "rgba(0, 0, 0, 0.12)";
                                 }}
                               >
-                                {/* Checkmark or Pending Indicator */}
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                                </svg>
+                                <span>
+                                  {prog.modules.every((m: { id: string }) => Boolean(expandedModules[`${prog.programId}_${m.id}`]))
+                                    ? "Collapse All Submodules"
+                                    : "Expand All Submodules"}
+                                </span>
+                              </button>
+                            )}
+                          </div>
+
+                          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "12px" }}>
+                            {prog.modules.map((m: { id: string; title: string; isCompleted: boolean; subtopics?: string[] }) => {
+                              const moduleKey = `${prog.programId}_${m.id}`;
+                              const hasSubtopics = Boolean(m.subtopics && m.subtopics.length > 0);
+                              const isExpanded = Boolean(expandedModules[moduleKey]);
+
+                              return (
                                 <div
+                                  key={m.id}
+                                  onClick={() => {
+                                    if (hasSubtopics) {
+                                      toggleModuleSubtopics(moduleKey);
+                                    }
+                                  }}
                                   style={{
-                                    width: "28px",
-                                    height: "28px",
-                                    borderRadius: "50%",
-                                    backgroundColor: m.isCompleted ? "#10B981" : "rgba(0, 0, 0, 0.05)",
-                                    color: m.isCompleted ? "#FFFFFF" : "rgba(26, 26, 26, 0.4)",
+                                    backgroundColor: m.isCompleted ? "#F0FDF4" : "#FFFFFF",
+                                    border: m.isCompleted ? "1.5px solid #10B981" : "1px solid rgba(0, 0, 0, 0.1)",
+                                    borderRadius: "14px",
+                                    padding: "16px 18px",
                                     display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    flexShrink: 0,
-                                    marginTop: "2px",
-                                    fontWeight: 700,
-                                    fontSize: "13px",
+                                    alignItems: "flex-start",
+                                    gap: "12px",
+                                    boxShadow: m.isCompleted ? "0 2px 10px rgba(16, 185, 129, 0.1)" : "0 2px 8px rgba(0, 0, 0, 0.02)",
+                                    cursor: hasSubtopics ? "pointer" : "default",
+                                    transition: "all 0.15s ease",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    if (hasSubtopics) {
+                                      e.currentTarget.style.transform = "translateY(-1px)";
+                                      e.currentTarget.style.boxShadow = m.isCompleted
+                                        ? "0 4px 14px rgba(16, 185, 129, 0.16)"
+                                        : "0 4px 14px rgba(0, 0, 0, 0.07)";
+                                    }
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    if (hasSubtopics) {
+                                      e.currentTarget.style.transform = "translateY(0)";
+                                      e.currentTarget.style.boxShadow = m.isCompleted
+                                        ? "0 2px 10px rgba(16, 185, 129, 0.1)"
+                                        : "0 2px 8px rgba(0, 0, 0, 0.02)";
+                                    }
                                   }}
                                 >
-                                  {m.isCompleted ? (
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                      <polyline points="20 6 9 17 4 12" />
-                                    </svg>
-                                  ) : (
-                                    m.id
-                                  )}
-                                </div>
-
-                                <div style={{ flex: 1, minWidth: 0 }}>
-                                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px", marginBottom: "4px" }}>
-                                    <span style={{ fontSize: "11px", fontWeight: 700, color: m.isCompleted ? "#065F46" : "#9A7B1A", textTransform: "uppercase" }}>
-                                      Module {m.id}
-                                    </span>
+                                  {/* Checkmark or Pending Indicator */}
+                                  <div
+                                    style={{
+                                      width: "28px",
+                                      height: "28px",
+                                      borderRadius: "50%",
+                                      backgroundColor: m.isCompleted ? "#10B981" : "rgba(0, 0, 0, 0.05)",
+                                      color: m.isCompleted ? "#FFFFFF" : "rgba(26, 26, 26, 0.4)",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "center",
+                                      flexShrink: 0,
+                                      marginTop: "2px",
+                                      fontWeight: 700,
+                                      fontSize: "13px",
+                                    }}
+                                  >
                                     {m.isCompleted ? (
-                                      <span style={{ backgroundColor: "#D1FAE5", color: "#065F46", fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "10px", display: "inline-flex", alignItems: "center", gap: "3px" }}>
-                                        <span>✓</span>
-                                        <span>COMPLETED</span>
-                                      </span>
+                                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                      </svg>
                                     ) : (
-                                      <span style={{ backgroundColor: "#F3F2EE", color: "rgba(26, 26, 26, 0.6)", fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "10px" }}>
-                                        IN PROGRESS
-                                      </span>
+                                      m.id
                                     )}
                                   </div>
 
-                                  <p style={{ margin: "0 0 4px", fontSize: "14px", fontWeight: 700, color: m.isCompleted ? "#065F46" : "#1A1A1A", lineHeight: 1.35 }}>
-                                    {m.title}
-                                  </p>
-
-                                  <p style={{ margin: "0 0 8px", fontSize: "12px", color: m.isCompleted ? "rgba(6, 95, 70, 0.75)" : "rgba(26, 26, 26, 0.55)", lineHeight: 1.4 }}>
-                                    {m.summary}
-                                  </p>
-
-                                  {m.subtopics && m.subtopics.length > 0 && (
-                                    <div style={{ display: "flex", flexWrap: "wrap", gap: "4px", marginTop: "6px" }}>
-                                      {m.subtopics.map((sub, sIdx) => (
-                                        <span
-                                          key={sIdx}
-                                          style={{
-                                            fontSize: "11px",
-                                            fontWeight: 500,
-                                            backgroundColor: m.isCompleted ? "rgba(16, 185, 129, 0.12)" : "rgba(0, 0, 0, 0.05)",
-                                            color: m.isCompleted ? "#065F46" : "rgba(26, 26, 26, 0.7)",
-                                            padding: "2px 7px",
-                                            borderRadius: "6px",
-                                          }}
-                                        >
-                                          {sub}
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px", marginBottom: "4px" }}>
+                                      <span style={{ fontSize: "11px", fontWeight: 700, color: m.isCompleted ? "#065F46" : "#9A7B1A", textTransform: "uppercase" }}>
+                                        Module {m.id}
+                                      </span>
+                                      {m.isCompleted ? (
+                                        <span style={{ backgroundColor: "#D1FAE5", color: "#065F46", fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "10px", display: "inline-flex", alignItems: "center", gap: "3px" }}>
+                                          <span>✓</span>
+                                          <span>COMPLETED</span>
                                         </span>
-                                      ))}
+                                      ) : (
+                                        <span style={{ backgroundColor: "#F3F2EE", color: "rgba(26, 26, 26, 0.6)", fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "10px" }}>
+                                          IN PROGRESS
+                                        </span>
+                                      )}
                                     </div>
-                                  )}
+
+                                    <p style={{ margin: "0 0 8px", fontSize: "14px", fontWeight: 700, color: m.isCompleted ? "#065F46" : "#1A1A1A", lineHeight: 1.35 }}>
+                                      {m.title}
+                                    </p>
+
+                                    {/* Subtopics Toggle Trigger & Collapsible Content */}
+                                    {hasSubtopics && (
+                                      <div style={{ marginTop: "8px" }}>
+                                        <button
+                                          type="button"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleModuleSubtopics(moduleKey);
+                                          }}
+                                          style={{
+                                            display: "inline-flex",
+                                            alignItems: "center",
+                                            gap: "5px",
+                                            background: isExpanded
+                                              ? (m.isCompleted ? "rgba(16, 185, 129, 0.14)" : "rgba(154, 123, 26, 0.12)")
+                                              : (m.isCompleted ? "rgba(16, 185, 129, 0.08)" : "#F4F4F0"),
+                                            border: isExpanded
+                                              ? (m.isCompleted ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid rgba(154, 123, 26, 0.3)")
+                                              : (m.isCompleted ? "1px solid rgba(16, 185, 129, 0.18)" : "1px solid rgba(0, 0, 0, 0.08)"),
+                                            color: m.isCompleted ? "#065F46" : "#9A7B1A",
+                                            fontSize: "11px",
+                                            fontWeight: 600,
+                                            padding: "3px 8px",
+                                            borderRadius: "6px",
+                                            cursor: "pointer",
+                                            transition: "all 0.15s ease",
+                                          }}
+                                          aria-expanded={isExpanded}
+                                        >
+                                          <svg
+                                            width="11"
+                                            height="11"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            style={{
+                                              transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)",
+                                              transition: "transform 0.2s ease"
+                                            }}
+                                          >
+                                            <polyline points="6 9 12 15 18 9" />
+                                          </svg>
+                                          <span>
+                                            {isExpanded
+                                              ? `Hide submodules (${m.subtopics!.length})`
+                                              : `${m.subtopics!.length} submodules (click to view)`}
+                                          </span>
+                                        </button>
+
+                                        {isExpanded && (
+                                          <div
+                                            style={{
+                                              marginTop: "8px",
+                                              display: "flex",
+                                              flexDirection: "column",
+                                              gap: "5px",
+                                              paddingTop: "8px",
+                                              borderTop: m.isCompleted ? "1px dashed rgba(16, 185, 129, 0.3)" : "1px dashed rgba(0, 0, 0, 0.1)",
+                                            }}
+                                            onClick={(e) => e.stopPropagation()}
+                                          >
+                                            {m.subtopics!.map((sub, sIdx) => (
+                                              <div
+                                                key={sIdx}
+                                                style={{
+                                                  fontSize: "11px",
+                                                  lineHeight: 1.4,
+                                                  padding: "6px 9px",
+                                                  borderRadius: "6px",
+                                                  backgroundColor: m.isCompleted ? "rgba(16, 185, 129, 0.08)" : "#F9F9F7",
+                                                  border: m.isCompleted ? "1px solid rgba(16, 185, 129, 0.18)" : "1px solid rgba(0, 0, 0, 0.05)",
+                                                  color: m.isCompleted ? "#065F46" : "#2A2A2A",
+                                                  display: "flex",
+                                                  alignItems: "flex-start",
+                                                  gap: "6px",
+                                                }}
+                                              >
+                                                <span
+                                                  style={{
+                                                    fontSize: "10px",
+                                                    fontWeight: 700,
+                                                    color: m.isCompleted ? "#065F46" : "#9A7B1A",
+                                                    flexShrink: 0,
+                                                    marginTop: "1px",
+                                                  }}
+                                                >
+                                                  •
+                                                </span>
+                                                <span style={{ fontWeight: 500 }}>{sub}</span>
+                                              </div>
+                                            ))}
+                                          </div>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         </div>
                       </div>

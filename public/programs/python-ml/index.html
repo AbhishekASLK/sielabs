@@ -261,7 +261,7 @@
             <h2 class="section-title reveal">From Python foundations to <em>production machine learning models.</em></h2>
 
             <div class="curriculum-wrapper">
-                <div class="timeline reveal">
+                <div class="timeline reveal" id="curriculumTimeline">
 
                     <!-- Module 1 -->
                     <article class="module-card active">
@@ -554,6 +554,68 @@
             });
         }, { threshold: 0.1 });
         revealEls.forEach(el => observer.observe(el));
+
+        // Dynamically sync modules and submodules from Admin Panel (MongoDB)
+        async function syncDynamicCurriculum() {
+            try {
+                const res = await fetch('/api/admin/programs/modules');
+                if (!res.ok) return;
+                const data = await res.json();
+                const prog = (data.programs || []).find(p => p.id === 'python-ml' || (p.title && p.title.toLowerCase().includes('python')));
+                if (!prog || !prog.modules || prog.modules.length === 0) return;
+
+                const container = document.getElementById('curriculumTimeline');
+                if (!container) return;
+
+                function escape(s) {
+                    return String(s || '')
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;');
+                }
+
+                container.innerHTML = prog.modules.map((m, idx) => {
+                    const isActive = idx === 0 ? 'active' : '';
+                    const subtopicsList = (m.subtopics && m.subtopics.length > 0)
+                        ? m.subtopics
+                        : [];
+
+                    const listHtml = subtopicsList.length > 0
+                        ? subtopicsList.map(sub => {
+                            const colonIdx = sub.indexOf(':');
+                            if (colonIdx !== -1) {
+                                const strongPart = sub.substring(0, colonIdx);
+                                const restPart = sub.substring(colonIdx + 1);
+                                return `<li><strong>${escape(strongPart)}</strong>${escape(restPart)}</li>`;
+                            }
+                            return `<li>${escape(sub)}</li>`;
+                        }).join('')
+                        : '<li>Curriculum topics will be updated soon.</li>';
+
+                    return `
+                    <article class="module-card ${isActive}">
+                        <div class="module-header" onclick="toggleModule(this)">
+                            <div class="module-header-left">
+                                <span class="module-number">${escape(m.id)}</span>
+                                <h3>${escape(m.title)}</h3>
+                            </div>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="module-body">
+                            <ul class="topic-list">
+                                ${listHtml}
+                            </ul>
+                        </div>
+                    </article>`;
+                }).join('');
+            } catch (err) {
+                // Keep static HTML fallback if fetch is not available
+                console.warn('Dynamic curriculum sync fallback:', err);
+            }
+        }
+        syncDynamicCurriculum();
     </script>
 </body>
 
