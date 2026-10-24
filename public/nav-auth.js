@@ -64,39 +64,38 @@
         width: 100%;
       }
       .mobile-user-link {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 12px;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 10px !important;
+        padding: 7px 12px !important;
         background: #F3F2EE;
-        border-radius: 12px;
+        border-radius: 10px;
         border: 1px solid rgba(0, 0, 0, 0.08);
         text-decoration: none;
         color: #1A1A1A !important;
       }
       .mobile-user-avatar {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
         background: rgba(154, 123, 26, 0.15);
         color: #9A7B1A;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        font-size: 14px;
+        font-size: 13px;
         border: 1.5px solid rgba(154, 123, 26, 0.35);
         flex-shrink: 0;
       }
       .mobile-user-name {
-        font-size: 13px;
+        font-size: 13.5px;
         font-weight: 600;
         color: #1A1A1A;
-      }
-      .mobile-user-sub {
-        font-size: 11px;
-        color: #9A7B1A;
-        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .mobile-logout-btn {
         width: 100%;
@@ -169,6 +168,13 @@
 
     if (user && user.trim().length > 0) {
       var initial = (user.trim().charAt(0) || 'U').toUpperCase();
+      var avatarStyle = 'fun-emoji';
+      var avatarSeed = user;
+      try {
+        avatarStyle = localStorage.getItem('user_avatar_style') || 'fun-emoji';
+        avatarSeed = localStorage.getItem('user_avatar_seed') || user;
+      } catch (e) {}
+      var avatarUrl = 'https://api.dicebear.com/9.x/' + avatarStyle + '/svg?seed=' + encodeURIComponent(avatarSeed) + '&radius=16';
 
       if (container) {
         container.innerHTML = `
@@ -179,11 +185,12 @@
               aria-label="User profile menu"
               aria-expanded="false"
               aria-haspopup="true"
-              style="width: 40px; height: 40px; border-radius: 50%; background-color: rgba(154, 123, 26, 0.12); border: 1.5px solid rgba(154, 123, 26, 0.35); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #9A7B1A; font-weight: 700; font-size: 15px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); transition: all 0.2s ease; outline: none;"
+              style="width: 38px; height: 38px; border-radius: 9px; background-color: rgba(154, 123, 26, 0.12); border: 1.5px solid rgba(154, 123, 26, 0.35); display: flex; align-items: center; justify-content: center; cursor: pointer; color: #9A7B1A; font-weight: 700; font-size: 15px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); transition: all 0.2s ease; outline: none; overflow: hidden; padding: 0;"
               onmouseover="this.style.backgroundColor='rgba(154, 123, 26, 0.2)'; this.style.borderColor='#9A7B1A';"
               onmouseout="if(this.getAttribute('aria-expanded') !== 'true'){ this.style.backgroundColor='rgba(154, 123, 26, 0.12)'; this.style.borderColor='rgba(154, 123, 26, 0.35)'; }"
             >
-              ${initial}
+              <img src="${avatarUrl}" alt="${user}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <span style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center;">${initial}</span>
             </button>
 
             <div
@@ -200,8 +207,9 @@
                 onmouseout="this.style.backgroundColor='#FAFAF8'; this.style.borderColor='rgba(0, 0, 0, 0.06)';"
                 title="Click to view Profile"
               >
-                <div style="width: 36px; height: 36px; border-radius: 50%; background-color: rgba(154, 123, 26, 0.15); color: #9A7B1A; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; border: 1px solid rgba(154, 123, 26, 0.3);">
-                  ${initial}
+                <div style="width: 36px; height: 36px; border-radius: 8px; background-color: rgba(154, 123, 26, 0.15); color: #9A7B1A; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; border: 1px solid rgba(154, 123, 26, 0.3); overflow: hidden;">
+                  <img src="${avatarUrl}" alt="${user}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                  <span style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center;">${initial}</span>
                 </div>
                 <div style="min-width: 0; flex: 1;">
                   <p style="margin: 0; font-size: 13px; font-weight: 600; color: #1A1A1A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
@@ -330,11 +338,16 @@
         mobileAuth.innerHTML = `
           <div class="mobile-user-box">
             <a href="/profile" class="mobile-user-link">
-              <div class="mobile-user-avatar">${initial}</div>
+              <div class="mobile-user-avatar" style="overflow: hidden; padding: 0;">
+                <img src="${avatarUrl}" alt="${user}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <span style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center;">${initial}</span>
+              </div>
               <div style="min-width: 0; flex: 1;">
                 <div class="mobile-user-name">${user}</div>
-                <div class="mobile-user-sub">${isAdmin ? 'Administrator →' : 'User Profile →'}</div>
               </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #9A7B1A; opacity: 0.75; flex-shrink: 0;">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
             </a>
             ${isAdmin ? `
             <a href="/admin" style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 600; color: #FFFFFF; background: #9A7B1A; text-decoration: none;">
@@ -423,6 +436,9 @@
           e.preventDefault();
         }
       });
+
+      window.addEventListener('storage', renderNavAuth);
+      window.addEventListener('sie_avatar_updated', renderNavAuth);
     }
   }
 

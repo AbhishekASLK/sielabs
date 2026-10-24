@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getUserAvatarUrl, DICEBEAR_STYLES, DiceBearStyle, getRandomAvatarSeed } from "@/lib/avatar";
 
 interface UserProfileData {
   name: string;
@@ -181,6 +182,8 @@ export default function ProfilePage() {
   const [mounted, setMounted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isNavOpen, setIsNavOpen] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
 
   // Country code & mobile state (Default: IND +91)
   const [selectedCountry, setSelectedCountry] = useState<CountryCode>(COUNTRIES[0]);
@@ -225,15 +228,26 @@ export default function ProfilePage() {
   const [saveMessage, setSaveMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [justSaved, setJustSaved] = useState(false);
 
+  // Avatar customization states (DiceBear)
+  const [avatarStyle, setAvatarStyle] = useState<DiceBearStyle>("fun-emoji");
+  const [avatarSeed, setAvatarSeed] = useState<string>("");
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const [tempAvatarStyle, setTempAvatarStyle] = useState<DiceBearStyle>("fun-emoji");
+  const [tempAvatarSeed, setTempAvatarSeed] = useState<string>("");
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setIsNavOpen(false);
+      }
     };
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsDropdownOpen(false);
+        setIsNavOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -314,9 +328,29 @@ export default function ProfilePage() {
             localStorage.setItem("user_role", data.role);
           }
         })
-        .catch(() => {})
-        .finally(() => setLoadingProgress(false));
+      // Load avatar preferences
+      const savedStyle = (localStorage.getItem("user_avatar_style") as DiceBearStyle) || "fun-emoji";
+      const savedSeed = localStorage.getItem("user_avatar_seed") || "";
+      setAvatarStyle(savedStyle);
+      setAvatarSeed(savedSeed);
+      setTempAvatarStyle(savedStyle);
+      setTempAvatarSeed(savedSeed);
     }
+
+    const handleSyncAvatar = () => {
+      const s = (localStorage.getItem("user_avatar_style") as DiceBearStyle) || "fun-emoji";
+      const seed = localStorage.getItem("user_avatar_seed") || "";
+      setAvatarStyle(s);
+      setAvatarSeed(seed);
+    };
+
+    window.addEventListener("storage", handleSyncAvatar);
+    window.addEventListener("sie_avatar_updated", handleSyncAvatar);
+
+    return () => {
+      window.removeEventListener("storage", handleSyncAvatar);
+      window.removeEventListener("sie_avatar_updated", handleSyncAvatar);
+    };
   }, []);
 
   const handleCountryChange = (countryCode: string) => {
@@ -381,10 +415,33 @@ export default function ProfilePage() {
     }
   };
 
+  const handleOpenAvatarModal = () => {
+    setTempAvatarStyle(avatarStyle);
+    setTempAvatarSeed(avatarSeed || userName || "SieLabs");
+    setIsAvatarModalOpen(true);
+  };
+
+  const handleSaveAvatar = () => {
+    setAvatarStyle(tempAvatarStyle);
+    setAvatarSeed(tempAvatarSeed);
+    localStorage.setItem("user_avatar_style", tempAvatarStyle);
+    localStorage.setItem("user_avatar_seed", tempAvatarSeed);
+    window.dispatchEvent(new Event("storage"));
+    window.dispatchEvent(new CustomEvent("sie_avatar_updated"));
+    setIsAvatarModalOpen(false);
+  };
+
+  const handleRandomizeAvatar = () => {
+    setTempAvatarSeed(getRandomAvatarSeed());
+  };
+
+  const currentAvatarUrl = getUserAvatarUrl(userName || "SieLabs", avatarStyle, avatarSeed);
+  const tempAvatarUrl = getUserAvatarUrl(userName || "SieLabs", tempAvatarStyle, tempAvatarSeed);
+
   const initial = (userName?.trim().charAt(0) || "U").toUpperCase();
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#FAFAF8", color: "#1A1A1A" }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#FAFAF8", color: "#1A1A1A", overflowX: "hidden" }}>
       {/* ── PROFILE ANIMATION KEYFRAMES ── */}
       <style>{`
         @keyframes profileSuccessPop {
@@ -455,12 +512,355 @@ export default function ProfilePage() {
             transform: scale(1);
           }
         }
+
+        /* ── Profile Responsive Styles ── */
+        .profile-main {
+          max-width: 1160px;
+          margin: 0 auto;
+          padding: 40px 28px 80px;
+          box-sizing: border-box;
+        }
+
+        .profile-summary-card {
+          background-color: #FFFFFF;
+          border-radius: 24px;
+          padding: 32px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 6px 24px rgba(0, 0, 0, 0.03);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 28px;
+          position: relative;
+          overflow: hidden;
+          margin-bottom: 32px;
+        }
+
+        .profile-summary-main {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          flex: 1;
+          min-width: 0;
+        }
+
+        .profile-avatar-wrap {
+          position: relative;
+          flex-shrink: 0;
+        }
+
+        .profile-avatar {
+          width: 82px;
+          height: 82px;
+          border-radius: 16px;
+          background: linear-gradient(135deg, rgba(154, 123, 26, 0.18), rgba(154, 123, 26, 0.06));
+          border: 2.5px solid #9A7B1A;
+          color: #9A7B1A;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 32px;
+          font-weight: 700;
+          box-shadow: 0 6px 20px rgba(154, 123, 26, 0.15);
+        }
+
+        .profile-status-dot {
+          position: absolute;
+          bottom: -2px;
+          right: -2px;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          background-color: #10B981;
+          border: 2.5px solid #FFFFFF;
+        }
+
+        .profile-bio {
+          min-width: 0;
+          flex: 1;
+        }
+
+        .profile-name {
+          font-size: 24px;
+          font-weight: 700;
+          margin: 0 0 6px;
+          letter-spacing: -0.02em;
+          color: #1A1A1A;
+          word-break: break-word;
+        }
+
+        .profile-details-line {
+          margin: 0;
+          font-size: 14px;
+          color: rgba(26, 26, 26, 0.65);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+          word-break: break-word;
+        }
+
+        .profile-actions-col {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+
+        .profile-logout-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background-color: transparent;
+          color: #DC2626;
+          border: 1px solid rgba(220, 38, 38, 0.25);
+          padding: 8px 16px;
+          border-radius: 10px;
+          fontSize: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          white-space: nowrap;
+          font-family: inherit;
+        }
+
+        .profile-logout-btn:hover {
+          background-color: rgba(220, 38, 38, 0.08);
+          border-color: rgba(220, 38, 38, 0.4);
+        }
+
+        .profile-joined-text {
+          font-size: 12px;
+          color: rgba(26, 26, 26, 0.45);
+          font-weight: 500;
+          white-space: nowrap;
+        }
+
+        .profile-admin-banner {
+          background-color: #FFFFFF;
+          border: 1.5px solid #9A7B1A;
+          border-radius: 16px;
+          padding: 18px 24px;
+          margin-bottom: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 16px;
+          box-shadow: 0 4px 16px rgba(154, 123, 26, 0.12);
+        }
+
+        .profile-tabs-bar {
+          display: flex;
+          gap: 8px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+          margin-bottom: 32px;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+
+        .profile-tabs-bar::-webkit-scrollbar {
+          display: none;
+        }
+
+        .profile-tab-btn {
+          padding: 12px 20px;
+          font-size: 14px;
+          font-weight: 600;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+          transition: all 0.15s ease;
+          white-space: nowrap;
+          flex-shrink: 0;
+          font-family: inherit;
+        }
+
+        .profile-details-grid {
+          display: grid;
+          grid-template-columns: 1.4fr 1fr;
+          gap: 32px;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .profile-details-grid > * {
+          min-width: 0;
+          max-width: 100%;
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        .profile-form-card {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          background-color: #FFFFFF;
+          border-radius: 20px;
+          padding: 32px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+          transition: all 0.3s ease;
+          overflow: hidden;
+        }
+
+        .profile-side-col {
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .profile-side-card {
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          background-color: #FFFFFF;
+          border-radius: 20px;
+          padding: 24px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+          overflow: hidden;
+        }
+
+        .profile-form-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          width: 100%;
+        }
+
+        .profile-save-btn-wrap {
+          display: flex;
+          justify-content: flex-start;
+          margin-top: 10px;
+          position: relative;
+        }
+
+        .profile-save-btn {
+          width: auto;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        @media (max-width: 900px) {
+          .profile-details-grid {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 24px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .profile-main {
+            padding: 20px 16px 60px;
+            width: 100%;
+            max-width: 100vw;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .profile-summary-card {
+            padding: 20px 16px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+            border-radius: 20px;
+          }
+
+          .profile-summary-main {
+            gap: 14px;
+            align-items: flex-start;
+          }
+
+          .profile-avatar {
+            width: 62px;
+            height: 62px;
+            border-radius: 13px;
+            font-size: 24px;
+            border-width: 2px;
+          }
+
+          .profile-name {
+            font-size: 20px;
+            margin-bottom: 4px;
+          }
+
+          .profile-details-line {
+            font-size: 13px;
+            gap: 6px;
+          }
+
+          .profile-actions-col {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding-top: 14px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            margin-top: 2px;
+          }
+
+          .profile-admin-banner {
+            padding: 16px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+          }
+
+          .profile-admin-banner-btn {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .profile-form-row {
+            flex-direction: column;
+            gap: 16px;
+          }
+
+          .profile-save-btn-wrap {
+            justify-content: flex-start;
+          }
+
+          .profile-save-btn {
+            width: auto;
+            max-width: 260px;
+          }
+
+          .profile-tab-btn {
+            padding: 10px 14px;
+            font-size: 13px;
+          }
+
+          .profile-form-card {
+            padding: 20px 16px !important;
+            border-radius: 16px !important;
+          }
+
+          .profile-side-card {
+            padding: 20px 16px !important;
+            border-radius: 16px !important;
+          }
+
+          .profile-program-card {
+            padding: 20px 16px !important;
+            border-radius: 18px !important;
+          }
+        }
       `}</style>
 
       {/* ── HEADER NAVBAR ── */}
       <header style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.08)", backgroundColor: "#FAFAF8", position: "relative", zIndex: 100 }}>
         <div className="container" style={{ maxWidth: "1160px", margin: "0 auto", padding: "0 28px", boxSizing: "border-box" }}>
-          <nav aria-label="Main navigation" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "28px 0" }}>
+          <nav aria-label="Main navigation">
             <Link href="/" className="nav-brand" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#1A1A1A", fontWeight: 600, fontSize: "17px" }}>
               <img
                 src="/favicon.ico"
@@ -471,10 +871,24 @@ export default function ProfilePage() {
               SieLabs
             </Link>
 
-            <div className="nav-links" style={{ display: "flex", gap: "36px", marginLeft: "auto" }}>
-              <a href="/programs/index.html" style={{ textDecoration: "none", color: "rgba(26, 26, 26, 0.6)", fontSize: "14px", fontWeight: 400, transition: "color 0.2s" }}>Programs</a>
-              <a href="/products/index.html" style={{ textDecoration: "none", color: "rgba(26, 26, 26, 0.6)", fontSize: "14px", fontWeight: 400, transition: "color 0.2s" }}>Products</a>
-              <a href="/careers/index.html" style={{ textDecoration: "none", color: "rgba(26, 26, 26, 0.6)", fontSize: "14px", fontWeight: 400, transition: "color 0.2s" }}>Careers</a>
+            <div ref={navRef} className={`nav-links ${isNavOpen ? 'show' : ''}`} id="navLinks">
+              <a href="/programs/index.html" onClick={() => setIsNavOpen(false)}>Programs</a>
+              <a href="/products/index.html" onClick={() => setIsNavOpen(false)}>Products</a>
+              <a href="/careers/index.html" onClick={() => setIsNavOpen(false)}>Careers</a>
+              <a
+                href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1"
+                target="_blank"
+                rel="noreferrer"
+                className="nav-cta nav-cta-community mobile-cta"
+                style={{ display: "flex", alignItems: "center", gap: "6px", color: "#FFFFFF" }}
+                onClick={() => setIsNavOpen(false)}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#FFFFFF" }}>
+                  <path d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z" />
+                  <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.986-1.308A9.948 9.948 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.734 0-3.344-.462-4.737-1.268l-.34-.196-2.955.775.789-2.883-.217-.345A7.954 7.954 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" />
+                </svg>
+                Join Community
+              </a>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "16px", marginLeft: "36px" }}>
@@ -514,9 +928,9 @@ export default function ProfilePage() {
                       aria-expanded={isDropdownOpen}
                       aria-haspopup="true"
                       style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
+                        width: "38px",
+                        height: "38px",
+                        borderRadius: "9px",
                         backgroundColor: "rgba(154, 123, 26, 0.12)",
                         border: isDropdownOpen ? "2px solid #9A7B1A" : "1.5px solid rgba(154, 123, 26, 0.35)",
                         display: "flex",
@@ -529,9 +943,21 @@ export default function ProfilePage() {
                         outline: "none",
                         fontWeight: 700,
                         fontSize: "15px",
+                        overflow: "hidden",
+                        padding: 0,
                       }}
                     >
-                      {initial}
+                      <img
+                        src={currentAvatarUrl}
+                        alt={userName || "User Avatar"}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLElement).style.display = "none";
+                          const fallback = (e.currentTarget.parentElement?.querySelector(".nav-avatar-fallback") as HTMLElement);
+                          if (fallback) fallback.style.display = "flex";
+                        }}
+                      />
+                      <span className="nav-avatar-fallback" style={{ display: "none" }}>{initial}</span>
                     </button>
 
                     {isDropdownOpen && (
@@ -571,7 +997,7 @@ export default function ProfilePage() {
                             style={{
                               width: "36px",
                               height: "36px",
-                              borderRadius: "50%",
+                              borderRadius: "8px",
                               backgroundColor: "rgba(154, 123, 26, 0.15)",
                               color: "#9A7B1A",
                               display: "flex",
@@ -581,17 +1007,24 @@ export default function ProfilePage() {
                               fontSize: "14px",
                               flexShrink: 0,
                               border: "1px solid rgba(154, 123, 26, 0.3)",
+                              overflow: "hidden",
                             }}
                           >
-                            {initial}
+                            <img
+                              src={currentAvatarUrl}
+                              alt={userName || "User Avatar"}
+                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                              onError={(e) => {
+                                (e.currentTarget as HTMLElement).style.display = "none";
+                                const fallback = (e.currentTarget.parentElement?.querySelector(".dd-head-fallback") as HTMLElement);
+                                if (fallback) fallback.style.display = "flex";
+                              }}
+                            />
+                            <span className="dd-head-fallback" style={{ display: "none" }}>{initial}</span>
                           </div>
                           <div style={{ minWidth: 0, flex: 1 }}>
-                            <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#1A1A1A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            <p style={{ margin: 0, fontSize: "13.5px", fontWeight: 600, color: "#1A1A1A", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                               {userName}
-                            </p>
-                            <p style={{ margin: "2px 0 0", fontSize: "11px", color: "#9A7B1A", fontWeight: 600, display: "flex", alignItems: "center", gap: "4px" }}>
-                              <span>User Profile</span>
-                              <span>✓</span>
                             </p>
                           </div>
                         </Link>
@@ -686,6 +1119,65 @@ export default function ProfilePage() {
 
                         <div style={{ height: "1px", backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "4px 0" }} />
 
+                        {/* Customize Avatar Item */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            handleOpenAvatarModal();
+                          }}
+                          style={{
+                            width: "100%",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            padding: "10px 12px",
+                            borderRadius: "10px",
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            color: "#1A1A1A",
+                            backgroundColor: "transparent",
+                            border: "none",
+                            cursor: "pointer",
+                            textAlign: "left",
+                            fontFamily: "inherit",
+                            transition: "background 0.15s, color 0.15s",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = "rgba(154, 123, 26, 0.08)";
+                            e.currentTarget.style.color = "#9A7B1A";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                            e.currentTarget.style.color = "#1A1A1A";
+                          }}
+                          role="menuitem"
+                        >
+                          <div
+                            style={{
+                              width: "30px",
+                              height: "30px",
+                              borderRadius: "8px",
+                              backgroundColor: "rgba(154, 123, 26, 0.1)",
+                              color: "#9A7B1A",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0,
+                            }}
+                          >
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <circle cx="12" cy="12" r="10" />
+                              <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                              <line x1="9" y1="9" x2="9.01" y2="9" />
+                              <line x1="15" y1="9" x2="15.01" y2="9" />
+                            </svg>
+                          </div>
+                          <span>Change Avatar</span>
+                        </button>
+
+                        <div style={{ height: "1px", backgroundColor: "rgba(0, 0, 0, 0.06)", margin: "4px 0" }} />
+
                         {/* Logout Item */}
                         <button
                           type="button"
@@ -733,18 +1225,36 @@ export default function ProfilePage() {
                   </div>
                 ) : (
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Link href="/login" className="nav-auth-btn nav-auth-btn--ghost">Log in</Link>
-                    <Link href="/signup" className="nav-auth-btn nav-auth-btn--primary">Sign up</Link>
+                    <Link href="/login" className="nav-auth-btn nav-auth-btn--primary">Log in</Link>
                   </div>
                 )}
               </div>
             </div>
+
+            <button
+              type="button"
+              className={`hamburger-btn ${isNavOpen ? 'is-active' : ''}`}
+              onClick={() => setIsNavOpen(prev => !prev)}
+              aria-label={isNavOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isNavOpen}
+            >
+              {isNavOpen ? (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 12h18M3 6h18M3 18h18" />
+                </svg>
+              )}
+            </button>
           </nav>
         </div>
       </header>
 
       {/* ── MAIN PROFILE CONTENT ── */}
-      <main style={{ maxWidth: "1160px", margin: "0 auto", padding: "40px 28px 80px", boxSizing: "border-box" }}>
+      <main className="profile-main">
         {/* Breadcrumb Navigation */}
         <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "rgba(26, 26, 26, 0.5)", marginBottom: "28px" }}>
           <Link href="/" style={{ color: "rgba(26, 26, 26, 0.6)", textDecoration: "none", fontWeight: 500 }}>
@@ -806,43 +1316,13 @@ export default function ProfilePage() {
               >
                 Log In
               </Link>
-              <Link
-                href="/signup"
-                style={{
-                  backgroundColor: "transparent",
-                  color: "#1A1A1A",
-                  border: "1px solid rgba(0, 0, 0, 0.15)",
-                  padding: "10px 24px",
-                  borderRadius: "10px",
-                  textDecoration: "none",
-                  fontWeight: 600,
-                  fontSize: "14px",
-                }}
-              >
-                Sign Up
-              </Link>
             </div>
           </div>
         ) : (
           /* Logged In Profile Dashboard */
           <>
             {/* Top Profile Summary Card */}
-            <div
-              style={{
-                backgroundColor: "#FFFFFF",
-                borderRadius: "24px",
-                padding: "36px",
-                border: "1px solid rgba(0, 0, 0, 0.08)",
-                boxShadow: "0 6px 24px rgba(0, 0, 0, 0.03)",
-                display: "grid",
-                gridTemplateColumns: "auto 1fr auto",
-                alignItems: "center",
-                gap: "32px",
-                position: "relative",
-                overflow: "hidden",
-                marginBottom: "36px",
-              }}
-            >
+            <div className="profile-summary-card">
               {/* Ambient Glow */}
               <div
                 style={{
@@ -857,113 +1337,162 @@ export default function ProfilePage() {
                 }}
               />
 
-              {/* Avatar Photo / Badge */}
-              <div style={{ position: "relative" }}>
-                <div
-                  style={{
-                    width: "88px",
-                    height: "88px",
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg, rgba(154, 123, 26, 0.2), rgba(154, 123, 26, 0.08))",
-                    border: "3px solid #9A7B1A",
-                    color: "#9A7B1A",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "34px",
-                    fontWeight: 700,
-                    boxShadow: "0 6px 20px rgba(154, 123, 26, 0.18)",
-                  }}
-                >
-                  {initial}
-                </div>
-                {/* Active Status Dot */}
-                <div
-                  title="Active User Account"
-                  style={{
-                    position: "absolute",
-                    bottom: "2px",
-                    right: "4px",
-                    width: "16px",
-                    height: "16px",
-                    borderRadius: "50%",
-                    backgroundColor: "#10B981",
-                    border: "2.5px solid #FFFFFF",
-                  }}
-                />
-              </div>
+              <div className="profile-summary-main">
+                {/* Avatar Photo / Badge (Rectangular with rounded corners & DiceBear Illustration) */}
+                <div className="profile-avatar-wrap">
+                  <div
+                    className="profile-avatar"
+                    style={{
+                      overflow: "hidden",
+                      position: "relative",
+                      backgroundColor: "rgba(154, 123, 26, 0.08)",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleOpenAvatarModal}
+                    title="Click to customize illustration"
+                  >
+                    <img
+                      src={currentAvatarUrl}
+                      alt={profile.name || "Profile illustration"}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = "none";
+                        const fallback = (e.currentTarget.parentElement?.querySelector(".profile-avatar-fallback") as HTMLElement);
+                        if (fallback) fallback.style.display = "flex";
+                      }}
+                    />
+                    <div
+                      className="profile-avatar-fallback"
+                      style={{
+                        display: "none",
+                        width: "100%",
+                        height: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: 700,
+                        fontSize: "32px",
+                        color: "#9A7B1A",
+                      }}
+                    >
+                      {initial}
+                    </div>
+                  </div>
 
-              {/* User Bio Details */}
-              <div style={{ minWidth: 0 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap", marginBottom: "6px" }}>
-                  <h1 style={{ fontSize: "26px", fontWeight: 700, margin: 0, letterSpacing: "-0.02em" }}>
+                  {/* Edit / Change Avatar Button Overlay */}
+                  <button
+                    type="button"
+                    onClick={handleOpenAvatarModal}
+                    title="Change or randomize illustration"
+                    aria-label="Change illustration avatar"
+                    style={{
+                      position: "absolute",
+                      bottom: "-4px",
+                      right: "-4px",
+                      width: "28px",
+                      height: "28px",
+                      borderRadius: "8px",
+                      backgroundColor: "#9A7B1A",
+                      border: "2px solid #FFFFFF",
+                      color: "#FFFFFF",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      boxShadow: "0 2px 8px rgba(154, 123, 26, 0.4)",
+                      transition: "transform 0.15s ease, background-color 0.15s ease",
+                      zIndex: 2,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.1)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* User Bio Details */}
+                <div className="profile-bio">
+                  <h1 className="profile-name">
                     {profile.name || "User"}
                   </h1>
-                </div>
 
-                <p style={{ margin: 0, fontSize: "14px", color: "rgba(26, 26, 26, 0.6)" }}>
-                  {profile.email?.includes("@") ? profile.email : `@${profile.email}`}{profile.mobile ? ` • ${profile.mobile}` : ""}
-                </p>
+                  <p className="profile-details-line">
+                    <span>{profile.email?.includes("@") ? profile.email : `@${profile.email}`}</span>
+                    {profile.mobile && (
+                      <>
+                        <span style={{ opacity: 0.5 }}>•</span>
+                        <span>{profile.mobile}</span>
+                      </>
+                    )}
+                  </p>
+
+                  {/* Change Avatar Quick Trigger Pill */}
+                  <div style={{ marginTop: "8px" }}>
+                    <button
+                      type="button"
+                      onClick={handleOpenAvatarModal}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "4px 10px",
+                        borderRadius: "8px",
+                        backgroundColor: "rgba(154, 123, 26, 0.08)",
+                        border: "1px solid rgba(154, 123, 26, 0.25)",
+                        color: "#9A7B1A",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        transition: "all 0.15s ease",
+                        fontFamily: "inherit",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "rgba(154, 123, 26, 0.16)";
+                        e.currentTarget.style.borderColor = "#9A7B1A";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "rgba(154, 123, 26, 0.08)";
+                        e.currentTarget.style.borderColor = "rgba(154, 123, 26, 0.25)";
+                      }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                        <line x1="9" y1="9" x2="9.01" y2="9" />
+                        <line x1="15" y1="9" x2="15.01" y2="9" />
+                      </svg>
+                      <span>Change Illustration</span>
+                      <span style={{ opacity: 0.65, fontSize: "11px" }}>• {DICEBEAR_STYLES.find((s) => s.id === avatarStyle)?.label || "Emoji"}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              {/* Quick Actions */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "flex-end" }}>
+              {/* Quick Actions & Meta */}
+              <div className="profile-actions-col">
                 <button
                   type="button"
                   onClick={handleLogout}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    backgroundColor: "transparent",
-                    color: "#DC2626",
-                    border: "1px solid rgba(220, 38, 38, 0.2)",
-                    padding: "8px 16px",
-                    borderRadius: "10px",
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    transition: "all 0.15s ease",
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(220, 38, 38, 0.08)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                  }}
+                  className="profile-logout-btn"
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                     <polyline points="16 17 21 12 16 7" />
                     <line x1="21" y1="12" x2="9" y2="12" />
                   </svg>
-                  Sign Out
+                  <span>Sign Out</span>
                 </button>
-                <span style={{ fontSize: "11px", color: "rgba(26, 26, 26, 0.45)", fontWeight: 500 }}>
+                <span className="profile-joined-text">
                   Joined Oct 2026
                 </span>
               </div>
             </div>
 
-            
-
             {/* Admin Banner if user has admin role */}
             {userRole === "admin" && (
-              <div
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1.5px solid #9A7B1A",
-                  borderRadius: "16px",
-                  padding: "18px 24px",
-                  marginBottom: "28px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: "16px",
-                  boxShadow: "0 4px 16px rgba(154, 123, 26, 0.12)",
-                }}
-              >
+              <div className="profile-admin-banner">
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                   <div
                     style={{
@@ -994,6 +1523,7 @@ export default function ProfilePage() {
 
                 <Link
                   href="/admin"
+                  className="profile-admin-banner-btn"
                   style={{
                     backgroundColor: "#9A7B1A",
                     color: "#FFFFFF",
@@ -1003,7 +1533,7 @@ export default function ProfilePage() {
                     fontWeight: 700,
                     textDecoration: "none",
                     boxShadow: "0 2px 10px rgba(154, 123, 26, 0.25)",
-                    display: "flex",
+                    display: "inline-flex",
                     alignItems: "center",
                     gap: "6px",
                   }}
@@ -1015,20 +1545,14 @@ export default function ProfilePage() {
             )}
 
             {/* Navigation Tabs */}
-            <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid rgba(0, 0, 0, 0.08)", marginBottom: "32px" }}>
+            <div className="profile-tabs-bar">
               <button
                 type="button"
                 onClick={() => setActiveTab("details")}
+                className="profile-tab-btn"
                 style={{
-                  padding: "12px 20px",
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  backgroundColor: "transparent",
-                  border: "none",
                   borderBottom: activeTab === "details" ? "2.5px solid #9A7B1A" : "2.5px solid transparent",
                   color: activeTab === "details" ? "#9A7B1A" : "rgba(26, 26, 26, 0.6)",
-                  cursor: "pointer",
-                  transition: "all 0.15s ease",
                 }}
               >
                 Profile Details
@@ -1036,35 +1560,23 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => setActiveTab("programs")}
+                className="profile-tab-btn"
                 style={{
-                  padding: "12px 20px",
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  backgroundColor: "transparent",
-                  border: "none",
                   borderBottom: activeTab === "programs" ? "2.5px solid #9A7B1A" : "2.5px solid transparent",
                   color: activeTab === "programs" ? "#9A7B1A" : "rgba(26, 26, 26, 0.6)",
-                  cursor: "pointer",
-                  transition: "all 0.15s ease",
                 }}
               >
                 My Enrolled Programs
               </button>
-              
             </div>
 
             {/* ── TAB 1: PROFILE DETAILS FORM ── */}
             {activeTab === "details" && (
-              <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: "32px" }}>
+              <div className="profile-details-grid">
                 {/* Editable Profile Information */}
                 <div
+                  className="profile-form-card"
                   style={{
-                    backgroundColor: "#FFFFFF",
-                    borderRadius: "20px",
-                    padding: "32px",
-                    border: "1px solid rgba(0, 0, 0, 0.08)",
-                    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.03)",
-                    transition: "all 0.3s ease",
                     animation: justSaved ? "profilePulseGlow 1.4s ease-out" : "none",
                   }}
                 >
@@ -1173,7 +1685,7 @@ export default function ProfilePage() {
                     </div>
                   )}
 
-                  <form onSubmit={handleSaveProfile} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                  <form onSubmit={handleSaveProfile} style={{ display: "flex", flexDirection: "column", gap: "18px", width: "100%", maxWidth: "100%" }}>
                     <div>
                       <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "rgba(26, 26, 26, 0.8)", marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.03em" }}>
                         Full Name
@@ -1185,6 +1697,7 @@ export default function ProfilePage() {
                         required
                         style={{
                           width: "100%",
+                          maxWidth: "360px",
                           padding: "10px 14px",
                           fontSize: "14px",
                           borderRadius: "10px",
@@ -1196,8 +1709,8 @@ export default function ProfilePage() {
                       />
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                      <div>
+                    <div className="profile-form-row">
+                      <div style={{ width: "100%", maxWidth: "240px" }}>
                         <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "rgba(26, 26, 26, 0.8)", marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.03em" }}>
                           Username
                         </label>
@@ -1205,10 +1718,11 @@ export default function ProfilePage() {
                           type="text"
                           value={profile.email}
                           onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                          placeholder="Enter your username"
+                          placeholder="Enter username"
                           required
                           style={{
                             width: "100%",
+                            maxWidth: "240px",
                             padding: "10px 14px",
                             fontSize: "14px",
                             borderRadius: "10px",
@@ -1219,7 +1733,8 @@ export default function ProfilePage() {
                           }}
                         />
                       </div>
-                      <div>
+
+                      <div style={{ width: "100%", maxWidth: "280px" }}>
                         <label style={{ display: "block", fontSize: "12px", fontWeight: 700, color: "rgba(26, 26, 26, 0.8)", marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.03em" }}>
                           Mobile / WhatsApp
                         </label>
@@ -1232,6 +1747,8 @@ export default function ProfilePage() {
                             borderRadius: "10px",
                             overflow: "hidden",
                             boxSizing: "border-box",
+                            width: "100%",
+                            maxWidth: "280px",
                             transition: "border-color 0.15s ease",
                           }}
                         >
@@ -1240,8 +1757,8 @@ export default function ProfilePage() {
                             style={{
                               display: "flex",
                               alignItems: "center",
-                              gap: "6px",
-                              padding: "0 10px",
+                              gap: "5px",
+                              padding: "0 8px",
                               backgroundColor: "rgba(0, 0, 0, 0.03)",
                               borderRight: "1px solid rgba(0, 0, 0, 0.1)",
                               position: "relative",
@@ -1250,10 +1767,10 @@ export default function ProfilePage() {
                             }}
                             title="Country Code (Default: India +91)"
                           >
-                            <CountryFlag code={selectedCountry.flagKey} width={21} height={14} />
+                            <CountryFlag code={selectedCountry.flagKey} width={20} height={13} />
                             <span style={{ fontSize: "12px", fontWeight: 700, color: "#1A1A1A", letterSpacing: "0.02em" }}>{selectedCountry.label}</span>
-                            <span style={{ fontSize: "13px", fontWeight: 600, color: "rgba(26, 26, 26, 0.65)" }}>{selectedCountry.code}</span>
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "rgba(26, 26, 26, 0.4)", marginLeft: "2px" }}>
+                            <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(26, 26, 26, 0.65)" }}>{selectedCountry.code}</span>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "rgba(26, 26, 26, 0.4)", marginLeft: "1px" }}>
                               <path d="m6 9 6 6 6-6" />
                             </svg>
                             <select
@@ -1283,12 +1800,13 @@ export default function ProfilePage() {
                             type="tel"
                             value={rawMobile}
                             onChange={(e) => handleRawMobileChange(e.target.value)}
-                            placeholder="Enter 10-digit number"
-                            maxLength={15}
+                            placeholder="10-digit number"
+                            maxLength={10}
                             style={{
                               flex: 1,
                               minWidth: 0,
-                              padding: "10px 14px",
+                              width: "100%",
+                              padding: "10px 10px",
                               fontSize: "14px",
                               border: "none",
                               backgroundColor: "transparent",
@@ -1301,12 +1819,10 @@ export default function ProfilePage() {
                       </div>
                     </div>
 
-                    
-
-                    <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "10px", position: "relative" }}>
+                    <div className="profile-save-btn-wrap">
                       {/* Confetti celebration burst */}
                       {justSaved && (
-                        <div style={{ position: "absolute", top: "50%", right: "65px", pointerEvents: "none", zIndex: 10 }}>
+                        <div style={{ position: "absolute", top: "50%", left: "150px", pointerEvents: "none", zIndex: 10 }}>
                           {[
                             { x: -45, y: -45, color: "#10B981", size: 7, delay: "0ms" },
                             { x: 35, y: -48, color: "#9A7B1A", size: 6, delay: "40ms" },
@@ -1341,10 +1857,11 @@ export default function ProfilePage() {
                       <button
                         type="submit"
                         disabled={isSaving}
+                        className="profile-save-btn"
                         style={{
                           backgroundColor: justSaved ? "#10B981" : "#9A7B1A",
                           color: "#FFFFFF",
-                          padding: "11px 28px",
+                          padding: "10px 24px",
                           borderRadius: "10px",
                           border: "none",
                           fontSize: "14px",
@@ -1356,9 +1873,6 @@ export default function ProfilePage() {
                             : "0 4px 14px rgba(154, 123, 26, 0.25)",
                           transition: "all 0.25s ease",
                           animation: justSaved ? "profileButtonSuccess 0.4s cubic-bezier(0.16, 1, 0.3, 1)" : "none",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "8px",
                         }}
                       >
                         {isSaving ? (
@@ -1385,17 +1899,9 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Right Column: Security & Cohort Info */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+                <div className="profile-side-col">
                   {/* Account Security Card */}
-                  <div
-                    style={{
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "20px",
-                      padding: "24px",
-                      border: "1px solid rgba(0, 0, 0, 0.08)",
-                      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.03)",
-                    }}
-                  >
+                  <div className="profile-side-card">
                     <h3 style={{ fontSize: "16px", fontWeight: 700, margin: "0 0 8px" }}>Account Security</h3>
                     <p style={{ fontSize: "13px", color: "rgba(26, 26, 26, 0.6)", margin: "0 0 16px", lineHeight: 1.5 }}>
                       Manage your password credentials and account access settings.
@@ -1418,11 +1924,10 @@ export default function ProfilePage() {
 
                   {/* Student Community Hub */}
                   <div
+                    className="profile-side-card"
                     style={{
                       backgroundColor: "rgba(154, 123, 26, 0.05)",
-                      borderRadius: "20px",
-                      padding: "24px",
-                      border: "1px solid rgba(154, 123, 26, 0.2)",
+                      borderColor: "rgba(154, 123, 26, 0.2)",
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
@@ -1500,6 +2005,7 @@ export default function ProfilePage() {
                     return (
                       <div
                         key={prog.programId}
+                        className="profile-program-card"
                         style={{
                           backgroundColor: "#FFFFFF",
                           borderRadius: "24px",
@@ -1860,10 +2366,318 @@ export default function ProfilePage() {
               </div>
             )}
 
-            
           </>
         )}
       </main>
+
+      {/* ── DICEBEAR AVATAR CUSTOMIZER MODAL ── */}
+      {isAvatarModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="avatar-modal-title"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 99999,
+            backgroundColor: "rgba(15, 23, 42, 0.55)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+            boxSizing: "border-box",
+            animation: "fadeIn 0.2s ease-out",
+          }}
+          onClick={() => setIsAvatarModalOpen(false)}
+        >
+          <div
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: "20px",
+              width: "100%",
+              maxWidth: "520px",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              boxShadow: "0 20px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08)",
+              boxSizing: "border-box",
+              padding: "24px",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "20px", gap: "12px" }}>
+              <div>
+                <h2 id="avatar-modal-title" style={{ margin: 0, fontSize: "19px", fontWeight: 700, color: "#1A1A1A" }}>
+                  Customize Illustration
+                </h2>
+                <p style={{ margin: "4px 0 0", fontSize: "13px", color: "rgba(26, 26, 26, 0.6)" }}>
+                  Choose an art style and roll the dice to generate a unique look.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAvatarModalOpen(false)}
+                aria-label="Close modal"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "rgba(26, 26, 26, 0.5)",
+                  padding: "4px",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Live Preview & Randomizer Card */}
+            <div
+              style={{
+                backgroundColor: "#FBFBF9",
+                borderRadius: "16px",
+                border: "1px solid rgba(154, 123, 26, 0.2)",
+                padding: "20px",
+                display: "flex",
+                alignItems: "center",
+                gap: "20px",
+                marginBottom: "22px",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* Preview Avatar Image (Rectangular 16px radius) */}
+              <div
+                style={{
+                  width: "84px",
+                  height: "84px",
+                  borderRadius: "16px",
+                  border: "2.5px solid #9A7B1A",
+                  backgroundColor: "rgba(154, 123, 26, 0.08)",
+                  overflow: "hidden",
+                  boxShadow: "0 8px 24px rgba(154, 123, 26, 0.2)",
+                  flexShrink: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={tempAvatarUrl}
+                  alt="Preview"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
+              </div>
+
+              {/* Controls next to preview */}
+              <div style={{ flex: 1, minWidth: "180px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <button
+                  type="button"
+                  onClick={handleRandomizeAvatar}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "8px",
+                    backgroundColor: "#9A7B1A",
+                    color: "#FFFFFF",
+                    border: "none",
+                    borderRadius: "10px",
+                    padding: "9px 16px",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    boxShadow: "0 3px 12px rgba(154, 123, 26, 0.25)",
+                    transition: "transform 0.15s ease, background-color 0.15s ease",
+                    fontFamily: "inherit",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#7A6015";
+                    e.currentTarget.style.transform = "translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#9A7B1A";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
+                >
+                  <span style={{ fontSize: "16px" }}>🎲</span>
+                  <span>Roll Random Look</span>
+                </button>
+
+                {/* Seed Input */}
+                <div>
+                  <label
+                    htmlFor="custom-avatar-seed"
+                    style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "rgba(26, 26, 26, 0.6)", marginBottom: "4px" }}
+                  >
+                    Custom seed or nickname:
+                  </label>
+                  <input
+                    id="custom-avatar-seed"
+                    type="text"
+                    value={tempAvatarSeed}
+                    onChange={(e) => setTempAvatarSeed(e.target.value)}
+                    placeholder="e.g. SieLabs, Alex, Ninja..."
+                    style={{
+                      width: "100%",
+                      padding: "7px 10px",
+                      borderRadius: "8px",
+                      border: "1px solid rgba(0, 0, 0, 0.15)",
+                      fontSize: "12.5px",
+                      backgroundColor: "#FFFFFF",
+                      color: "#1A1A1A",
+                      outline: "none",
+                      boxSizing: "border-box",
+                      fontFamily: "inherit",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Illustration Styles Selector */}
+            <div style={{ marginBottom: "22px" }}>
+              <label style={{ display: "block", fontSize: "13px", fontWeight: 700, color: "#1A1A1A", marginBottom: "10px" }}>
+                Select Art Style
+              </label>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+                  gap: "10px",
+                }}
+              >
+                {DICEBEAR_STYLES.map((styleOpt) => {
+                  const isSelected = tempAvatarStyle === styleOpt.id;
+                  const previewThumbUrl = getUserAvatarUrl(tempAvatarSeed || userName || "SieLabs", styleOpt.id);
+
+                  return (
+                    <button
+                      key={styleOpt.id}
+                      type="button"
+                      onClick={() => setTempAvatarStyle(styleOpt.id)}
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        textAlign: "center",
+                        padding: "12px 10px",
+                        borderRadius: "14px",
+                        border: isSelected ? "2px solid #9A7B1A" : "1.5px solid rgba(0, 0, 0, 0.08)",
+                        backgroundColor: isSelected ? "rgba(154, 123, 26, 0.08)" : "#FFFFFF",
+                        cursor: "pointer",
+                        transition: "all 0.15s ease",
+                        position: "relative",
+                        fontFamily: "inherit",
+                      }}
+                    >
+                      {/* Mini Thumbnail */}
+                      <div
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "12px",
+                          backgroundColor: isSelected ? "#FFFFFF" : "rgba(0, 0, 0, 0.03)",
+                          border: isSelected ? "1.5px solid rgba(154, 123, 26, 0.3)" : "1px solid rgba(0, 0, 0, 0.06)",
+                          overflow: "hidden",
+                          marginBottom: "8px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <img
+                          src={previewThumbUrl}
+                          alt={styleOpt.label}
+                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        />
+                      </div>
+
+                      {/* Label & Description */}
+                      <span style={{ fontSize: "12px", fontWeight: 700, color: isSelected ? "#9A7B1A" : "#1A1A1A" }}>
+                        {styleOpt.label}
+                      </span>
+                      <span style={{ fontSize: "10px", color: "rgba(26, 26, 26, 0.55)", marginTop: "2px", lineHeight: 1.3 }}>
+                        {styleOpt.description}
+                      </span>
+
+                      {/* Active indicator badge */}
+                      {isSelected && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "6px",
+                            right: "6px",
+                            width: "16px",
+                            height: "16px",
+                            borderRadius: "50%",
+                            backgroundColor: "#9A7B1A",
+                            color: "#FFFFFF",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "10px",
+                            fontWeight: 700,
+                          }}
+                        >
+                          ✓
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "10px", paddingTop: "8px" }}>
+              <button
+                type="button"
+                onClick={() => setIsAvatarModalOpen(false)}
+                style={{
+                  backgroundColor: "transparent",
+                  color: "#1A1A1A",
+                  border: "1px solid rgba(0, 0, 0, 0.12)",
+                  padding: "9px 18px",
+                  borderRadius: "10px",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveAvatar}
+                style={{
+                  backgroundColor: "#9A7B1A",
+                  color: "#FFFFFF",
+                  border: "none",
+                  padding: "9px 22px",
+                  borderRadius: "10px",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  boxShadow: "0 3px 12px rgba(154, 123, 26, 0.25)",
+                  fontFamily: "inherit",
+                }}
+              >
+                Save Illustration
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

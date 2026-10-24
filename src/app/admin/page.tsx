@@ -46,6 +46,8 @@ export default function AdminPage() {
   // Layout states (matching dashboard style)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [adminTab, setAdminTab] = useState<"dashboard" | "programs" | "students" | "curriculum">("programs");
+  const [isMobile, setIsMobile] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [selectedInspectorStudent, setSelectedInspectorStudent] = useState<StudentUser | null>(null);
   const [selectedInspectorProgram, setSelectedInspectorProgram] = useState<ProgramDefinition | null>(null);
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
@@ -82,6 +84,18 @@ export default function AdminPage() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Mobile detection via resize
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setMobileSidebarOpen(false);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
   // Custom Confirmation Modal state (replacing browser default window.confirm)
   const [confirmModal, setConfirmModal] = useState<{
@@ -755,7 +769,8 @@ export default function AdminPage() {
           style={{
             position: "fixed",
             bottom: "28px",
-            right: "28px",
+            right: isMobile ? "12px" : "28px",
+            left: isMobile ? "12px" : "auto",
             zIndex: 9999,
             backgroundColor: toast.type === "success" ? "#065F46" : "#991B1B",
             color: "#FFFFFF",
@@ -774,21 +789,43 @@ export default function AdminPage() {
         </div>
       )}
 
+      {/* Mobile Sidebar Overlay Backdrop */}
+      {isMobile && mobileSidebarOpen && (
+        <div
+          onClick={() => setMobileSidebarOpen(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 45,
+            transition: "opacity 0.2s ease"
+          }}
+        />
+      )}
+
       {/* ═════════════════════════════════════════════════════════════════ */}
       {/* 1. LEFT SIDEBAR (Dark Navy/Slate #0F1523 matching screenshot) */}
       {/* ═════════════════════════════════════════════════════════════════ */}
       <aside
         style={{
-          width: sidebarCollapsed ? "72px" : "236px",
+          width: isMobile ? "260px" : sidebarCollapsed ? "72px" : "236px",
           backgroundColor: "#0F1523",
           color: "#E2E8F0",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          transition: "width 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+          transition: isMobile ? "transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)" : "width 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
           flexShrink: 0,
           borderRight: "1px solid rgba(255, 255, 255, 0.06)",
-          zIndex: 40,
+          zIndex: isMobile ? 50 : 40,
+          ...(isMobile ? {
+            position: "fixed" as const,
+            top: 0,
+            left: 0,
+            bottom: 0,
+            transform: mobileSidebarOpen ? "translateX(0)" : "translateX(-100%)",
+            boxShadow: mobileSidebarOpen ? "4px 0 24px rgba(0, 0, 0, 0.3)" : "none"
+          } : {})
         }}
       >
         <div>
@@ -836,7 +873,7 @@ export default function AdminPage() {
                   style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", borderRadius: "6px" }}
                 />
               </div>
-              {!sidebarCollapsed && (
+              {(isMobile || !sidebarCollapsed) && (
                 <div style={{ overflow: "hidden" }}>
                   <span style={{ fontSize: "16px", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.01em", display: "block", lineHeight: 1.1 }}>
                     SieLabs
@@ -857,7 +894,7 @@ export default function AdminPage() {
                 color: "#64748B",
                 cursor: "pointer",
                 padding: "6px",
-                display: sidebarCollapsed ? "none" : "flex",
+                display: (isMobile || sidebarCollapsed) ? "none" : "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 borderRadius: "6px"
@@ -876,7 +913,7 @@ export default function AdminPage() {
           <nav style={{ padding: "14px 10px 8px", display: "flex", flexDirection: "column", gap: "4px" }}>
             {/* Dashboard / Overview */}
             <button
-              onClick={() => setAdminTab("dashboard")}
+              onClick={() => { setAdminTab("dashboard"); if (isMobile) setMobileSidebarOpen(false); }}
               title="Dashboard Overview"
               style={{
                 display: "flex",
@@ -892,7 +929,7 @@ export default function AdminPage() {
                 fontSize: "13px",
                 fontWeight: adminTab === "dashboard" ? 700 : 500,
                 textAlign: "left",
-                justifyContent: sidebarCollapsed ? "center" : "flex-start",
+                justifyContent: (isMobile || !sidebarCollapsed) ? "flex-start" : "center",
                 transition: "all 0.15s ease"
               }}
             >
@@ -902,17 +939,17 @@ export default function AdminPage() {
                 <rect x="14" y="14" width="7" height="7" />
                 <rect x="3" y="14" width="7" height="7" />
               </svg>
-              {!sidebarCollapsed && <span>Dashboard</span>}
+              {(isMobile || !sidebarCollapsed) && <span>Dashboard</span>}
             </button>
 
             {/* Programs / Cohorts */}
             <button
-              onClick={() => setAdminTab("programs")}
+              onClick={() => { setAdminTab("programs"); if (isMobile) setMobileSidebarOpen(false); }}
               title="Programs Directory"
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: sidebarCollapsed ? "center" : "space-between",
+                justifyContent: (isMobile || !sidebarCollapsed) ? "space-between" : "center",
                 width: "100%",
                 padding: "9px 12px",
                 borderRadius: "8px",
@@ -931,9 +968,9 @@ export default function AdminPage() {
                   <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                   <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                 </svg>
-                {!sidebarCollapsed && <span>Programs</span>}
+                {(isMobile || !sidebarCollapsed) && <span>Programs</span>}
               </div>
-              {!sidebarCollapsed && (
+              {(isMobile || !sidebarCollapsed) && (
                 <span style={{ fontSize: "10px", fontWeight: 700, padding: "1px 6px", borderRadius: "10px", backgroundColor: adminTab === "programs" ? "#9A7B1A" : "rgba(255, 255, 255, 0.08)", color: "#FFFFFF" }}>
                   {programs.length}
                 </span>
@@ -942,12 +979,12 @@ export default function AdminPage() {
 
             {/* Users Directory */}
             <button
-              onClick={() => setAdminTab("students")}
+              onClick={() => { setAdminTab("students"); if (isMobile) setMobileSidebarOpen(false); }}
               title="Users Directory"
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: sidebarCollapsed ? "center" : "space-between",
+                justifyContent: (isMobile || !sidebarCollapsed) ? "space-between" : "center",
                 width: "100%",
                 padding: "9px 12px",
                 borderRadius: "8px",
@@ -968,9 +1005,9 @@ export default function AdminPage() {
                   <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                   <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
-                {!sidebarCollapsed && <span>Users</span>}
+                {(isMobile || !sidebarCollapsed) && <span>Users</span>}
               </div>
-              {!sidebarCollapsed && (
+              {(isMobile || !sidebarCollapsed) && (
                 <span style={{ fontSize: "10px", fontWeight: 700, padding: "1px 6px", borderRadius: "10px", backgroundColor: adminTab === "students" ? "#9A7B1A" : "rgba(255, 255, 255, 0.08)", color: "#FFFFFF" }}>
                   {totalUsersCount}
                 </span>
@@ -979,12 +1016,12 @@ export default function AdminPage() {
 
             {/* Curriculum Modules */}
             <button
-              onClick={() => setAdminTab("curriculum")}
+              onClick={() => { setAdminTab("curriculum"); if (isMobile) setMobileSidebarOpen(false); }}
               title="Manage Program Curriculum"
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: sidebarCollapsed ? "center" : "space-between",
+                justifyContent: (isMobile || !sidebarCollapsed) ? "space-between" : "center",
                 width: "100%",
                 padding: "9px 12px",
                 borderRadius: "8px",
@@ -1004,9 +1041,9 @@ export default function AdminPage() {
                   <polyline points="2 17 12 22 22 17" />
                   <polyline points="2 12 12 17 22 12" />
                 </svg>
-                {!sidebarCollapsed && <span>Curriculum</span>}
+                {(isMobile || !sidebarCollapsed) && <span>Curriculum</span>}
               </div>
-              {!sidebarCollapsed && (
+              {(isMobile || !sidebarCollapsed) && (
                 <span style={{ fontSize: "10px", fontWeight: 700, padding: "1px 6px", borderRadius: "10px", backgroundColor: adminTab === "curriculum" ? "#9A7B1A" : "rgba(255, 255, 255, 0.08)", color: "#FFFFFF" }}>
                   {totalModulesCount}
                 </span>
@@ -1029,23 +1066,23 @@ export default function AdminPage() {
               color: "#94A3B8",
               fontSize: "13px",
               textDecoration: "none",
-              justifyContent: sidebarCollapsed ? "center" : "flex-start"
+              justifyContent: (isMobile || !sidebarCollapsed) ? "flex-start" : "center"
             }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="3" />
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
             </svg>
-            {!sidebarCollapsed && <span>Settings</span>}
+            {(isMobile || !sidebarCollapsed) && <span>Settings</span>}
           </Link>
 
           {/* User Profile Mini Bar */}
-          <div style={{ marginTop: "6px", paddingTop: "8px", borderTop: "1px solid rgba(255, 255, 255, 0.06)", display: "flex", alignItems: "center", justifyContent: sidebarCollapsed ? "center" : "space-between" }}>
+          <div style={{ marginTop: "6px", paddingTop: "8px", borderTop: "1px solid rgba(255, 255, 255, 0.06)", display: "flex", alignItems: "center", justifyContent: (isMobile || !sidebarCollapsed) ? "space-between" : "center" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: "#9A7B1A", color: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: 800 }}>
                 A
               </div>
-              {!sidebarCollapsed && (
+              {(isMobile || !sidebarCollapsed) && (
                 <div style={{ overflow: "hidden" }}>
                   <p style={{ margin: 0, fontSize: "12px", fontWeight: 700, color: "#FFFFFF", whiteSpace: "nowrap" }}>
                     Abhishek
@@ -1055,7 +1092,7 @@ export default function AdminPage() {
               )}
             </div>
 
-            {!sidebarCollapsed && (
+            {(isMobile || !sidebarCollapsed) && (
               <button
                 onClick={() => {
                   localStorage.removeItem("user");
@@ -1080,33 +1117,60 @@ export default function AdminPage() {
       {/* ═════════════════════════════════════════════════════════════════ */}
       <main style={{ flex: 1, minWidth: 0, backgroundColor: "#FFFFFF", display: "flex", flexDirection: "column", overflowY: "auto", position: "relative" }}>
         {/* Top Header Row with Action Buttons */}
-        <div style={{ padding: "20px 32px 16px", borderBottom: "1px solid #F1F5F9", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-            <div
-              style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "10px",
-                backgroundColor: "#F8FAFC",
-                border: "1px solid #E2E8F0",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "4px",
-                flexShrink: 0,
-                boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)"
-              }}
-            >
-              <img
-                src="/favicon.ico"
-                alt="SieLabs Logo"
-                width={38}
-                height={38}
-                style={{ objectFit: "contain", display: "block", borderRadius: "6px" }}
-              />
-            </div>
-            <div>
-              <h1 style={{ fontSize: "22px", fontWeight: 800, margin: 0, color: "#0F172A", letterSpacing: "-0.02em" }}>
+        <div style={{ padding: isMobile ? "14px 16px 12px" : "20px 32px 16px", borderBottom: "1px solid #F1F5F9", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: isMobile ? "10px" : "16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "10px" : "14px", flex: 1, minWidth: 0 }}>
+            {/* Mobile Hamburger Button */}
+            {isMobile && (
+              <button
+                onClick={() => setMobileSidebarOpen(true)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "8px",
+                  backgroundColor: "#F1F5F9",
+                  border: "1px solid #E2E8F0",
+                  cursor: "pointer",
+                  flexShrink: 0,
+                  padding: 0
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2" strokeLinecap="round">
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              </button>
+            )}
+            {!isMobile && (
+              <div
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "10px",
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #E2E8F0",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "4px",
+                  flexShrink: 0,
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)"
+                }}
+              >
+                <img
+                  src="/favicon.ico"
+                  alt="SieLabs Logo"
+                  width={38}
+                  height={38}
+                  style={{ objectFit: "contain", display: "block", borderRadius: "6px" }}
+                />
+              </div>
+            )}
+            <div style={{ minWidth: 0 }}>
+              <h1 style={{ fontSize: isMobile ? "16px" : "22px", fontWeight: 800, margin: 0, color: "#0F172A", letterSpacing: "-0.02em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                 {adminTab === "programs"
                   ? "Programs & Cohorts"
                   : adminTab === "students"
@@ -1115,19 +1179,21 @@ export default function AdminPage() {
                   ? "Curriculum & Modules"
                   : "Operations Overview"}
               </h1>
-              <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#64748B" }}>
-                {adminTab === "programs"
-                  ? "Active curriculum batches, schedule tracks, and user milestones."
-                  : adminTab === "students"
-                  ? `Directory of registered accounts (${totalUsersCount} total, ${enrolledLearnersCount} enrolled, ${normalUsersCount} normal accounts).`
-                  : adminTab === "curriculum"
-                  ? "Edit modules, subtopics and milestones"
-                  : "Real-time key performance indicators and cohort milestones."}
-              </p>
+              {!isMobile && (
+                <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#64748B" }}>
+                  {adminTab === "programs"
+                    ? "Active curriculum batches, schedule tracks, and user milestones."
+                    : adminTab === "students"
+                    ? `Directory of registered accounts (${totalUsersCount} total, ${enrolledLearnersCount} enrolled, ${normalUsersCount} normal accounts).`
+                    : adminTab === "curriculum"
+                    ? "Edit modules, subtopics and milestones"
+                    : "Real-time key performance indicators and cohort milestones."}
+                </p>
+              )}
             </div>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "6px" : "10px", flexShrink: 0 }}>
             <button
               onClick={() => {
                 if (adminTab === "curriculum") {
@@ -1140,7 +1206,7 @@ export default function AdminPage() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                padding: "8px 14px",
+                padding: isMobile ? "8px 10px" : "8px 14px",
                 borderRadius: "8px",
                 border: "1px solid #E2E8F0",
                 backgroundColor: "#FFFFFF",
@@ -1151,7 +1217,7 @@ export default function AdminPage() {
               }}
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
-              <span>Export</span>
+              {!isMobile && <span>Export</span>}
             </button>
 
             {adminTab !== "curriculum" && (
@@ -1161,7 +1227,7 @@ export default function AdminPage() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "6px",
-                  padding: "8px 16px",
+                  padding: isMobile ? "8px 10px" : "8px 16px",
                   borderRadius: "8px",
                   backgroundColor: "#0F172A",
                   color: "#FFFFFF",
@@ -1173,7 +1239,7 @@ export default function AdminPage() {
                 }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                <span>Enroll User in Cohort</span>
+                {!isMobile && <span>Enroll User in Cohort</span>}
               </button>
             )}
           </div>
@@ -1181,9 +1247,9 @@ export default function AdminPage() {
 
         {/* Filter Pills Toolbar (strictly for Users / Students Directory tab) */}
         {adminTab === "students" && (
-          <div style={{ padding: "14px 32px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", borderBottom: "1px solid #F8FAFC", backgroundColor: "#FAFAF8" }}>
+          <div style={{ padding: isMobile ? "10px 12px" : "14px 32px", display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", borderBottom: "1px solid #F8FAFC", backgroundColor: "#FAFAF8" }}>
             {/* Account Type Segmented Filter (All / Enrolled / Normal) */}
-            <div style={{ display: "inline-flex", backgroundColor: "#FFFFFF", borderRadius: "6px", border: "1px solid #E2E8F0", padding: "2px", gap: "2px" }}>
+            <div style={{ display: "inline-flex", backgroundColor: "#FFFFFF", borderRadius: "6px", border: "1px solid #E2E8F0", padding: "2px", gap: "2px", overflowX: "auto", maxWidth: "100%" }}>
               <button
                 onClick={() => setUserTypeFilter("all")}
                 style={{
@@ -1439,75 +1505,56 @@ export default function AdminPage() {
         )}
 
         {/* ── HIGH-DENSITY DATA TABLE ── */}
-        <div style={{ flex: 1, padding: "0 32px 40px", overflowX: "auto" }}>
+        <div style={{ flex: 1, padding: isMobile ? "0 12px 24px" : "0 32px 40px", overflowX: "auto" }}>
           {/* TAB: PROGRAMS TABLE VIEW */}
           {adminTab === "programs" && (
-            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid #E2E8F0", color: "#64748B", fontSize: "12px", fontWeight: 600 }}>
-                  <th style={{ padding: "14px 10px", width: "36px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedRowIds.length === programs.length && programs.length > 0}
-                      onChange={() => {
-                        if (selectedRowIds.length === programs.length) setSelectedRowIds([]);
-                        else setSelectedRowIds(programs.map(p => p.id));
-                      }}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </th>
-                  <th style={{ padding: "14px 12px" }}>Program / Cohort</th>
-                  <th style={{ padding: "14px 12px" }}>Schedule &amp; Batch</th>
-                  <th style={{ padding: "14px 12px" }}>Enrolled Users</th>
-                  <th style={{ padding: "14px 12px" }}>Milestone Status</th>
-                  <th style={{ padding: "14px 12px" }}>Curriculum Progress</th>
-                  <th style={{ padding: "14px 12px", textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+            isMobile ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", paddingBottom: "24px" }}>
                 {programs.map(program => {
                   const completedModules = globalProgress[program.id] || [];
                   const totalModules = program.modules?.length || 0;
                   const completedCount = completedModules.length;
                   const percentage = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
                   const isChecked = selectedRowIds.includes(program.id);
-
                   const enrolledStudentsCount = students.filter(s =>
                     s.role !== "admin" &&
                     (s.enrolledPrograms || []).some(ep => ep.programId === program.id)
                   ).length;
 
                   return (
-                    <tr
+                    <div
                       key={program.id}
                       onClick={() => {
                         setSelectedCurriculumProgramId(program.id);
                         setAdminTab("curriculum");
                       }}
                       style={{
-                        borderBottom: "1px solid #F1F5F9",
-                        backgroundColor: isChecked ? "rgba(154, 123, 26, 0.04)" : "transparent",
-                        transition: "background-color 0.1s ease",
-                        cursor: "pointer"
+                        backgroundColor: isChecked ? "rgba(154, 123, 26, 0.04)" : "#FFFFFF",
+                        border: isChecked ? "1.5px solid #9A7B1A" : "1px solid #E2E8F0",
+                        borderRadius: "12px",
+                        padding: "16px",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
+                        cursor: "pointer",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px"
                       }}
                     >
-                      {/* Checkbox */}
-                      <td style={{ padding: "14px 10px" }} onClick={e => e.stopPropagation()}>
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => toggleRowSelect(program.id)}
-                          style={{ cursor: "pointer" }}
-                        />
-                      </td>
-
-                      {/* Program Title & ID */}
-                      <td style={{ padding: "14px 12px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      {/* Top row: Checkbox, Icon, Title, ID */}
+                      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: 0 }}>
+                          <div onClick={e => e.stopPropagation()}>
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => toggleRowSelect(program.id)}
+                              style={{ cursor: "pointer", width: "16px", height: "16px" }}
+                            />
+                          </div>
                           <div
                             style={{
-                              width: "32px",
-                              height: "32px",
+                              width: "36px",
+                              height: "36px",
                               borderRadius: "8px",
                               backgroundColor: "rgba(154, 123, 26, 0.1)",
                               color: "#9A7B1A",
@@ -1515,15 +1562,15 @@ export default function AdminPage() {
                               alignItems: "center",
                               justifyContent: "center",
                               fontWeight: 800,
-                              fontSize: "12px",
+                              fontSize: "14px",
                               flexShrink: 0
                             }}
                           >
                             {program.title.charAt(0)}
                           </div>
-                          <div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                              <span style={{ fontWeight: 700, color: "#0F172A", fontSize: "13px" }}>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                              <span style={{ fontWeight: 800, color: "#0F172A", fontSize: "14px" }}>
                                 {program.title}
                               </span>
                               <span style={{ fontSize: "10px", fontWeight: 700, color: "#9A7B1A", backgroundColor: "rgba(154, 123, 26, 0.1)", padding: "1px 6px", borderRadius: "4px" }}>
@@ -1533,46 +1580,38 @@ export default function AdminPage() {
                             <span style={{ fontSize: "11px", color: "#64748B" }}>{program.badge}</span>
                           </div>
                         </div>
-                      </td>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", fontWeight: 700, color: percentage === 100 ? "#059669" : "#D97706", flexShrink: 0, backgroundColor: percentage === 100 ? "#ECFDF5" : "#FFFBEB", padding: "3px 8px", borderRadius: "6px" }}>
+                          <span>{percentage === 100 ? "✓" : "●"}</span>
+                          <span>{percentage === 100 ? "Done" : "In Progress"}</span>
+                        </span>
+                      </div>
 
-                      {/* Schedule & Duration */}
-                      <td style={{ padding: "14px 12px", color: "#475569" }}>
-                        <div style={{ fontSize: "12px", fontWeight: 600 }}>{program.schedule}</div>
-                        <div style={{ fontSize: "11px", color: "#94A3B8" }}>Duration: {program.duration}</div>
-                      </td>
-
-                      {/* Enrolled Users */}
-                      <td style={{ padding: "14px 12px" }}>
-                        <span style={{ backgroundColor: "#F1F5F9", color: "#334155", fontSize: "11px", fontWeight: 700, padding: "3px 8px", borderRadius: "6px" }}>
+                      {/* Meta row: Schedule, Enrolled Users */}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "12px", color: "#475569", flexWrap: "wrap", gap: "8px", backgroundColor: "#F8FAFC", padding: "8px 12px", borderRadius: "8px" }}>
+                        <div>
+                          <span style={{ fontWeight: 600 }}>{program.schedule}</span>
+                          <span style={{ color: "#94A3B8", marginLeft: "6px" }}>• {program.duration}</span>
+                        </div>
+                        <span style={{ backgroundColor: "#FFFFFF", color: "#334155", fontSize: "11px", fontWeight: 700, padding: "2px 8px", borderRadius: "6px", border: "1px solid #E2E8F0" }}>
                           {enrolledStudentsCount} {enrolledStudentsCount === 1 ? "User" : "Users"}
                         </span>
-                      </td>
+                      </div>
 
-                      {/* Status */}
-                      <td style={{ padding: "14px 12px" }}>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "12px", fontWeight: 700, color: percentage === 100 ? "#059669" : "#D97706" }}>
-                          <span>{percentage === 100 ? "✓" : "●"}</span>
-                          <span>{percentage === 100 ? "Completed" : "In Progress"}</span>
-                        </span>
-                      </td>
-
-                      {/* Progress Bar & Rate */}
-                      <td style={{ padding: "14px 12px", width: "170px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <div style={{ flex: 1, height: "6px", backgroundColor: "#E2E8F0", borderRadius: "3px", overflow: "hidden" }}>
-                            <div style={{ width: `${percentage}%`, height: "100%", backgroundColor: percentage === 100 ? "#10B981" : "#9A7B1A", borderRadius: "3px" }} />
-                          </div>
-                          <span style={{ fontSize: "11px", fontWeight: 700, color: "#0F172A", minWidth: "32px" }}>
-                            {percentage}%
+                      {/* Progress bar */}
+                      <div>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                          <span style={{ fontSize: "11px", color: "#64748B" }}>Curriculum Progress</span>
+                          <span style={{ fontSize: "11px", fontWeight: 700, color: "#0F172A" }}>
+                            {percentage}% ({completedCount}/{totalModules} modules)
                           </span>
                         </div>
-                        <span style={{ fontSize: "10px", color: "#64748B" }}>
-                          {completedCount}/{totalModules} modules
-                        </span>
-                      </td>
+                        <div style={{ width: "100%", height: "6px", backgroundColor: "#E2E8F0", borderRadius: "3px", overflow: "hidden" }}>
+                          <div style={{ width: `${percentage}%`, height: "100%", backgroundColor: percentage === 100 ? "#10B981" : "#9A7B1A", borderRadius: "3px" }} />
+                        </div>
+                      </div>
 
-                      {/* Actions */}
-                      <td style={{ padding: "14px 12px", textAlign: "right" }} onClick={e => e.stopPropagation()}>
+                      {/* Bottom Actions */}
+                      <div style={{ display: "flex", justifyContent: "flex-end", borderTop: "1px solid #F1F5F9", paddingTop: "8px" }} onClick={e => e.stopPropagation()}>
                         <button
                           onClick={() => {
                             setSelectedCurriculumProgramId(program.id);
@@ -1584,7 +1623,7 @@ export default function AdminPage() {
                             gap: "5px",
                             backgroundColor: "#9A7B1A",
                             color: "#FFFFFF",
-                            padding: "6px 12px",
+                            padding: "7px 14px",
                             borderRadius: "7px",
                             fontSize: "12px",
                             fontWeight: 700,
@@ -1592,48 +1631,185 @@ export default function AdminPage() {
                             cursor: "pointer"
                           }}
                         >
-                          <span>Manage</span>
+                          <span>Manage Curriculum</span>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
                         </button>
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   );
                 })}
-              </tbody>
-            </table>
+              </div>
+            ) : (
+              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #E2E8F0", color: "#64748B", fontSize: "12px", fontWeight: 600 }}>
+                    <th style={{ padding: "14px 10px", width: "36px" }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedRowIds.length === programs.length && programs.length > 0}
+                        onChange={() => {
+                          if (selectedRowIds.length === programs.length) setSelectedRowIds([]);
+                          else setSelectedRowIds(programs.map(p => p.id));
+                        }}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </th>
+                    <th style={{ padding: "14px 12px" }}>Program / Cohort</th>
+                    <th style={{ padding: "14px 12px" }}>Schedule &amp; Batch</th>
+                    <th style={{ padding: "14px 12px" }}>Enrolled Users</th>
+                    <th style={{ padding: "14px 12px" }}>Milestone Status</th>
+                    <th style={{ padding: "14px 12px" }}>Curriculum Progress</th>
+                    <th style={{ padding: "14px 12px", textAlign: "right" }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {programs.map(program => {
+                    const completedModules = globalProgress[program.id] || [];
+                    const totalModules = program.modules?.length || 0;
+                    const completedCount = completedModules.length;
+                    const percentage = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
+                    const isChecked = selectedRowIds.includes(program.id);
+
+                    const enrolledStudentsCount = students.filter(s =>
+                      s.role !== "admin" &&
+                      (s.enrolledPrograms || []).some(ep => ep.programId === program.id)
+                    ).length;
+
+                    return (
+                      <tr
+                        key={program.id}
+                        onClick={() => {
+                          setSelectedCurriculumProgramId(program.id);
+                          setAdminTab("curriculum");
+                        }}
+                        style={{
+                          borderBottom: "1px solid #F1F5F9",
+                          backgroundColor: isChecked ? "rgba(154, 123, 26, 0.04)" : "transparent",
+                          transition: "background-color 0.1s ease",
+                          cursor: "pointer"
+                        }}
+                      >
+                        {/* Checkbox */}
+                        <td style={{ padding: "14px 10px" }} onClick={e => e.stopPropagation()}>
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => toggleRowSelect(program.id)}
+                            style={{ cursor: "pointer" }}
+                          />
+                        </td>
+
+                        {/* Program Title & ID */}
+                        <td style={{ padding: "14px 12px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                            <div
+                              style={{
+                                width: "32px",
+                                height: "32px",
+                                borderRadius: "8px",
+                                backgroundColor: "rgba(154, 123, 26, 0.1)",
+                                color: "#9A7B1A",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontWeight: 800,
+                                fontSize: "12px",
+                                flexShrink: 0
+                              }}
+                            >
+                              {program.title.charAt(0)}
+                            </div>
+                            <div>
+                              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                <span style={{ fontWeight: 700, color: "#0F172A", fontSize: "13px" }}>
+                                  {program.title}
+                                </span>
+                                <span style={{ fontSize: "10px", fontWeight: 700, color: "#9A7B1A", backgroundColor: "rgba(154, 123, 26, 0.1)", padding: "1px 6px", borderRadius: "4px" }}>
+                                  {program.id}
+                                </span>
+                              </div>
+                              <span style={{ fontSize: "11px", color: "#64748B" }}>{program.badge}</span>
+                            </div>
+                          </div>
+                        </td>
+
+                        {/* Schedule & Duration */}
+                        <td style={{ padding: "14px 12px", color: "#475569" }}>
+                          <div style={{ fontSize: "12px", fontWeight: 600 }}>{program.schedule}</div>
+                          <div style={{ fontSize: "11px", color: "#94A3B8" }}>Duration: {program.duration}</div>
+                        </td>
+
+                        {/* Enrolled Users */}
+                        <td style={{ padding: "14px 12px" }}>
+                          <span style={{ backgroundColor: "#F1F5F9", color: "#334155", fontSize: "11px", fontWeight: 700, padding: "3px 8px", borderRadius: "6px" }}>
+                            {enrolledStudentsCount} {enrolledStudentsCount === 1 ? "User" : "Users"}
+                          </span>
+                        </td>
+
+                        {/* Status */}
+                        <td style={{ padding: "14px 12px" }}>
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "12px", fontWeight: 700, color: percentage === 100 ? "#059669" : "#D97706" }}>
+                            <span>{percentage === 100 ? "✓" : "●"}</span>
+                            <span>{percentage === 100 ? "Completed" : "In Progress"}</span>
+                          </span>
+                        </td>
+
+                        {/* Progress Bar & Rate */}
+                        <td style={{ padding: "14px 12px", width: "170px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <div style={{ flex: 1, height: "6px", backgroundColor: "#E2E8F0", borderRadius: "3px", overflow: "hidden" }}>
+                              <div style={{ width: `${percentage}%`, height: "100%", backgroundColor: percentage === 100 ? "#10B981" : "#9A7B1A", borderRadius: "3px" }} />
+                            </div>
+                            <span style={{ fontSize: "11px", fontWeight: 700, color: "#0F172A", minWidth: "32px" }}>
+                              {percentage}%
+                            </span>
+                          </div>
+                          <span style={{ fontSize: "10px", color: "#64748B" }}>
+                            {completedCount}/{totalModules} modules
+                          </span>
+                        </td>
+
+                        {/* Actions */}
+                        <td style={{ padding: "14px 12px", textAlign: "right" }} onClick={e => e.stopPropagation()}>
+                          <button
+                            onClick={() => {
+                              setSelectedCurriculumProgramId(program.id);
+                              setAdminTab("curriculum");
+                            }}
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "5px",
+                              backgroundColor: "#9A7B1A",
+                              color: "#FFFFFF",
+                              padding: "6px 12px",
+                              borderRadius: "7px",
+                              fontSize: "12px",
+                              fontWeight: 700,
+                              border: "none",
+                              cursor: "pointer"
+                            }}
+                          >
+                            <span>Manage</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></svg>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )
           )}
 
           {/* TAB: USERS TABLE VIEW */}
           {adminTab === "students" && (
-            <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid #E2E8F0", color: "#64748B", fontSize: "12px", fontWeight: 600 }}>
-                  <th style={{ padding: "14px 10px", width: "36px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedRowIds.length === filteredStudents.length && filteredStudents.length > 0}
-                      onChange={() => {
-                        if (selectedRowIds.length === filteredStudents.length) setSelectedRowIds([]);
-                        else setSelectedRowIds(filteredStudents.map(s => s.id));
-                      }}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </th>
-                  <th style={{ padding: "14px 12px" }}>Account ID</th>
-                  <th style={{ padding: "14px 12px" }}>User &amp; Contact</th>
-                  <th style={{ padding: "14px 12px" }}>Mobile</th>
-                  <th style={{ padding: "14px 12px" }}>Account Status</th>
-                  <th style={{ padding: "14px 12px" }}>Enrolled Cohorts</th>
-                  <th style={{ padding: "14px 12px", textAlign: "right" }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+            isMobile ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px", paddingBottom: "24px" }}>
                 {filteredStudents.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} style={{ padding: "48px 0", textAlign: "center", color: "#64748B" }}>
-                      No user accounts match your active filter.
-                    </td>
-                  </tr>
+                  <div style={{ padding: "36px 16px", textAlign: "center", color: "#64748B", backgroundColor: "#FFFFFF", borderRadius: "12px", border: "1px dashed #CBD5E1" }}>
+                    No user accounts match your active filter.
+                  </div>
                 ) : (
                   filteredStudents.map(student => {
                     const isChecked = selectedRowIds.includes(student.id);
@@ -1642,156 +1818,346 @@ export default function AdminPage() {
                     const isNormalUser = enrollCount === 0;
 
                     return (
-                      <tr
+                      <div
                         key={student.id}
                         onClick={() => setSelectedInspectorStudent(student)}
                         style={{
-                          borderBottom: "1px solid #F1F5F9",
-                          backgroundColor: isChecked ? "rgba(154, 123, 26, 0.04)" : "transparent",
+                          backgroundColor: isChecked ? "rgba(154, 123, 26, 0.04)" : "#FFFFFF",
+                          border: isChecked ? "1.5px solid #9A7B1A" : "1px solid #E2E8F0",
+                          borderRadius: "12px",
+                          padding: "16px",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.03)",
                           cursor: "pointer",
-                          transition: "background-color 0.1s ease"
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px"
                         }}
                       >
-                        {/* Checkbox */}
-                        <td style={{ padding: "14px 10px" }} onClick={e => e.stopPropagation()}>
-                          <input
-                            type="checkbox"
-                            checked={isChecked}
-                            onChange={() => toggleRowSelect(student.id)}
-                            style={{ cursor: "pointer" }}
-                          />
-                        </td>
-
-                        {/* ID */}
-                        <td style={{ padding: "14px 12px" }}>
-                          <span style={{ fontSize: "12px", fontWeight: 700, color: "#64748B" }}>
-                            #{student.id.slice(-6).toUpperCase()}
-                          </span>
-                        </td>
-
-                        {/* User Contact */}
-                        <td style={{ padding: "14px 12px" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        {/* Top row: Checkbox, Avatar, Name & ID */}
+                        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: 0 }}>
+                            <div onClick={e => e.stopPropagation()}>
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={() => toggleRowSelect(student.id)}
+                                style={{ cursor: "pointer", width: "16px", height: "16px" }}
+                              />
+                            </div>
                             <div
                               style={{
-                                width: "32px",
-                                height: "32px",
+                                width: "36px",
+                                height: "36px",
                                 borderRadius: "50%",
                                 backgroundColor: isNormalUser ? "#F1F5F9" : "#EDECE8",
                                 color: isNormalUser ? "#64748B" : "#0F172A",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                fontSize: "12px",
+                                fontSize: "13px",
                                 fontWeight: 800,
                                 flexShrink: 0
                               }}
                             >
                               {initial}
                             </div>
-                            <div>
-                              <div style={{ fontWeight: 700, color: "#0F172A" }}>{student.name}</div>
-                              <div style={{ fontSize: "11px", color: "#64748B" }}>{student.email}</div>
+                            <div style={{ minWidth: 0 }}>
+                              <div style={{ fontWeight: 800, color: "#0F172A", fontSize: "14px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                {student.name}
+                              </div>
+                              <div style={{ fontSize: "11px", color: "#64748B", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                {student.email}
+                              </div>
                             </div>
                           </div>
-                        </td>
 
-                        {/* Mobile */}
-                        <td style={{ padding: "14px 12px", color: "#475569", fontSize: "12px" }}>
-                          {student.mobile || "—"}
-                        </td>
+                          <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748B", backgroundColor: "#F1F5F9", padding: "2px 6px", borderRadius: "4px", flexShrink: 0 }}>
+                            #{student.id.slice(-6).toUpperCase()}
+                          </span>
+                        </div>
 
-                        {/* Account Status */}
-                        <td style={{ padding: "14px 12px" }}>
-                          {isNormalUser ? (
-                            <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "11px", fontWeight: 700, color: "#D97706", backgroundColor: "#FEF3C7", padding: "3px 8px", borderRadius: "6px" }}>
-                              <span>○</span>
-                              <span>Normal User</span>
-                            </span>
-                          ) : (
-                            <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "11px", fontWeight: 700, color: "#059669", backgroundColor: "#ECFDF5", padding: "3px 8px", borderRadius: "6px" }}>
-                              <span>✓</span>
-                              <span>Enrolled ({enrollCount})</span>
-                            </span>
-                          )}
-                        </td>
-
-                        {/* Enrolled Programs */}
-                        <td style={{ padding: "14px 12px" }}>
-                          <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                        {/* Status and Contact meta */}
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", paddingTop: "4px" }}>
+                          <div>
                             {isNormalUser ? (
-                              <span style={{ fontSize: "11px", color: "#94A3B8", fontStyle: "italic" }}>
-                                No programs enrolled
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", fontWeight: 700, color: "#D97706", backgroundColor: "#FEF3C7", padding: "3px 8px", borderRadius: "6px" }}>
+                                <span>○</span>
+                                <span>Normal User</span>
                               </span>
                             ) : (
-                              student.enrolledPrograms.map(ep => (
-                                <span
-                                  key={ep.programId}
-                                  style={{
-                                    fontSize: "11px",
-                                    fontWeight: 600,
-                                    padding: "2px 7px",
-                                    borderRadius: "4px",
-                                    backgroundColor: "rgba(154, 123, 26, 0.1)",
-                                    color: "#9A7B1A"
-                                  }}
-                                >
-                                  {ep.programName || ep.programId}
-                                </span>
-                              ))
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "11px", fontWeight: 700, color: "#059669", backgroundColor: "#ECFDF5", padding: "3px 8px", borderRadius: "6px" }}>
+                                <span>✓</span>
+                                <span>Enrolled ({enrollCount})</span>
+                              </span>
                             )}
                           </div>
-                        </td>
+                          {student.mobile && (
+                            <span style={{ fontSize: "11px", color: "#475569" }}>
+                              ✆ {student.mobile}
+                            </span>
+                          )}
+                        </div>
 
-                        {/* Actions */}
-                        <td style={{ padding: "14px 12px", textAlign: "right" }} onClick={e => e.stopPropagation()}>
-                          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "6px" }}>
-                            {isNormalUser && (
-                              <button
-                                onClick={() => {
-                                  setSelectedStudentForEnroll(student.email);
-                                  setIsEnrollModalOpen(true);
-                                }}
+                        {/* Enrolled Cohorts Pills */}
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                          {isNormalUser ? (
+                            <span style={{ fontSize: "11px", color: "#94A3B8", fontStyle: "italic" }}>
+                              No programs enrolled
+                            </span>
+                          ) : (
+                            student.enrolledPrograms.map(ep => (
+                              <span
+                                key={ep.programId}
                                 style={{
-                                  backgroundColor: "#0F172A",
-                                  color: "#FFFFFF",
-                                  border: "none",
-                                  padding: "5px 10px",
-                                  borderRadius: "6px",
-                                  fontSize: "11px",
-                                  fontWeight: 700,
-                                  cursor: "pointer",
-                                  display: "inline-flex",
-                                  alignItems: "center",
-                                  gap: "3px"
+                                  fontSize: "10.5px",
+                                  fontWeight: 600,
+                                  padding: "2px 7px",
+                                  borderRadius: "4px",
+                                  backgroundColor: "rgba(154, 123, 26, 0.1)",
+                                  color: "#9A7B1A"
                                 }}
                               >
-                                <span>+ Enroll</span>
-                              </button>
-                            )}
+                                {ep.programName || ep.programId}
+                              </span>
+                            ))
+                          )}
+                        </div>
+
+                        {/* Actions row */}
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "8px", borderTop: "1px solid #F1F5F9", paddingTop: "8px" }} onClick={e => e.stopPropagation()}>
+                          {isNormalUser && (
                             <button
-                              onClick={() => setSelectedInspectorStudent(student)}
+                              onClick={() => {
+                                setSelectedStudentForEnroll(student.email);
+                                setIsEnrollModalOpen(true);
+                              }}
                               style={{
-                                backgroundColor: "transparent",
-                                border: "1px solid #E2E8F0",
-                                color: "#0F172A",
-                                padding: "5px 10px",
+                                backgroundColor: "#0F172A",
+                                color: "#FFFFFF",
+                                border: "none",
+                                padding: "6px 12px",
                                 borderRadius: "6px",
-                                fontSize: "11px",
-                                fontWeight: 600,
-                                cursor: "pointer"
+                                fontSize: "11.5px",
+                                fontWeight: 700,
+                                cursor: "pointer",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "3px"
                               }}
                             >
-                              Details
+                              <span>+ Enroll</span>
                             </button>
-                          </div>
-                        </td>
-                      </tr>
+                          )}
+                          <button
+                            onClick={() => setSelectedInspectorStudent(student)}
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "1px solid #CBD5E1",
+                              color: "#0F172A",
+                              padding: "6px 12px",
+                              borderRadius: "6px",
+                              fontSize: "11.5px",
+                              fontWeight: 600,
+                              cursor: "pointer"
+                            }}
+                          >
+                            Details
+                          </button>
+                        </div>
+                      </div>
                     );
                   })
                 )}
-              </tbody>
-            </table>
+              </div>
+            ) : (
+              <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #E2E8F0", color: "#64748B", fontSize: "12px", fontWeight: 600 }}>
+                    <th style={{ padding: "14px 10px", width: "36px" }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedRowIds.length === filteredStudents.length && filteredStudents.length > 0}
+                        onChange={() => {
+                          if (selectedRowIds.length === filteredStudents.length) setSelectedRowIds([]);
+                          else setSelectedRowIds(filteredStudents.map(s => s.id));
+                        }}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </th>
+                    <th style={{ padding: "14px 12px" }}>Account ID</th>
+                    <th style={{ padding: "14px 12px" }}>User &amp; Contact</th>
+                    <th style={{ padding: "14px 12px" }}>Mobile</th>
+                    <th style={{ padding: "14px 12px" }}>Account Status</th>
+                    <th style={{ padding: "14px 12px" }}>Enrolled Cohorts</th>
+                    <th style={{ padding: "14px 12px", textAlign: "right" }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStudents.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} style={{ padding: "48px 0", textAlign: "center", color: "#64748B" }}>
+                        No user accounts match your active filter.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredStudents.map(student => {
+                      const isChecked = selectedRowIds.includes(student.id);
+                      const initial = (student.name.charAt(0) || "U").toUpperCase();
+                      const enrollCount = (student.enrolledPrograms || []).length;
+                      const isNormalUser = enrollCount === 0;
+
+                      return (
+                        <tr
+                          key={student.id}
+                          onClick={() => setSelectedInspectorStudent(student)}
+                          style={{
+                            borderBottom: "1px solid #F1F5F9",
+                            backgroundColor: isChecked ? "rgba(154, 123, 26, 0.04)" : "transparent",
+                            cursor: "pointer",
+                            transition: "background-color 0.1s ease"
+                          }}
+                        >
+                          {/* Checkbox */}
+                          <td style={{ padding: "14px 10px" }} onClick={e => e.stopPropagation()}>
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => toggleRowSelect(student.id)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </td>
+
+                          {/* ID */}
+                          <td style={{ padding: "14px 12px" }}>
+                            <span style={{ fontSize: "12px", fontWeight: 700, color: "#64748B" }}>
+                              #{student.id.slice(-6).toUpperCase()}
+                            </span>
+                          </td>
+
+                          {/* User Contact */}
+                          <td style={{ padding: "14px 12px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                              <div
+                                style={{
+                                  width: "32px",
+                                  height: "32px",
+                                  borderRadius: "50%",
+                                  backgroundColor: isNormalUser ? "#F1F5F9" : "#EDECE8",
+                                  color: isNormalUser ? "#64748B" : "#0F172A",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontSize: "12px",
+                                  fontWeight: 800,
+                                  flexShrink: 0
+                                }}
+                              >
+                                {initial}
+                              </div>
+                              <div>
+                                <div style={{ fontWeight: 700, color: "#0F172A" }}>{student.name}</div>
+                                <div style={{ fontSize: "11px", color: "#64748B" }}>{student.email}</div>
+                              </div>
+                            </div>
+                          </td>
+
+                          {/* Mobile */}
+                          <td style={{ padding: "14px 12px", color: "#475569", fontSize: "12px" }}>
+                            {student.mobile || "—"}
+                          </td>
+
+                          {/* Account Status */}
+                          <td style={{ padding: "14px 12px" }}>
+                            {isNormalUser ? (
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "11px", fontWeight: 700, color: "#D97706", backgroundColor: "#FEF3C7", padding: "3px 8px", borderRadius: "6px" }}>
+                                <span>○</span>
+                                <span>Normal User</span>
+                              </span>
+                            ) : (
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: "5px", fontSize: "11px", fontWeight: 700, color: "#059669", backgroundColor: "#ECFDF5", padding: "3px 8px", borderRadius: "6px" }}>
+                                <span>✓</span>
+                                <span>Enrolled ({enrollCount})</span>
+                              </span>
+                            )}
+                          </td>
+
+                          {/* Enrolled Programs */}
+                          <td style={{ padding: "14px 12px" }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                              {isNormalUser ? (
+                                <span style={{ fontSize: "11px", color: "#94A3B8", fontStyle: "italic" }}>
+                                  No programs enrolled
+                                </span>
+                              ) : (
+                                student.enrolledPrograms.map(ep => (
+                                  <span
+                                    key={ep.programId}
+                                    style={{
+                                      fontSize: "11px",
+                                      fontWeight: 600,
+                                      padding: "2px 7px",
+                                      borderRadius: "4px",
+                                      backgroundColor: "rgba(154, 123, 26, 0.1)",
+                                      color: "#9A7B1A"
+                                    }}
+                                  >
+                                    {ep.programName || ep.programId}
+                                  </span>
+                                ))
+                              )}
+                            </div>
+                          </td>
+
+                          {/* Actions */}
+                          <td style={{ padding: "14px 12px", textAlign: "right" }} onClick={e => e.stopPropagation()}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: "6px" }}>
+                              {isNormalUser && (
+                                <button
+                                  onClick={() => {
+                                    setSelectedStudentForEnroll(student.email);
+                                    setIsEnrollModalOpen(true);
+                                  }}
+                                  style={{
+                                    backgroundColor: "#0F172A",
+                                    color: "#FFFFFF",
+                                    border: "none",
+                                    padding: "5px 10px",
+                                    borderRadius: "6px",
+                                    fontSize: "11px",
+                                    fontWeight: 700,
+                                    cursor: "pointer",
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: "3px"
+                                  }}
+                                >
+                                  <span>+ Enroll</span>
+                                </button>
+                              )}
+                              <button
+                                onClick={() => setSelectedInspectorStudent(student)}
+                                style={{
+                                  backgroundColor: "transparent",
+                                  border: "1px solid #E2E8F0",
+                                  color: "#0F172A",
+                                  padding: "5px 10px",
+                                  borderRadius: "6px",
+                                  fontSize: "11px",
+                                  fontWeight: 600,
+                                  cursor: "pointer"
+                                }}
+                              >
+                                Details
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            )
           )}
 
           {/* TAB: CURRICULUM MODULES VIEW (Compact SaaS Redesign) */}
@@ -1801,13 +2167,14 @@ export default function AdminPage() {
               <div
                 style={{
                   display: "flex",
-                  alignItems: "center",
+                  alignItems: isMobile ? "stretch" : "center",
                   justifyContent: "space-between",
-                  gap: "16px",
+                  flexDirection: isMobile ? "column" : "row",
+                  gap: isMobile ? "12px" : "16px",
                   backgroundColor: "#FFFFFF",
                   border: "1px solid #E2E8F0",
                   borderRadius: "10px",
-                  padding: "10px 16px",
+                  padding: isMobile ? "12px 14px" : "10px 16px",
                   marginBottom: "16px",
                   boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)"
                 }}
@@ -2099,8 +2466,8 @@ export default function AdminPage() {
                 </div>
 
                 {/* RIGHT PROGRESS BAR */}
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-                  <div style={{ width: "95px", height: "5px", backgroundColor: "#E2E8F0", borderRadius: "3px", overflow: "hidden" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: isMobile ? "space-between" : "flex-end", gap: "10px", flexShrink: 0, borderTop: isMobile ? "1px solid #F1F5F9" : "none", paddingTop: isMobile ? "8px" : 0 }}>
+                  <div style={{ flex: isMobile ? 1 : "initial", width: isMobile ? "auto" : "95px", height: "5px", backgroundColor: "#E2E8F0", borderRadius: "3px", overflow: "hidden" }}>
                     <div
                       style={{
                         width: `${activeProgressPct}%`,
@@ -2129,7 +2496,7 @@ export default function AdminPage() {
                   boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)"
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+                <div style={{ display: "flex", alignItems: isMobile ? "stretch" : "center", flexDirection: isMobile ? "column" : "row", gap: "10px", marginBottom: "8px" }}>
                   <span
                     style={{
                       backgroundColor: "#0F172A",
@@ -2139,7 +2506,8 @@ export default function AdminPage() {
                       padding: "6px 12px",
                       borderRadius: "6px",
                       whiteSpace: "nowrap",
-                      letterSpacing: "0.02em"
+                      letterSpacing: "0.02em",
+                      alignSelf: isMobile ? "flex-start" : "center"
                     }}
                   >
                     {nextModuleBadge}
@@ -2625,28 +2993,28 @@ export default function AdminPage() {
 
           {/* TAB: DASHBOARD OVERVIEW */}
           {adminTab === "dashboard" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px", paddingTop: "20px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px", paddingTop: isMobile ? "8px" : "20px" }}>
               {/* SieLabs Welcome Banner */}
               <div
                 style={{
                   display: "flex",
-                  alignItems: "center",
+                  alignItems: isMobile ? "flex-start" : "center",
                   justifyContent: "space-between",
                   backgroundColor: "#0F1523",
                   color: "#FFFFFF",
                   borderRadius: "14px",
-                  padding: "24px 28px",
+                  padding: isMobile ? "16px" : "24px 28px",
                   border: "1px solid rgba(255, 255, 255, 0.08)",
                   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
-                  flexWrap: "wrap",
+                  flexDirection: isMobile ? "column" : "row",
                   gap: "16px"
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "12px" : "18px" }}>
                   <div
                     style={{
-                      width: "64px",
-                      height: "64px",
+                      width: isMobile ? "48px" : "64px",
+                      height: isMobile ? "48px" : "64px",
                       borderRadius: "12px",
                       backgroundColor: "rgba(255, 255, 255, 0.08)",
                       border: "1px solid rgba(255, 255, 255, 0.15)",
@@ -2661,16 +3029,16 @@ export default function AdminPage() {
                     <img
                       src="/favicon.ico"
                       alt="SieLabs Logo"
-                      width={50}
-                      height={50}
+                      width={isMobile ? 36 : 50}
+                      height={isMobile ? 36 : 50}
                       style={{ objectFit: "contain", display: "block", borderRadius: "8px" }}
                     />
                   </div>
                   <div>
-                    <h2 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: "#FFFFFF" }}>
+                    <h2 style={{ margin: 0, fontSize: isMobile ? "16px" : "18px", fontWeight: 800, color: "#FFFFFF" }}>
                       SieLabs Operations Dashboard
                     </h2>
-                    <p style={{ margin: "4px 0 0", fontSize: "13px", color: "#94A3B8" }}>
+                    <p style={{ margin: "4px 0 0", fontSize: isMobile ? "12px" : "13px", color: "#94A3B8" }}>
                       Welcome back, {currentUser || "Administrator"} • Live platform operations, cohort progress, and curriculum management.
                     </p>
                   </div>
@@ -2697,7 +3065,7 @@ export default function AdminPage() {
               </div>
 
               {/* Stats Cards */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(260px, 1fr))", gap: "16px" }}>
                 <div style={{ backgroundColor: "#F8FAFC", borderRadius: "14px", padding: "20px", border: "1px solid #E2E8F0" }}>
                   <span style={{ fontSize: "12px", fontWeight: 700, color: "#64748B", textTransform: "uppercase" }}>Registered Platform Users</span>
                   <h3 style={{ fontSize: "28px", fontWeight: 800, margin: "6px 0 2px", color: "#0F172A" }}>{totalUsersCount}</h3>
@@ -2724,21 +3092,35 @@ export default function AdminPage() {
         {/* FLOATING INSPECTOR POPOVER CARD                                */}
         {/* ═══════════════════════════════════════════════════════════════ */}
         {selectedInspectorStudent && (
-          <div
-            style={{
-              position: "fixed",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "420px",
-              maxWidth: "92vw",
-              backgroundColor: "#FFFFFF",
-              borderRadius: "14px",
-              boxShadow: "0 20px 60px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08)",
-              zIndex: 100,
-              overflow: "hidden"
-            }}
-          >
+          <>
+            <div
+              onClick={() => setSelectedInspectorStudent(null)}
+              style={{
+                position: "fixed",
+                inset: 0,
+                backgroundColor: "rgba(15, 23, 42, 0.55)",
+                backdropFilter: "blur(4px)",
+                zIndex: 99
+              }}
+            />
+            <div
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: "420px",
+                maxWidth: "92vw",
+                maxHeight: "90vh",
+                display: "flex",
+                flexDirection: "column",
+                backgroundColor: "#FFFFFF",
+                borderRadius: "14px",
+                boxShadow: "0 20px 60px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.08)",
+                zIndex: 100,
+                overflow: "hidden"
+              }}
+            >
             {/* Dark Topbar */}
             <div style={{ backgroundColor: "#111625", color: "#FFFFFF", padding: "12px 18px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -2880,7 +3262,8 @@ export default function AdminPage() {
               </button>
             </div>
           </div>
-        )}
+        </>
+      )}
       </main>
 
 

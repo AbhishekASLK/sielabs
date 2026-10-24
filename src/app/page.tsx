@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import { getUserAvatarUrl, DiceBearStyle } from '@/lib/avatar';
 
 export default function Home() {
   const [userName, setUserName] = useState<string | null>(null);
+  const [avatarStyle, setAvatarStyle] = useState<DiceBearStyle>('fun-emoji');
+  const [avatarSeed, setAvatarSeed] = useState<string>('');
   const [mounted, setMounted] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -35,8 +38,17 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    setUserName(localStorage.getItem('user'));
+    const syncUserAndAvatar = () => {
+      setUserName(localStorage.getItem('user'));
+      setAvatarStyle((localStorage.getItem('user_avatar_style') as DiceBearStyle) || 'fun-emoji');
+      setAvatarSeed(localStorage.getItem('user_avatar_seed') || '');
+    };
+
+    syncUserAndAvatar();
     setMounted(true);
+
+    window.addEventListener('storage', syncUserAndAvatar);
+    window.addEventListener('sie_avatar_updated', syncUserAndAvatar);
     const els = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
@@ -85,11 +97,16 @@ export default function Home() {
     seeMoreBtn?.addEventListener('click', handleSeeMore);
 
     return () => {
+      window.removeEventListener('storage', syncUserAndAvatar);
+      window.removeEventListener('sie_avatar_updated', syncUserAndAvatar);
       hamburgerBtn?.removeEventListener('click', handleNav);
       readMoreBtns.forEach(btn => btn.removeEventListener('click', handleReadMore));
       seeMoreBtn?.removeEventListener('click', handleSeeMore);
     };
   }, []);
+
+  const avatarUrl = getUserAvatarUrl(userName || 'SieLabs', avatarStyle, avatarSeed);
+  const initial = (userName?.trim().charAt(0) || 'U').toUpperCase();
 
   return (
     <>
@@ -108,9 +125,9 @@ export default function Home() {
           <a href="/products/index.html" onClick={() => setIsNavOpen(false)}>Products</a>
           <a href="/careers/index.html" onClick={() => setIsNavOpen(false)}>Careers</a>
           <a href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1" target="_blank" rel="noreferrer"
-            className="nav-cta nav-cta-community mobile-cta" style={{"display":"flex","alignItems":"center","gap":"6px"}}
+            className="nav-cta nav-cta-community mobile-cta" style={{"display":"flex","alignItems":"center","gap":"6px","color":"#FFFFFF"}}
             onClick={() => setIsNavOpen(false)}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{"color":"#FFFFFF"}}>
               <path
                 d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z" />
               <path
@@ -130,13 +147,28 @@ export default function Home() {
                   onClick={() => setIsNavOpen(false)}
                   className="mobile-user-link"
                 >
-                  <div className="mobile-user-avatar">
-                    {userName.charAt(0).toUpperCase()}
+                  <div
+                    className="mobile-user-avatar"
+                    style={{ overflow: "hidden", padding: 0 }}
+                  >
+                    <img
+                      src={avatarUrl}
+                      alt={userName}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      onError={(e) => {
+                        (e.currentTarget as HTMLElement).style.display = "none";
+                        const fallback = (e.currentTarget.parentElement?.querySelector(".mobile-avatar-fallback") as HTMLElement);
+                        if (fallback) fallback.style.display = "flex";
+                      }}
+                    />
+                    <span className="mobile-avatar-fallback" style={{ display: "none" }}>{initial}</span>
                   </div>
                   <div style={{ minWidth: 0, flex: 1 }}>
                     <div className="mobile-user-name">{userName}</div>
-                    <div className="mobile-user-sub">User Profile →</div>
                   </div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--gold)", opacity: 0.75, flexShrink: 0 }}>
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
                 </Link>
                 <button
                   type="button"
@@ -159,16 +191,9 @@ export default function Home() {
                 <Link
                   href="/login"
                   onClick={() => setIsNavOpen(false)}
-                  className="nav-auth-btn nav-auth-btn--ghost"
-                >
-                  Log in
-                </Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setIsNavOpen(false)}
                   className="nav-auth-btn nav-auth-btn--primary"
                 >
-                  Sign up
+                  Log in
                 </Link>
               </div>
             )}
@@ -176,8 +201,8 @@ export default function Home() {
         </div>
         <div className="nav-actions">
           <a href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1" target="_blank" rel="noreferrer"
-            className="nav-cta nav-cta-community desktop-cta" style={{"display":"flex","alignItems":"center","gap":"6px","marginLeft":0}}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            className="nav-cta nav-cta-community desktop-cta" style={{"display":"flex","alignItems":"center","gap":"6px","marginLeft":0,"color":"#FFFFFF"}}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{"color":"#FFFFFF"}}>
               <path
                 d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z" />
               <path
@@ -194,9 +219,9 @@ export default function Home() {
                 aria-expanded={isDropdownOpen}
                 aria-haspopup="true"
                 style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "9px",
                   backgroundColor: "rgba(154, 123, 26, 0.12)",
                   border: isDropdownOpen ? "2px solid #9A7B1A" : "1.5px solid rgba(154, 123, 26, 0.35)",
                   display: "flex",
@@ -209,9 +234,21 @@ export default function Home() {
                   outline: "none",
                   fontWeight: 700,
                   fontSize: "15px",
+                  overflow: "hidden",
+                  padding: 0,
                 }}
               >
-                {userName.charAt(0).toUpperCase()}
+                <img
+                  src={avatarUrl}
+                  alt={userName || "Profile"}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLElement).style.display = "none";
+                    const fallback = (e.currentTarget.parentElement?.querySelector(".home-nav-fallback") as HTMLElement);
+                    if (fallback) fallback.style.display = "flex";
+                  }}
+                />
+                <span className="home-nav-fallback" style={{ display: "none" }}>{initial}</span>
               </button>
 
               {isDropdownOpen && (
@@ -261,7 +298,7 @@ export default function Home() {
                       style={{
                         width: "36px",
                         height: "36px",
-                        borderRadius: "50%",
+                        borderRadius: "8px",
                         backgroundColor: "rgba(154, 123, 26, 0.15)",
                         color: "#9A7B1A",
                         display: "flex",
@@ -271,15 +308,26 @@ export default function Home() {
                         fontSize: "14px",
                         flexShrink: 0,
                         border: "1px solid rgba(154, 123, 26, 0.3)",
+                        overflow: "hidden",
                       }}
                     >
-                      {userName.charAt(0).toUpperCase()}
+                      <img
+                        src={avatarUrl}
+                        alt={userName || "Profile"}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLElement).style.display = "none";
+                          const fallback = (e.currentTarget.parentElement?.querySelector(".home-dd-fallback") as HTMLElement);
+                          if (fallback) fallback.style.display = "flex";
+                        }}
+                      />
+                      <span className="home-dd-fallback" style={{ display: "none" }}>{initial}</span>
                     </div>
                     <div style={{ minWidth: 0, flex: 1 }}>
                       <p
                         style={{
                           margin: 0,
-                          fontSize: "13px",
+                          fontSize: "13.5px",
                           fontWeight: 600,
                           color: "#1A1A1A",
                           overflow: "hidden",
@@ -288,20 +336,6 @@ export default function Home() {
                         }}
                       >
                         {userName}
-                      </p>
-                      <p
-                        style={{
-                          margin: "2px 0 0",
-                          fontSize: "11px",
-                          color: "#9A7B1A",
-                          fontWeight: 600,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
-                      >
-                        <span>User Profile</span>
-                        <span>→</span>
                       </p>
                     </div>
                   </Link>
@@ -461,8 +495,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="nav-auth-group">
-              <Link href="/login" className="nav-auth-btn nav-auth-btn--ghost">Log in</Link>
-              <Link href="/signup" className="nav-auth-btn nav-auth-btn--primary">Sign up</Link>
+              <Link href="/login" className="nav-auth-btn nav-auth-btn--primary">Log in</Link>
             </div>
           )}
           <button

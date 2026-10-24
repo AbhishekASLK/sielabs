@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 
 :root {
   --bg: #FAFAF8;
@@ -176,16 +180,27 @@ header nav {
   border-color: rgba(154, 123, 26, 0.4);
 }
 
-.nav-cta-community {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #FFFFFF;
+.nav-cta-community,
+.nav-links a.nav-cta-community,
+.nav-links a.nav-cta-community:visited,
+.mobile-cta.nav-cta-community {
+  background: var(--gold) !important;
+  border-color: var(--gold) !important;
+  color: #FFFFFF !important;
 }
 
-.nav-cta-community:hover {
-  background: var(--gold-light);
-  border-color: var(--gold-light);
-  color: #FFFFFF;
+.nav-cta-community svg,
+.nav-links a.nav-cta-community svg {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+.nav-cta-community:hover,
+.nav-links a.nav-cta-community:hover,
+.mobile-cta.nav-cta-community:hover {
+  background: var(--gold-light) !important;
+  border-color: var(--gold-light) !important;
+  color: #FFFFFF !important;
 }
 
 .desktop-cta {
@@ -216,6 +231,7 @@ header nav {
   border-radius: 8px;
   transition: all 0.2s ease;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .nav-auth-btn--primary {
@@ -1639,47 +1655,54 @@ footer nav,
   .mobile-user-box {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
   }
 
+  .nav-links a.mobile-user-link,
   .mobile-user-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
-    background: var(--bg-card-2);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    text-decoration: none;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 7px 12px !important;
+    background: var(--bg-card-2) !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--border) !important;
+    text-decoration: none !important;
     color: var(--text) !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-links a.mobile-user-link:hover,
+  .mobile-user-link:hover {
+    background: rgba(154, 123, 26, 0.08) !important;
+    border-color: rgba(154, 123, 26, 0.3) !important;
   }
 
   .mobile-user-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(154, 123, 26, 0.15);
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-    border: 1.5px solid rgba(154, 123, 26, 0.35);
-    flex-shrink: 0;
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 8px !important;
+    background: rgba(154, 123, 26, 0.15) !important;
+    color: var(--gold) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    border: 1.5px solid rgba(154, 123, 26, 0.35) !important;
+    flex-shrink: 0 !important;
   }
 
   .mobile-user-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .mobile-user-sub {
-    font-size: 11px;
-    color: var(--gold);
-    font-weight: 600;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.2 !important;
   }
 
   .mobile-logout-btn {
@@ -1687,20 +1710,20 @@ footer nav,
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 13px;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-size: 12px;
     font-weight: 600;
     color: #DC2626;
-    background: rgba(220, 38, 38, 0.08);
-    border: 1px solid rgba(220, 38, 38, 0.15);
+    background: rgba(220, 38, 38, 0.06);
+    border: 1px solid rgba(220, 38, 38, 0.12);
     cursor: pointer;
     font-family: inherit;
     transition: background 0.15s;
   }
 
   .mobile-logout-btn:hover {
-    background: rgba(220, 38, 38, 0.15);
+    background: rgba(220, 38, 38, 0.12);
   }
 }

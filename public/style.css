@@ -1,3 +1,7 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 :root {
   --bg: #FAFAF8;
   /* Warm off-white background */
@@ -188,16 +192,27 @@ header nav {
   border-color: rgba(154, 123, 26, 0.4);
 }
 
-.nav-cta-community {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #FFFFFF;
+.nav-cta-community,
+.nav-links a.nav-cta-community,
+.nav-links a.nav-cta-community:visited,
+.mobile-cta.nav-cta-community {
+  background: var(--gold) !important;
+  border-color: var(--gold) !important;
+  color: #FFFFFF !important;
 }
 
-.nav-cta-community:hover {
-  background: var(--gold-light);
-  border-color: var(--gold-light);
-  color: #FFFFFF;
+.nav-cta-community svg,
+.nav-links a.nav-cta-community svg {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+.nav-cta-community:hover,
+.nav-links a.nav-cta-community:hover,
+.mobile-cta.nav-cta-community:hover {
+  background: var(--gold-light) !important;
+  border-color: var(--gold-light) !important;
+  color: #FFFFFF !important;
 }
 
 .desktop-cta {
