@@ -15,14 +15,12 @@ export async function GET(req: Request) {
     
     // Fetch all student users (or all users)
     const users = await User.find({}).select('-password').sort({ createdAt: -1 });
-    const envAdmin = (process.env.ADMIN_USERNAME || process.env.ADMIN_EMAIL || '').trim().toLowerCase();
-
     const students = users.map(u => ({
       id: u._id.toString(),
       name: u.name,
       email: u.email,
       mobile: u.mobile || '',
-      role: (u.role === 'admin' || (envAdmin && (u.email?.toLowerCase() === envAdmin || u.name?.toLowerCase() === envAdmin))) ? 'admin' : (u.role || 'student'),
+      role: u.role || 'student',
       enrolledPrograms: u.enrolledPrograms || [],
       createdAt: u.createdAt
     }));

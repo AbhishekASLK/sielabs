@@ -78,13 +78,10 @@ export async function GET(req: Request) {
       };
     });
 
-    const envAdmin = (process.env.ADMIN_USERNAME || process.env.ADMIN_EMAIL || '').trim().toLowerCase();
-    const isAdmin = user.role === 'admin' || (envAdmin && (user.email?.toLowerCase() === envAdmin || user.name?.toLowerCase() === envAdmin));
-
     return NextResponse.json({
       userName: user.name,
       userEmail: user.email,
-      role: isAdmin ? 'admin' : (user.role || 'student'),
+      role: user.role || 'student',
       programs: enrichedPrograms
     }, { status: 200 });
   } catch (error) {

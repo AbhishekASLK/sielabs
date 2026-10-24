@@ -22,9 +22,7 @@ export async function POST(req: Request) {
       User.updateOne({ _id: user._id }, { $unset: { phone: "" } }).exec().catch(() => {});
     }
 
-    const envAdmin = (process.env.ADMIN_USERNAME || process.env.ADMIN_EMAIL || '').trim().toLowerCase();
-    const isAdmin = user.role === 'admin' || (envAdmin && (user.email?.toLowerCase() === envAdmin || user.name?.toLowerCase() === envAdmin));
-    const userRole = isAdmin ? 'admin' : (user.role || 'student');
+    const userRole = user.role === 'admin' ? 'admin' : (user.role || 'student');
 
     return NextResponse.json({
       message: 'Login successful',

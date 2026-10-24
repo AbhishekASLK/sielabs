@@ -35,9 +35,7 @@ export async function GET(req: Request) {
       User.updateOne({ _id: user._id }, { $unset: { phone: "" } }).exec().catch(() => {});
     }
 
-    const envAdmin = (process.env.ADMIN_USERNAME || process.env.ADMIN_EMAIL || '').trim().toLowerCase();
-    const isAdmin = user.role === 'admin' || (envAdmin && (user.email?.toLowerCase() === envAdmin || user.name?.toLowerCase() === envAdmin));
-    const userRole = isAdmin ? 'admin' : (user.role || 'student');
+    const userRole = user.role || 'student';
 
     return NextResponse.json({ 
       user: {
@@ -53,14 +51,12 @@ export async function GET(req: Request) {
     // Graceful fallback if database is not reachable
     const { searchParams } = new URL(req.url);
     const identifier = searchParams.get('user') || 'Student';
-    const envAdmin = (process.env.ADMIN_USERNAME || process.env.ADMIN_EMAIL || '').trim().toLowerCase();
-    const isAdmin = Boolean(envAdmin && identifier.toLowerCase() === envAdmin);
     return NextResponse.json({
       user: {
         name: identifier,
         email: identifier,
         mobile: '',
-        role: isAdmin ? 'admin' : 'student',
+        role: 'student',
         enrolledPrograms: []
       }
     }, { status: 200 });
