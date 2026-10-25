@@ -18,7 +18,7 @@ export const PROGRAMS: ProgramDefinition[] = [
   {
     id: 'python-ml',
     title: 'Python with Machine Learning',
-    badge: 'Active Cohort • Narhe, Pune',
+    badge: 'Active Cohort',
     schedule: 'Fri, Sat & Sun, 7:00 – 9:00 PM',
     duration: '4 Months',
     link: '/programs/python-ml/index.html',

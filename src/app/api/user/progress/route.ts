@@ -87,7 +87,7 @@ export async function GET(req: Request) {
       return {
         programId: targetProgramId,
         programName: def?.title || epName || 'SieLabs Program',
-        badge: def?.badge || 'Cohort Program',
+        badge: (def?.badge || 'Active Cohort').replace(/\s*•.*$/, '').trim() || 'Active Cohort',
         schedule: def?.schedule || 'Weekend Cohort',
         duration: def?.duration || '4 Months',
         link: def?.link || '/programs/index.html',
