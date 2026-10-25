@@ -215,6 +215,38 @@ export default function ProfilePage() {
     });
   };
 
+  const fetchProgramProgress = async (userOverride?: string) => {
+    const targetUser = userOverride || userName || (typeof window !== "undefined" ? localStorage.getItem("user") : null) || "";
+    if (!targetUser) {
+      setLoadingProgress(false);
+      return;
+    }
+
+    setLoadingProgress(true);
+    try {
+      const email = typeof window !== "undefined" ? (localStorage.getItem("user_email") || "") : "";
+      const query = new URLSearchParams();
+      query.set("user", targetUser);
+      if (email) query.set("email", email);
+
+      const res = await fetch(`/api/user/progress?${query.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.programs && Array.isArray(data.programs)) {
+          setEnrolledProgramsProgress(data.programs);
+        }
+        if (data?.role) {
+          setUserRole(data.role);
+          localStorage.setItem("user_role", data.role);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load program progress:", err);
+    } finally {
+      setLoadingProgress(false);
+    }
+  };
+
   // Profile Form State
   const [profile, setProfile] = useState<UserProfileData>({
     name: "",
@@ -316,18 +348,8 @@ export default function ProfilePage() {
         .catch(() => {});
 
       // Fetch dynamic program progress
-      setLoadingProgress(true);
-      fetch(`/api/user/progress?user=${encodeURIComponent(user)}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data?.programs) {
-            setEnrolledProgramsProgress(data.programs);
-          }
-          if (data?.role) {
-            setUserRole(data.role);
-            localStorage.setItem("user_role", data.role);
-          }
-        })
+      fetchProgramProgress(user);
+
       // Load avatar preferences
       const savedStyle = (localStorage.getItem("user_avatar_style") as DiceBearStyle) || "fun-emoji";
       const savedSeed = localStorage.getItem("user_avatar_seed") || "";
@@ -1559,7 +1581,10 @@ export default function ProfilePage() {
               </button>
               <button
                 type="button"
-                onClick={() => setActiveTab("programs")}
+                onClick={() => {
+                  setActiveTab("programs");
+                  fetchProgramProgress();
+                }}
                 className="profile-tab-btn"
                 style={{
                   borderBottom: activeTab === "programs" ? "2.5px solid #9A7B1A" : "2.5px solid transparent",
@@ -1983,13 +2008,20 @@ export default function ProfilePage() {
                     <p style={{ fontSize: "14px", color: "rgba(26, 26, 26, 0.6)", margin: "0 auto 24px", maxWidth: "420px", lineHeight: 1.5 }}>
                       You have not been enrolled into any cohort yet. Please contact the administrator or browse our available engineering programs.
                     </p>
-                    <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+                    <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
                       <a
                         href="/programs/index.html"
                         style={{ backgroundColor: "#9A7B1A", color: "#FFFFFF", padding: "10px 22px", borderRadius: "10px", fontSize: "13px", fontWeight: 600, textDecoration: "none" }}
                       >
                         Explore Programs →
                       </a>
+                      <button
+                        type="button"
+                        onClick={() => fetchProgramProgress()}
+                        style={{ backgroundColor: "rgba(154, 123, 26, 0.1)", color: "#9A7B1A", border: "1px solid rgba(154, 123, 26, 0.3)", padding: "10px 22px", borderRadius: "10px", fontSize: "13px", fontWeight: 600, cursor: "pointer" }}
+                      >
+                        Refresh Progress
+                      </button>
                       {userRole === "admin" && (
                         <Link
                           href="/admin"
