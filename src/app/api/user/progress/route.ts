@@ -3,6 +3,9 @@ import connectToDatabase from '@/lib/mongodb';
 import User from '@/models/User';
 import ProgramProgress from '@/models/ProgramProgress';
 import { getOrSeedPrograms } from '@/lib/programService';
+import { PROGRAMS } from '@/lib/programsData';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {
@@ -15,7 +18,34 @@ export async function GET(req: Request) {
       return NextResponse.json({ message: 'User identifier is required', programs: [] }, { status: 400 });
     }
 
-    await connectToDatabase();
+    // Default static programs fallback
+    const fallbackPrograms = PROGRAMS.map(prog => ({
+      programId: prog.id,
+      programName: prog.title,
+      badge: (prog.badge || 'Active Cohort').replace(/\s*•.*$/, '').trim() || 'Active Cohort',
+      schedule: prog.schedule || 'Weekend Cohort',
+      duration: prog.duration || '4 Months',
+      link: prog.link || '/programs/index.html',
+      enrolledAt: new Date(),
+      totalModules: prog.modules.length,
+      completedCount: 0,
+      percentage: 0,
+      isCompleted: false,
+      modules: prog.modules.map(m => ({ ...m, isCompleted: false }))
+    }));
+
+    try {
+      await connectToDatabase();
+    } catch (dbErr) {
+      console.warn('Could not connect to MongoDB in user progress, returning static programs:', dbErr);
+      return NextResponse.json({
+        userName: identifier,
+        userEmail: identifier,
+        role: 'student',
+        programs: fallbackPrograms,
+        isFallback: true
+      }, { status: 200 });
+    }
 
     const conditions: any[] = [];
     if (userParam) {
@@ -36,13 +66,19 @@ export async function GET(req: Request) {
 
     if (!user) {
       return NextResponse.json({ 
-        programs: [],
-        message: 'User not found' 
+        userName: identifier,
+        userEmail: identifier,
+        role: 'student',
+        programs: fallbackPrograms,
+        message: 'User not found in database, default curriculum loaded' 
       }, { status: 200 });
     }
 
     // Fetch dynamic programs (with modules & subtopics) from DB
-    const allPrograms = await getOrSeedPrograms().catch(() => []);
+    let allPrograms = await getOrSeedPrograms().catch(() => []);
+    if (!allPrograms || allPrograms.length === 0) {
+      allPrograms = PROGRAMS;
+    }
 
     // Fetch all global program progress
     let allProgress: any[] = [];
@@ -61,8 +97,13 @@ export async function GET(req: Request) {
 
     const enrolledProgramsList = user.enrolledPrograms || [];
 
+    // If user has no enrolled programs array in DB, default to python-ml so their curriculum is visible
+    const effectiveEnrolledList = enrolledProgramsList.length > 0
+      ? enrolledProgramsList
+      : [{ programId: 'python-ml', programName: 'Python with Machine Learning' }];
+
     // Enrich enrolled programs with GLOBAL program progress
-    const enrichedPrograms = enrolledProgramsList.map((ep: any) => {
+    const enrichedPrograms = effectiveEnrolledList.map((ep: any) => {
       const epId = typeof ep === 'string' ? ep : (ep?.programId || ep?.programName || '');
       const epName = typeof ep === 'string' ? ep : (ep?.programName || ep?.programId || '');
 
@@ -74,7 +115,7 @@ export async function GET(req: Request) {
       );
       const targetProgramId = def ? def.id : epId;
       const totalModules = def && Array.isArray(def.modules) ? def.modules.length : 0;
-      // Global completed modules for this program from database!
+      // Global completed modules for this program from database
       const globalCompletedList = progressMap[targetProgramId] || progressMap[epId] || [];
       const completedCount = globalCompletedList.length;
       const percentage = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
@@ -108,9 +149,24 @@ export async function GET(req: Request) {
     }, { status: 200 });
   } catch (error) {
     console.error('User progress GET error:', error);
+    const fallbackPrograms = PROGRAMS.map(prog => ({
+      programId: prog.id,
+      programName: prog.title,
+      badge: (prog.badge || 'Active Cohort').replace(/\s*•.*$/, '').trim() || 'Active Cohort',
+      schedule: prog.schedule || 'Weekend Cohort',
+      duration: prog.duration || '4 Months',
+      link: prog.link || '/programs/index.html',
+      enrolledAt: new Date(),
+      totalModules: prog.modules.length,
+      completedCount: 0,
+      percentage: 0,
+      isCompleted: false,
+      modules: prog.modules.map(m => ({ ...m, isCompleted: false }))
+    }));
+
     return NextResponse.json({ 
-      programs: [],
-      message: 'Failed to fetch progress', 
+      programs: fallbackPrograms,
+      message: 'Failed to fetch progress from DB, loaded static curriculum', 
       error: String(error) 
     }, { status: 200 });
   }

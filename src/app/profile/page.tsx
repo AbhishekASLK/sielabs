@@ -222,18 +222,36 @@ export default function ProfilePage() {
       return;
     }
 
-    setLoadingProgress(true);
+    // Only show full-page loading spinner if we have no programs currently displayed
+    setEnrolledProgramsProgress((current) => {
+      if (current.length === 0) {
+        setLoadingProgress(true);
+      }
+      return current;
+    });
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 8000);
+
     try {
       const email = typeof window !== "undefined" ? (localStorage.getItem("user_email") || "") : "";
       const query = new URLSearchParams();
       query.set("user", targetUser);
       if (email) query.set("email", email);
 
-      const res = await fetch(`/api/user/progress?${query.toString()}`);
+      const res = await fetch(`/api/user/progress?${query.toString()}`, {
+        signal: controller.signal,
+      });
+
       if (res.ok) {
         const data = await res.json();
-        if (data?.programs && Array.isArray(data.programs)) {
+        if (data?.programs && Array.isArray(data.programs) && data.programs.length > 0) {
           setEnrolledProgramsProgress(data.programs);
+          try {
+            localStorage.setItem("sie_programs_progress", JSON.stringify(data.programs));
+          } catch {}
         }
         if (data?.role) {
           setUserRole(data.role);
@@ -241,8 +259,9 @@ export default function ProfilePage() {
         }
       }
     } catch (err) {
-      console.error("Failed to load program progress:", err);
+      console.warn("Could not fetch latest program progress:", err);
     } finally {
+      clearTimeout(timeoutId);
       setLoadingProgress(false);
     }
   };
@@ -346,6 +365,17 @@ export default function ProfilePage() {
           }
         })
         .catch(() => {});
+
+      // Load cached program progress immediately for instant display
+      try {
+        const cachedProg = localStorage.getItem("sie_programs_progress");
+        if (cachedProg) {
+          const parsed = JSON.parse(cachedProg);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setEnrolledProgramsProgress(parsed);
+          }
+        }
+      } catch {}
 
       // Fetch dynamic program progress
       fetchProgramProgress(user);
