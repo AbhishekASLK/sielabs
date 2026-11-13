@@ -910,64 +910,79 @@ export default function ProfilePage() {
       `}</style>
 
       {/* ── HEADER NAVBAR ── */}
-      <header style={{ borderBottom: "1px solid rgba(0, 0, 0, 0.08)", backgroundColor: "#FAFAF8", position: "relative", zIndex: 100 }}>
-        <div className="container" style={{ maxWidth: "1160px", margin: "0 auto", padding: "0 28px", boxSizing: "border-box" }}>
-          <nav aria-label="Main navigation">
-            <Link href="/" className="nav-brand" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#1A1A1A", fontWeight: 600, fontSize: "17px" }}>
-              <img
-                src="/favicon.ico"
-                alt="SieLabs Logo"
-                className="nav-logo"
-                style={{ width: "30px", height: "30px", objectFit: "contain", borderRadius: "4px", display: "block" }}
-              />
-              SieLabs
-            </Link>
+      <header style={{ borderBottom: '1px solid rgba(20, 20, 19, 0.08)', backgroundColor: 'var(--bg, #FAF9F5)', position: 'relative', zIndex: 100 }}>
+        <div className="header-container">
+          <nav aria-label="Main navigation" style={{ padding: '16px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+              <Link href="/" className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
+                <img
+                  src="/favicon.ico"
+                  alt="SieLabs Logo"
+                  className="nav-logo"
+                  style={{ width: '30px', height: '30px', objectFit: 'contain', borderRadius: '4px', display: 'block' }}
+                />
+                <span style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--text)' }}>
+                  SieLabs
+                </span>
+              </Link>
 
-            <div ref={navRef} className={`nav-links ${isNavOpen ? 'show' : ''}`} id="navLinks">
-              <a href="/programs/index.html" onClick={() => setIsNavOpen(false)}>Programs</a>
-              <a href="/products/index.html" onClick={() => setIsNavOpen(false)}>Products</a>
-              <a href="/careers/index.html" onClick={() => setIsNavOpen(false)}>Careers</a>
-              <a
-                href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1"
-                target="_blank"
-                rel="noreferrer"
-                className="nav-cta nav-cta-community mobile-cta"
-                style={{ display: "flex", alignItems: "center", gap: "6px", color: "#FFFFFF" }}
-                onClick={() => setIsNavOpen(false)}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style={{ color: "#FFFFFF" }}>
-                  <path d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z" />
-                  <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.986-1.308A9.948 9.948 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.734 0-3.344-.462-4.737-1.268l-.34-.196-2.955.775.789-2.883-.217-.345A7.954 7.954 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" />
-                </svg>
-                Join Community
-              </a>
+              <div ref={navRef} className={`nav-links ${isNavOpen ? 'show' : ''}`} id="navLinks">
+                <a href="/programs/index.html" onClick={() => setIsNavOpen(false)}>Programs</a>
+                <a href="/products/index.html" onClick={() => setIsNavOpen(false)}>Products</a>
+                <a href="/careers/index.html" onClick={() => setIsNavOpen(false)}>Careers</a>
+                <a
+                  href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="nav-cta nav-cta-community mobile-cta"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  Join Community
+                </a>
+              </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "16px", marginLeft: "36px" }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <div className="claude-search-box desktop-cta" style={{ width: '300px', minWidth: '260px' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.6, flexShrink: 0 }}>
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const val = (e.currentTarget.value || '').trim();
+                      if (val) window.location.href = `/programs/index.html?search=${encodeURIComponent(val)}`;
+                    }
+                  }}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    outline: 'none',
+                    color: 'var(--text)',
+                    fontSize: '13.5px',
+                    flex: 1,
+                    minWidth: 0,
+                  }}
+                />
+                <span className="claude-kbd-shortcut" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>Ctrl&nbsp;K</span>
+              </div>
+
               <a
                 href="https://chat.whatsapp.com/FhMDzQ9D6oVJ7E9WT21Xw6?s=cl&p=a&ilr=1"
                 target="_blank"
                 rel="noreferrer"
-                className="nav-cta nav-cta-community desktop-cta"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  backgroundColor: "#9A7B1A",
-                  borderColor: "#9A7B1A",
-                  color: "#FFFFFF",
-                  textDecoration: "none",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  padding: "8px 20px",
-                  borderRadius: "8px",
-                }}
+                className="btn-secondary desktop-cta"
+                style={{ padding: '7px 18px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--gold)' }}>
                   <path d="M17.472 14.382c-.301-.15-1.777-.878-2.053-.978-.276-.1-.477-.15-.677.15-.2.3-.776.978-.952 1.178-.175.2-.351.225-.651.075-.3-.15-1.265-.466-2.41-1.487-.893-.796-1.496-1.78-1.671-2.08-.175-.3-.019-.462.13-.611.135-.134.301-.35.451-.525.15-.176.201-.301.301-.5.1-.2.05-.376-.025-.526-.075-.15-.677-1.632-.927-2.232-.244-.583-.493-.504-.677-.514-.175-.01-.376-.01-.576-.01-.2 0-.525.075-.8.375-.276.3-1.053 1.029-1.053 2.509 0 1.48 1.077 2.908 1.227 3.109.15.2 2.119 3.235 5.134 4.536.717.31 1.277.495 1.713.633.72.228 1.376.195 1.895.118.578-.086 1.777-.726 2.027-1.428.25-.7.25-1.3.175-1.428-.075-.128-.276-.228-.576-.378z" />
                   <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.986-1.308A9.948 9.948 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.734 0-3.344-.462-4.737-1.268l-.34-.196-2.955.775.789-2.883-.217-.345A7.954 7.954 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z" />
                 </svg>
-                Join Community
+                Community
               </a>
 
               <div id="navAuthSection" style={{ display: "flex", alignItems: "center" }} suppressHydrationWarning>

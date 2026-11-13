@@ -6,29 +6,39 @@
 
 
 :root {
-  --bg: #FAFAF8;
-  /* Warm off-white background */
+  /* ── Claude Anthropic Light Mode Palette ── */
+  --bg: #FAF9F5;
+  /* Signature Ivory Cream / Warm Linen Canvas */
   --bg-card: #FFFFFF;
-  /* Clean white card */
-  --bg-card-2: #F3F2EE;
-  /* Subtle warm gray for hover states */
-  --border: rgba(0, 0, 0, 0.08);
-  /* Soft dark line */
-  --border-gold: rgba(160, 120, 20, 0.3);
-  /* Deepened gold border */
-  --text: #1A1A1A;
-  /* Dark charcoal text */
-  --text-muted: rgba(26, 26, 26, 0.6);
-  /* Readable subtle text */
-  --text-dim: rgba(26, 26, 26, 0.4);
-  --gold: #9A7B1A;
-  /* Deepened gold for readable text on light */
-  --gold-light: #7A6015;
-  --gold-pale: rgba(154, 123, 26, 0.08);
+  /* Crisp Paper White elevated card */
+  --bg-card-2: #F3F1EC;
+  /* Soft warm parchment surface / hover state */
+  --bg-card-3: #EAE6DF;
+  /* Elevated chip & control surface */
+  --border: rgba(20, 20, 19, 0.08);
+  /* Hairline warm gray border */
+  --border-gold: rgba(217, 119, 87, 0.35);
+  /* Terracotta accent border */
+  --border-card: #E5E3DC;
+  /* Distinctive light card border */
+  --text: #141413;
+  /* Slate Ink / Near Black display & body text */
+  --text-muted: #6E6D68;
+  /* Warm stone readable secondary text */
+  --text-dim: #9C9A92;
+  /* Subdued metadata & secondary text */
+  --gold: #D97757;
+  /* Anthropic signature Terracotta / Crail accent */
+  --gold-light: #C96442;
+  /* Deepened Terracotta for button hover/active */
+  --gold-pale: rgba(217, 119, 87, 0.09);
+  /* Soft terracotta tint/glow */
+  --clay-hero: #F3EAE2;
+  /* Claude Academy course banner warm clay parchment */
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-sans: 'Outfit', system-ui, sans-serif;
-  --r: 14px;
-  --r-sm: 8px;
+  --r: 16px;
+  --r-sm: 9999px;
 }
 
 html {
@@ -48,14 +58,13 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--gold-light), var(--gold));
+  background: #DCD7CC;
   border-radius: 8px;
   border: 2px solid var(--bg);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--gold), #6B5512);
-  border-color: transparent;
+  background: var(--gold);
 }
 
 ::-webkit-scrollbar-thumb:active {
@@ -85,16 +94,29 @@ body::before {
   z-index: 0;
 }
 
-/* Ambient glow */
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(20, 20, 19, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 20, 19, 0.025) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ambient warm terracotta glow */
 body::after {
   content: '';
   position: fixed;
-  top: -20%;
+  top: -15%;
   left: 50%;
   transform: translateX(-50%);
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(ellipse, rgba(154, 123, 26, 0.06) 0%, transparent 70%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(ellipse, rgba(217, 119, 87, 0.06) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -110,6 +132,26 @@ body::after {
 }
 
 /* ── HEADER ── */
+
+/* ── HEADER CONTAINER (Full-bleed / left-aligned like Claude Academy) ── */
+.header-container {
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .header-container {
+    padding: 0 36px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .header-container {
+    padding: 0 44px;
+  }
+}
+
 header {
   position: relative;
   z-index: 100;
@@ -373,42 +415,55 @@ h1 em {
 .btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   text-decoration: none;
-  background: var(--gold);
-  color: #FFFFFF;
+  background: #141413;
+  color: #FAF9F5 !important;
   font-size: 14px;
-  font-weight: 600;
-  padding: 12px 26px;
-  border-radius: 8px;
-  transition: background 0.2s, transform 0.15s;
+  font-weight: 500;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   letter-spacing: 0.01em;
+  box-shadow: 0 1px 3px rgba(20, 20, 19, 0.12);
+  border: 1px solid #141413;
 }
 
 .btn-primary:hover {
-  background: var(--gold-light);
+  background: #2B2B28;
+  color: #FFFFFF !important;
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(20, 20, 19, 0.16);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   text-decoration: none;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
+  background: #FFFFFF;
+  border: 1px solid #E2DFD7;
+  color: #141413;
   font-size: 14px;
   font-weight: 500;
-  padding: 12px 26px;
-  border-radius: 8px;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(20, 20, 19, 0.04);
 }
 
 .btn-secondary:hover {
-  background: var(--bg-card-2);
-  border-color: rgba(0, 0, 0, 0.15);
-  color: var(--text);
+  background: #F5F3EC;
+  border-color: #D5D1C7;
+  color: #141413;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(20, 20, 19, 0.06);
 }
 
 /* ── HERO PANEL ── */
@@ -1725,5 +1780,367 @@ footer nav,
 
   .mobile-logout-btn:hover {
     background: rgba(220, 38, 38, 0.12);
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────
+   CLAUDE ACADEMY LIGHT MODE COMPONENTS
+   (Derived from Claude Academy & Anthropic Design System)
+   ────────────────────────────────────────────────────────── */
+
+/* ── Top Bar Search Bar ── */
+.claude-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #EFECE4;
+  border: 1px solid #E0DCD2;
+  border-radius: 9999px;
+  padding: 7px 16px;
+  color: #6E6D68;
+  font-size: 13.5px;
+  transition: all 0.2s ease;
+  width: 300px; min-width: 260px;
+}
+
+.claude-search-box:hover,
+.claude-search-box:focus-within {
+  border-color: rgba(217, 119, 87, 0.6);
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(217, 119, 87, 0.08);
+}
+
+.claude-search-box input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
+
+.claude-kbd-shortcut {
+  background: #E2DFD6;
+  color: #6E6D68;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(20, 20, 19, 0.1);
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  margin-left: auto;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Course Banner (Warm Clay Parchment in Light Mode) ── */
+.claude-course-banner {
+  background: #F3EAE2;
+  border: 1px solid #E5D6C7;
+  border-radius: 20px;
+  padding: 44px 44px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(217, 119, 87, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.claude-breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #A05236;
+  font-size: 13px;
+  margin-bottom: 18px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.claude-breadcrumb-link:hover {
+  color: #141413;
+}
+
+.claude-course-banner h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 4vw, 46px);
+  color: #2E1810;
+  margin-bottom: 14px;
+  line-height: 1.15;
+  font-weight: 400;
+}
+
+.claude-course-banner .course-desc {
+  color: #5C483F;
+  font-size: 15.5px;
+  line-height: 1.7;
+  max-width: 620px;
+  margin-bottom: 24px;
+}
+
+.claude-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.claude-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(160, 82, 54, 0.2);
+  color: #3E231B;
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.claude-meta-chip svg {
+  color: #D97757;
+  flex-shrink: 0;
+}
+
+/* ── Medallion Badge Emblem in Course Hero ── */
+.claude-medallion-badge {
+  width: 150px;
+  height: 150px;
+  border-radius: 40px;
+  background: #E5D3C4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(160, 82, 54, 0.12);
+  flex-shrink: 0;
+}
+
+/* ── "Dive into a product / track" 3-Column Grid ── */
+.claude-tracks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+
+@media (max-width: 900px) {
+  .claude-tracks-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.claude-track-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E3DC;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.claude-track-card:hover {
+  border-color: #D5D1C7;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(20, 20, 19, 0.08);
+}
+
+.claude-window-preview {
+  background: #F6F4EE;
+  border-bottom: 1px solid #E8E5DD;
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  padding: 12px 14px;
+}
+
+.claude-window-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.claude-window-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.claude-window-dot.red { background: #FF5F56; }
+.claude-window-dot.yellow { background: #FFBD2E; }
+.claude-window-dot.green { background: #27C93F; }
+
+.claude-topography-lines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.claude-terminal-line {
+  font-family: var(--font-mono, monospace);
+  font-size: 11.5px;
+  color: #2D2C2A;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.claude-track-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.claude-track-title {
+  font-size: 19px;
+  font-weight: 600;
+  color: #141413;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.claude-track-desc {
+  font-size: 13.5px;
+  color: #6E6D68;
+  line-height: 1.65;
+}
+
+/* ── Claude Notification Callout Pill ── */
+.claude-callout-box {
+  background: #F6F4EE;
+  border: 1px solid #E5E2D9;
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.claude-callout-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #141413;
+  font-size: 13.5px;
+}
+
+.claude-callout-btn {
+  background: #FFFFFF;
+  border: 1px solid #DCD8CD;
+  color: #141413;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.claude-callout-btn:hover {
+  background: #EFECE4;
+  border-color: #CECAC0;
+}
+
+/* ── Floating Help Bubble (Bottom Right) ── */
+.claude-support-bubble {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #0284C7;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
+  z-index: 999;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.claude-support-bubble:hover {
+  transform: scale(1.06);
+  box-shadow: 0 12px 30px rgba(2, 132, 199, 0.5);
+}
+
+@media (max-width: 840px) {
+  .claude-search-box {
+    display: none !important;
+  }
+  .claude-curriculum-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.claude-curriculum-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 32px;
+}
+
+
+/* ── Inquiry Widget Docked Popover (Bottom Right) ── */
+@keyframes inquiryWidgetFlyout {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .inquiry-widget-card {
+    right: 12px !important;
+    left: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    bottom: 82px !important;
+  }
+}
+
+
+@keyframes messagePopIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+@keyframes nudgePopIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
