@@ -96,6 +96,8 @@ function playWebAudioPop() {
 
 export default function Home() {
   const [userName, setUserName] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [avatarStyle, setAvatarStyle] = useState<DiceBearStyle>('fun-emoji');
   const [avatarSeed, setAvatarSeed] = useState<string>('');
   const [mounted, setMounted] = useState(false);
@@ -178,7 +180,12 @@ export default function Home() {
 
   useEffect(() => {
     const syncUserAndAvatar = () => {
-      setUserName(localStorage.getItem('user'));
+      const u = localStorage.getItem('user');
+      const em = localStorage.getItem('user_email');
+      const role = localStorage.getItem('user_role');
+      setUserName(u);
+      setUserEmail(em || (u && u.includes('@') ? u : null));
+      setIsAdmin(role === 'admin' || u === 'admin' || u === 'admin@sielabs.com' || em === 'admin@sielabs.com');
       setAvatarStyle((localStorage.getItem('user_avatar_style') as DiceBearStyle) || 'fun-emoji');
       setAvatarSeed(localStorage.getItem('user_avatar_seed') || '');
     };
@@ -371,60 +378,70 @@ export default function Home() {
                       style={{
                         position: "absolute",
                         right: 0,
-                        top: "calc(100% + 10px)",
-                        width: "230px",
+                        top: "calc(100% + 8px)",
+                        width: "204px",
                         backgroundColor: "#FFFFFF",
-                        borderRadius: "16px",
-                        boxShadow: "0 14px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03)",
+                        borderRadius: "14px",
+                        boxShadow: "0 14px 40px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.04)",
                         border: "1px solid #E5E3DC",
-                        padding: "8px",
+                        padding: "5px",
                         zIndex: 9999,
                       }}
                       role="menu"
                     >
-                      <Link
-                        href="/profile"
-                        onClick={() => setIsDropdownOpen(false)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "10px",
-                          padding: "10px 12px",
-                          backgroundColor: "#F6F4EE",
-                          borderRadius: "12px",
-                          border: "1px solid #E8E5DD",
-                          marginBottom: "6px",
-                          textDecoration: "none",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "50%",
-                            backgroundColor: "rgba(218, 119, 86, 0.2)",
-                            color: "var(--gold)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontWeight: 700,
-                            fontSize: "13px",
-                            overflow: "hidden",
-                          }}
-                        >
+                      {/* Anthropic-style User Info Header with Avatar Alignment */}
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "7px 10px 6px" }}>
+                        <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "rgba(217, 119, 87, 0.12)", border: "1px solid rgba(217, 119, 87, 0.3)", overflow: "hidden", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                           <img
                             src={avatarUrl}
                             alt={userName || "Profile"}
                             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                            onError={(e) => {
+                              (e.currentTarget as HTMLElement).style.display = "none";
+                            }}
                           />
                         </div>
                         <div style={{ minWidth: 0, flex: 1 }}>
-                          <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#141413", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                            {userName}
+                          <p style={{ margin: 0, fontSize: "13px", fontWeight: 600, color: "#141413", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", lineHeight: 1.25 }}>
+                            {userEmail || userName}
+                          </p>
+                          <p style={{ margin: "1px 0 0", fontSize: "11px", color: "#8E8D88", fontWeight: 400, lineHeight: 1.2 }}>
+                            {isAdmin ? "Administrator" : "Personal"}
                           </p>
                         </div>
-                      </Link>
+                      </div>
 
+                      <div style={{ height: "1px", backgroundColor: "rgba(20, 20, 19, 0.08)", margin: "4px 6px 5px" }} />
+
+                      {isAdmin && (
+                        <a
+                          href="/admin"
+                          onClick={() => setIsDropdownOpen(false)}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            padding: "8px 10px",
+                            borderRadius: "8px",
+                            fontSize: "13.5px",
+                            fontWeight: 500,
+                            color: "#141413",
+                            textDecoration: "none",
+                            transition: "background 0.15s",
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F3F1EC")}
+                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#6E6D68", flexShrink: 0 }}>
+                            <rect width="18" height="18" x="3" y="3" rx="2" />
+                            <path d="M9 3v18" />
+                            <path d="m14 9 3 3-3 3" />
+                          </svg>
+                          <span>Admin Panel</span>
+                        </a>
+                      )}
+
+                      {/* My Profile */}
                       <Link
                         href="/profile"
                         onClick={() => setIsDropdownOpen(false)}
@@ -432,15 +449,25 @@ export default function Home() {
                           display: "flex",
                           alignItems: "center",
                           gap: "10px",
-                          padding: "8px 12px",
+                          padding: "8px 10px",
                           borderRadius: "8px",
-                          fontSize: "13px",
-                          color: "#A19F97",
+                          fontSize: "13.5px",
+                          fontWeight: 500,
+                          color: "#141413",
                           textDecoration: "none",
+                          transition: "background 0.15s",
                         }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F3F1EC")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                       >
-                        My Profile
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#6E6D68", flexShrink: 0 }}>
+                          <circle cx="12" cy="8" r="4" />
+                          <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
+                        </svg>
+                        <span>My Profile</span>
                       </Link>
+
+                      {/* My Courses */}
                       <a
                         href="/programs/index.html"
                         onClick={() => setIsDropdownOpen(false)}
@@ -448,15 +475,53 @@ export default function Home() {
                           display: "flex",
                           alignItems: "center",
                           gap: "10px",
-                          padding: "8px 12px",
+                          padding: "8px 10px",
                           borderRadius: "8px",
-                          fontSize: "13px",
-                          color: "#A19F97",
+                          fontSize: "13.5px",
+                          fontWeight: 500,
+                          color: "#141413",
                           textDecoration: "none",
+                          transition: "background 0.15s",
                         }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F3F1EC")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                       >
-                        My Courses
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#6E6D68", flexShrink: 0 }}>
+                          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                        </svg>
+                        <span>My Courses</span>
                       </a>
+
+                      {/* Certificates */}
+                      <Link
+                        href="/certificate"
+                        onClick={() => setIsDropdownOpen(false)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          padding: "8px 10px",
+                          borderRadius: "8px",
+                          fontSize: "13.5px",
+                          fontWeight: 500,
+                          color: "#141413",
+                          textDecoration: "none",
+                          transition: "background 0.15s",
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F3F1EC")}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#6E6D68", flexShrink: 0 }}>
+                          <circle cx="12" cy="8" r="6" />
+                          <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                        </svg>
+                        <span>Certificates</span>
+                      </Link>
+
+                      <div style={{ height: "1px", backgroundColor: "rgba(20, 20, 19, 0.08)", margin: "6px 6px" }} />
+
+                      {/* Logout */}
                       <button
                         type="button"
                         onClick={handleLogout}
@@ -465,17 +530,32 @@ export default function Home() {
                           display: "flex",
                           alignItems: "center",
                           gap: "10px",
-                          padding: "8px 12px",
+                          padding: "8px 10px",
                           borderRadius: "8px",
-                          fontSize: "13px",
-                          color: "#F87171",
+                          fontSize: "13.5px",
+                          fontWeight: 500,
+                          color: "#141413",
                           background: "transparent",
                           border: "none",
                           cursor: "pointer",
                           textAlign: "left",
+                          transition: "background 0.15s, color 0.15s",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = "#F3F1EC";
+                          e.currentTarget.style.color = "#DC2626";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "transparent";
+                          e.currentTarget.style.color = "#141413";
                         }}
                       >
-                        Logout
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: "inherit", flexShrink: 0 }}>
+                          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                          <polyline points="16 17 21 12 16 7" />
+                          <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                        <span>Log out</span>
                       </button>
                     </div>
                   )}

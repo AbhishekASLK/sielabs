@@ -560,86 +560,107 @@
 
             <div
               id="navUserDropdownMenu"
-              style="display: none; position: absolute; right: 0; top: calc(100% + 10px); width: 230px; background-color: #FFFFFF; border-radius: 16px; box-shadow: 0 14px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03); border: 1px solid #E5E3DC; padding: 8px; z-index: 9999;"
+              style="display: none; position: absolute; right: 0; top: calc(100% + 8px); width: 204px; background-color: #FFFFFF; border-radius: 14px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.04); border: 1px solid #E5E3DC; padding: 5px; z-index: 9999;"
               role="menu"
             >
-              <!-- User Profile Header Card (Clickable to Profile Page) -->
-              <a
-                href="/profile"
-                id="navProfileHeaderLink"
-                style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background-color: #F6F4EE; border-radius: 12px; border: 1px solid #E8E5DD; margin-bottom: 6px; text-decoration: none; cursor: pointer; transition: background 0.15s;"
-                title="Click to view Profile"
-              >
-                <div style="width: 32px; height: 32px; border-radius: 50%; background-color: rgba(218, 119, 86, 0.2); color: var(--gold, #D97757); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; flex-shrink: 0; overflow: hidden;">
+              <!-- Anthropic-style User Info Header with Avatar Alignment -->
+              <div style="display: flex; align-items: center; gap: 10px; padding: 7px 10px 6px;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(217, 119, 87, 0.12); border: 1px solid rgba(217, 119, 87, 0.3); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
                   <img src="${avatarUrl}" alt="${user}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                  <span style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center;">${initial}</span>
+                  <span style="display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #D97757;">${initial}</span>
                 </div>
                 <div style="min-width: 0; flex: 1;">
-                  <p style="margin: 0; font-size: 13px; font-weight: 600; color: #141413; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  <p style="margin: 0; font-size: 13px; font-weight: 600; color: #141413; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.25;">
                     ${user}
                   </p>
-                  <p style="margin: 2px 0 0; font-size: 11px; color: #D97757; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                    <span>${isAdmin ? 'Administrator' : 'User Profile'}</span>
-                    <span>→</span>
+                  <p style="margin: 1px 0 0; font-size: 11px; color: #8E8D88; font-weight: 400; line-height: 1.2;">
+                    ${isAdmin ? 'Administrator' : 'Personal'}
                   </p>
                 </div>
-              </a>
+              </div>
+
+              <div style="height: 1px; background-color: rgba(20, 20, 19, 0.08); margin: 4px 6px 5px;"></div>
 
               ${isAdmin ? `
               <!-- Admin Panel Item -->
               <a
                 href="/admin"
-                style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #141413; text-decoration: none; transition: background 0.15s;"
-                onmouseover="this.style.backgroundColor='#F6F4EE';"
+                style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13.5px; font-weight: 500; color: #141413; text-decoration: none; transition: background 0.15s;"
+                onmouseover="this.style.backgroundColor='#F3F1EC';"
                 onmouseout="this.style.backgroundColor='transparent';"
                 role="menuitem"
               >
-                <div style="width: 26px; height: 26px; border-radius: 6px; background-color: rgba(218, 119, 86, 0.12); color: #D97757; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                    <path d="M9 3v18"></path>
-                    <path d="m14 9 3 3-3 3"></path>
-                  </svg>
-                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: #6E6D68; flex-shrink: 0;">
+                  <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                  <path d="M9 3v18"></path>
+                  <path d="m14 9 3 3-3 3"></path>
+                </svg>
                 <span>Admin Panel</span>
               </a>
-              <div style="height: 1px; background-color: rgba(20, 20, 19, 0.06); margin: 4px 0;"></div>
               ` : ''}
 
               <!-- My Profile Item -->
               <a
                 href="/profile"
-                style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #6E6D68; text-decoration: none; transition: background 0.15s, color 0.15s;"
-                onmouseover="this.style.backgroundColor='#F6F4EE'; this.style.color='#141413';"
-                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#6E6D68';"
+                style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13.5px; font-weight: 500; color: #141413; text-decoration: none; transition: background 0.15s;"
+                onmouseover="this.style.backgroundColor='#F3F1EC';"
+                onmouseout="this.style.backgroundColor='transparent';"
                 role="menuitem"
               >
-                My Profile
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: #6E6D68; flex-shrink: 0;">
+                  <circle cx="12" cy="8" r="4"></circle>
+                  <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path>
+                </svg>
+                <span>My Profile</span>
               </a>
 
               <!-- My Courses Item -->
               <a
                 href="/programs/index.html"
-                style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #6E6D68; text-decoration: none; transition: background 0.15s, color 0.15s;"
-                onmouseover="this.style.backgroundColor='#F6F4EE'; this.style.color='#141413';"
-                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#6E6D68';"
+                style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13.5px; font-weight: 500; color: #141413; text-decoration: none; transition: background 0.15s;"
+                onmouseover="this.style.backgroundColor='#F3F1EC';"
+                onmouseout="this.style.backgroundColor='transparent';"
                 role="menuitem"
               >
-                My Courses
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: #6E6D68; flex-shrink: 0;">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                <span>My Courses</span>
               </a>
 
-              <div style="height: 1px; background-color: rgba(20, 20, 19, 0.06); margin: 4px 0;"></div>
+              <!-- Certificates Item -->
+              <a
+                href="/certificate"
+                style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13.5px; font-weight: 500; color: #141413; text-decoration: none; transition: background 0.15s;"
+                onmouseover="this.style.backgroundColor='#F3F1EC';"
+                onmouseout="this.style.backgroundColor='transparent';"
+                role="menuitem"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: #6E6D68; flex-shrink: 0;">
+                  <circle cx="12" cy="8" r="6"></circle>
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                </svg>
+                <span>Certificates</span>
+              </a>
+
+              <div style="height: 1px; background-color: rgba(20, 20, 19, 0.08); margin: 6px 6px;"></div>
 
               <!-- Logout Item -->
               <button
                 type="button"
                 id="navLogoutBtn"
-                style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #DC2626; background: transparent; border: none; cursor: pointer; text-align: left; transition: background 0.15s;"
-                onmouseover="this.style.backgroundColor='rgba(220, 38, 38, 0.06)';"
-                onmouseout="this.style.backgroundColor='transparent';"
+                style="width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; font-size: 13.5px; font-weight: 500; color: #141413; background: transparent; border: none; cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s;"
+                onmouseover="this.style.backgroundColor='#F3F1EC'; this.style.color='#DC2626';"
+                onmouseout="this.style.backgroundColor='transparent'; this.style.color='#141413';"
                 role="menuitem"
               >
-                Logout
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: inherit; flex-shrink: 0;">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Log out</span>
               </button>
             </div>
           </div>
