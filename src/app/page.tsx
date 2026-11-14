@@ -514,7 +514,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── SECTION 1: CLAUDE ACADEMY HERO (Welcome to SieLabs Academy) ── */}
+      {/* ── SECTION 1: HERO (Welcome to SieLabs) ── */}
       <section style={{ padding: '84px 0 64px', position: 'relative' }}>
         <div className="container">
           <div style={{ maxWidth: '780px' }} className="reveal">
@@ -527,7 +527,7 @@ export default function Home() {
               fontWeight: 400,
               marginBottom: '20px'
             }}>
-              Welcome to SieLabs Academy
+              Welcome to SieLabs
             </h1>
             <p style={{
               color: 'var(--text-muted)',

@@ -2109,6 +2109,25 @@ export default function ProfilePage() {
                                   ✓ 100% Completed
                                 </span>
                               )}
+                              <Link
+                                href={`/certificate?course=${encodeURIComponent(prog.programName)}&name=${encodeURIComponent(profile?.name || '')}`}
+                                style={{
+                                  backgroundColor: prog.percentage === 100 ? "#D97757" : "rgba(217, 119, 87, 0.12)",
+                                  color: prog.percentage === 100 ? "#FFFFFF" : "#D97757",
+                                  fontSize: "12px",
+                                  fontWeight: 700,
+                                  padding: "3px 12px",
+                                  borderRadius: "12px",
+                                  textDecoration: "none",
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                  boxShadow: prog.percentage === 100 ? "0 2px 8px rgba(217, 119, 87, 0.3)" : "none",
+                                  transition: "transform 0.15s ease",
+                                }}
+                              >
+                                <span>{prog.percentage === 100 ? "🎓 View Completion Badge →" : "Preview Badge ↗"}</span>
+                              </Link>
                             </div>
 
                             <h3 style={{ fontSize: "24px", fontWeight: 800, margin: "0 0 8px", color: "#1A1A1A" }}>

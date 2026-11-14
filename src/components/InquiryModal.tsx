@@ -180,7 +180,7 @@ export default function InquiryModal({ isOpen, onClose, defaultProgram = 'Python
               marginBottom: '3px',
             }}
           >
-            <span>SieLabs Academy</span>
+            <span>SieLabs</span>
           </div>
 
           <button
