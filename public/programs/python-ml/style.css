@@ -104,6 +104,70 @@ body::after {
   z-index: 1;
 }
 
+/* ── HEADER CONTAINER (Full-bleed / left-aligned like Claude Academy / Homepage) ── */
+.header-container {
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .header-container {
+    padding: 0 36px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .header-container {
+    padding: 0 44px;
+  }
+}
+
+/* ── CLAUDE ACADEMY SEARCH CAPSULE ── */
+.claude-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #EFECE4;
+  border: 1px solid #E0DCD2;
+  border-radius: 9999px;
+  padding: 7px 16px;
+  color: #6E6D68;
+  font-size: 13.5px;
+  transition: all 0.2s ease;
+  width: 300px;
+  min-width: 260px;
+}
+
+.claude-search-box.desktop-cta {
+  margin-left: 0;
+}
+
+.claude-search-box:hover,
+.claude-search-box:focus-within {
+  border-color: rgba(217, 119, 87, 0.6);
+  background: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(217, 119, 87, 0.08);
+}
+
+.claude-search-box input {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
+
+.claude-kbd-shortcut {
+  background: #E2DFD6;
+  color: #6E6D68;
+  font-size: 11px;
+  line-height: 1;
+  padding: 3px 8px;
+  border-radius: 5px;
+  border: 1px solid rgba(20, 20, 19, 0.1);
+  font-family: var(--font-mono, monospace);
+  font-weight: 500;
+}
+
 /* ── HEADER ── */
 header {
   position: relative;
@@ -177,7 +241,7 @@ header nav {
   color: #FFFFFF;
 }
 
-.desktop-cta { margin-left: 20px; }
+.desktop-cta { /* margin handled by flex gap */ }
 .mobile-cta { display: none !important; }
 
 .hamburger-btn {
